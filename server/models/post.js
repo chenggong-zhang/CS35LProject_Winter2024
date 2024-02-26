@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema(
     {
-        user: {
+        user_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
@@ -20,7 +20,27 @@ const postSchema = new mongoose.Schema(
             required: true,
             enum: ['😄 happy', '😢 sad', '😴 tired', '😠 angry', '🌈 hopeful', '😰 anxious', '✨ inspired', '🧘 calm', '🤩 excited', '😂 amused'],
         },
-        liked_by: [{
+        like_by: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        handshake_by: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        fire_by: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        sad_by: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        lol_by: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+        }],
+        gg_by: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
         }],

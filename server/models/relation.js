@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const relationSchema = new mongoose.Schema(
     {
-        user1: {
+        user1_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
         },
-        user2: {
+        user2_id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
