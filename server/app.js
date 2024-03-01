@@ -7,9 +7,14 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+const routes = require('./routes');
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+// connect api routes
+app.use('/auth', routes.auth);
 
 // start server
 app.listen(PORT, () => {
