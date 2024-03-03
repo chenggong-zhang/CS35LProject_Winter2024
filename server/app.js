@@ -15,6 +15,9 @@ app.get('/', (req, res) => {
 
 // connect api routes
 app.use('/auth', routes.auth);
+app.use('/user', routes.user);
+app.use('/relation', routes.relation);
+app.use('/post', routes.post);
 
 // start server
 app.listen(PORT, () => {
