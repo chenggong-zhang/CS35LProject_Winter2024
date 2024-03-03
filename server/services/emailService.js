@@ -4,12 +4,12 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const verifiedSender = 'yihengzhu@g.ucla.edu'
 
-async function sendOTPEmail({receiver, otp}) {
+async function sendOTPEmail({receiver, otp, expireTimeInMinutes}) {
     const msg = {
         to: receiver,
         from: verifiedSender,
         subject: 'Rubato: one-time password verification',
-        text: `Your Rubato otp is: ${otp}`,
+        text: `Your Rubato otp is: ${otp}. It will expire in ${expireTimeInMinutes} minutes.`,
         // html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     }
 

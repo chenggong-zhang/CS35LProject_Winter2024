@@ -150,5 +150,6 @@ module.exports = {
     emailOTPAuth,
     emailOTPVerify,
     refreshAccessToken,
-    logout
+    logout,
+    expireTimeInMinutes
 }

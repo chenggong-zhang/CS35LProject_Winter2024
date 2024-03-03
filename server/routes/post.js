@@ -1,4 +1,5 @@
 const express = require('express');
+const https = require('https');
 
 const { postService, relationService, authService } = require('../services')
 
@@ -21,8 +22,11 @@ router.post('/', async (req, res, next) => {
     // check if mood is valid
     if (!postService.MOODS.includes(mood)) return res.status(400).json({ ok: false, error: 'invalid mood' });
 
+    // retrieve the first youtube video id under a search with song and artists
+    const ytVideoId = await getYoutubeSearchResults(song, artists);
+
     // create a new post in the database
-    const newPost = await postService.createPost({ user_id, song, artists, mood });
+    const newPost = await postService.createPost({ user_id, song, artists, mood, yt_link: `https://www.youtube.com/watch?v=${ytVideoId}` });
 
     res.status(200).json({
       ok: true,
@@ -122,4 +126,19 @@ router.get('/moods', async (req, res, next) => {
   }
 });
 
+
+// helper function to get youtube search results
+async function getYoutubeSearchResults(song, artists) {
+  const url = `https://www.googleapis.com/youtube/v3/search?part=id&q=${song}+${artists}&key=${process.env.YOUTUBE_API_KEY}&type=video&part=snippet&maxResults=1`;
+  return new Promise((resolve) => {
+      let data = '';
+      https.get(url, (res) => {
+          res.on('data', chunk => { data += chunk });
+          res.on('error', (err) => { console.error(err) });
+          res.on('end', () => {
+             resolve(JSON.parse(data).items[0].id.videoId);
+          });
+      });
+  });
+}
 module.exports = router;

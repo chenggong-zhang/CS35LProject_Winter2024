@@ -2,8 +2,8 @@ const { Post } = require('../models');
 
 const MOODS = ['😄 happy', '😢 sad', '😴 tired', '😠 angry', '🌈 hopeful', '😰 anxious', '✨ inspired', '🧘 calm', '🤩 excited', '😂 amused'];
 
-async function createPost({user_id, song, artists, mood}) {
-    const post = await Post.create({user_id, song, artists, mood});
+async function createPost({user_id, song, artists, mood, yt_link}) {
+    const post = await Post.create({user_id, song, artists, mood, yt_link});
     return post;    
 }
 
@@ -12,7 +12,7 @@ async function getPostsByUser(user_id, {limit, offset, sort={created_at: -1}}) {
         .sort(sort)
         .skip(offset)
         .limit(limit)
-        .populate('user_id')
+        .populate({path: 'user_id', select: {_id: 1, username: 1, handle: 1}})
         // .populate('like_by')
         // .populate('handshake_by')
         // .populate('fire_by')
@@ -29,7 +29,7 @@ async function getFeedPosts(friend_user_ids, {limit, offset, sort={created_at: -
         .sort(sort)
         .skip(offset)
         .limit(limit)
-        .populate('user_id')
+        .populate({path: 'user_id', select: {_id: 1, username: 1, handle: 1}})
         // .populate('like_by')
         // .populate('handshake_by')
         // .populate('fire_by')

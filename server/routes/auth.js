@@ -25,7 +25,7 @@ router.post('/email', async (req, res, next) => {
     user = await authService.emailOTPAuth({ user });
 
     // send verification email to user
-    const emailSuccess = await emailService.sendOTPEmail({ receiver: email, otp: user.temp_code.otp });
+    const emailSuccess = await emailService.sendOTPEmail({ receiver: email, otp: user.temp_code.otp, expireTimeInMinutes: authService.expireTimeInMinutes });
 
     if (!emailSuccess) {
       // return error response
