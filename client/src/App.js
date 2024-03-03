@@ -3,7 +3,6 @@ import Mainpage from './mainpage.js'
 
 function App() {
   return (
-
       <Mainpage/>
   );
 }

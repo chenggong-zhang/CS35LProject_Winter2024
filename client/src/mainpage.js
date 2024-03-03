@@ -53,23 +53,26 @@ class Mainpage extends React.Component{
         </div>
     </div>
     <div>
-        <div className = "trending_container">
-            <p style ={{color: 'white',fontFamily: 'Quicksand',fontSize: '25px', textAlign: 'left'}}>
+        
+        <div style ={{position: 'absolute', marginTop: '100px', marginLeft: '-70px'}}>
+            <p style ={{position: 'absolute', color: 'white',fontSize: '35px', textAlign: 'Right', right: '40px', marginTop: '-65px', marginBottom:'15px'}}>
                 Trending Vibes
             </p>
-            <TrendingBar content = "1,233 vibes" width = "80%" /> 
-        </div>
-        <div className = "trending_container"> 
-            <TrendingBar content = "792 vibes"  width = "65%"/>
-        </div>
-        <div className = "trending_container"> 
-            <TrendingBar content = "456 vibes"  width = "50%"/>
-        </div>
-        <div className = "trending_container"> 
-            <TrendingBar content = "102 vibes"  width = "12.5%"/>
-        </div>
-        <div className = "trending_container"> 
-            <TrendingBar content = "56 vibes"  width = "1%"/>
+            <div className = "trending_container">
+                <TrendingBar content = "1,233 vibes" width = "80%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/> 
+            </div>
+            <div className = "trending_container"> 
+                <TrendingBar content = "792 vibes"  width = "65%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
+            </div>
+            <div className = "trending_container"> 
+                <TrendingBar content = "456 vibes"  width = "50%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
+            </div>
+            <div className = "trending_container"> 
+                <TrendingBar content = "102 vibes"  width = "12.5%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
+            </div>
+            <div className = "trending_container"> 
+                <TrendingBar content = "70 vibes"  width = "1%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
+            </div>
         </div>
     </div>
 </div>
