@@ -1,0 +1,127 @@
+
+/*Post frame*/
+.Post {
+    position: relative;
+    width: 600px;        /* Set the width of the post */
+    height: 565px;       /* Set the height of the post */
+    max-width: 100%;     /* Ensure it doesn't exceed the width of the parent */
+    max-height: 100%;    /* Ensure it doesn't exceed the height of the parent */
+    margin: auto;        /* Center the post horizontally */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+/*dividing line*/
+  .Post::after {
+    content: ''; /* This is required for pseudo-elements */
+    position: absolute;
+    left: 0;
+    bottom: 0; /* Position at the bottom */
+    width: 600px; /* Match the width of the post */
+    height: 1px; /* Height of 1 pixel for the line */
+    background: #C0B8B8; /* Set the color of the dividing line */
+  }
+
+
+/*Song info brief view frame*/
+.SongINFO_BV{ 
+    width: 450px;
+    height: 88px;
+    flex-shrink: 0;
+}
+
+.SongName{
+    display: flex;
+    width: 350px;
+    height: 30px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #C5D7ED;
+    font-family: Quattrocento;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.28px;
+}
+
+.ArtistName{
+    display: flex;
+    width: 185px;
+    height: 23px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #C5D7ED;
+    font-family: Quattrocento;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.21px;
+}
+
+.Album_BV{
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+}
+
+/*User info bar*/
+.UserInfo{
+    width: 355px;
+    height: 45px;
+    flex-shrink: 0;
+}
+
+.PublicName{
+    display: flex;
+    width: 288px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.UserHandle{
+    display: flex;
+    width: 78px;
+    height: 18px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+
+.Album_WV{
+    display: flex;
+    width: 255px;
+    height: 255px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+.Timestamp{
+    display: flex;
+    width: 53px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.AliasFrame{
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+}
+
+/*Interaction button and interactive buttons*/
+.InteractionBar{
+    width: 500px;
+    height: 32px;
+    flex-shrink: 0;
+}
+

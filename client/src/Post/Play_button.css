@@ -1,0 +1,11 @@
+.playback-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+.playback-button svg {
+    display: block; /* Removes potential extra space beneath the SVG */
+  }
+  
