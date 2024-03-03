@@ -1,23 +1,30 @@
 .trending_bar{
     text-align: left;
     display: flex;
-    width: 370px;
-    height: 61px;
+    width: 150px;
+    height: 10px;
     background-color: #B50D65; 
-    padding: 17px 268px 17px 26px;
+    padding: 17px 10px 17px 26px;
     align-items: center;
     border-radius: 20px;
-    margin-left: -200px; 
 }
 .word_font{
     color: #E6EAEF;
+    padding: 5px;
     font-family: Quicksand;
-    font-size: 25px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
 }
 .trending_container{
-    width: 370px;
-
+    width: 300px;
+    padding: 5px 30px 1px 26px;
+    margin-left: 1200px; 
+    margin-bottom: 1px;
+    position: 'absolute';
+    
+}
+.spacer {
+    height: 20px; /* Adjust the height as needed for spacing */
 }
