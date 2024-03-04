@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import './PlaybackButton.css';
+import './Play_button.css';
 
 
-const PlaybackButton = () => {
+const PlaybackButton = ({isVibing, setIsVibing}) => {
   // State to manage play/pause; true if currently playing, false otherwise
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -21,6 +21,7 @@ const PlaybackButton = () => {
   // Event handler for click events on the playback button
   const togglePlayback = () => {
     setIsPlaying(!isPlaying);
+    setIsVibing(!isVibing);
   };
 
   return (
