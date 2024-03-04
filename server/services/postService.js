@@ -1,5 +1,7 @@
 const { Post } = require('../models');
 
+const MOODS = ['😄 happy', '😢 sad', '😴 tired', '😠 angry', '🌈 hopeful', '😰 anxious', '✨ inspired', '🧘 calm', '🤩 excited', '😂 amused'];
+
 async function createPost({user_id, song, artists, mood}) {
     const post = await Post.create({user_id, song, artists, mood});
     return post;    
@@ -94,9 +96,37 @@ async function reactToPost(post_id, user_id, reaction) {
     return post;
 }
 
+async function getTrendingMoods({friend_user_ids, createdAfter}) {
+    const posts = await Post.aggregate([
+        {
+            $match: {
+              _id: {
+                $in: friend_user_ids
+              },
+              created_at: {
+                $gte: createdAfter
+              }
+            }
+        },
+        { 
+            $group: { 
+                _id: '$mood', 
+                count: { $sum: 1 }
+            } 
+        }
+    ]);
+
+    // const sorted_moods = Object.entries(posts).sort((a, b) => b[1] - a[1]);
+
+    return posts;
+}
+
+
+
 module.exports = {
     createPost,
     getPostsByUser,
     getFeedPosts,
-    reactToPost
+    reactToPost,
+    getTrendingMoods
 }
