@@ -208,7 +208,14 @@
     width: 88px;
     height: 88px;
     flex-shrink: 0;
+    justify-content: space-around;
 }
+.InteractionBar button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 30px; /* Adjust padding as necessary */
+  }
 
 .PlayButtonFrame {
     position: absolute;
