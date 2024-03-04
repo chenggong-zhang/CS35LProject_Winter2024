@@ -23,4 +23,22 @@ router.post('/email/verify', (req, res) => {
 
 });
 
+router.get('/token', (req, res) => {
+
+  res.status(200).json({
+    ok: true,
+    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+  });
+
+});
+
+router.post('/logout', (req, res) => {
+
+  res.status(200).json({
+    ok: true,
+    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+  });
+
+});
+
 module.exports = router;
