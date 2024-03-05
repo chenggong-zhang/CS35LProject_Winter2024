@@ -76,7 +76,7 @@ async function emailOTPVerify({email, otp}) {
     user.refresh_token = refreshToken;
     await user.save();
 
-    return { ok: true, accessToken, refreshToken };
+    return { ok: true, user, accessToken, refreshToken };
 }
 
 async function refreshAccessToken({refreshToken}) {
@@ -95,12 +95,12 @@ async function refreshAccessToken({refreshToken}) {
     return { ok: true, accessToken };
 }
 
-async function logout({user_id, refreshToken}) {
+async function logout({user_id}) {
     const user = await User.findById(user_id);
 
     if (!user) return { ok: false, error: 'User not found' };
 
-    if (user.refresh_token !== refreshToken) return { ok: false, error: 'Invalid refresh token' };
+    // if (user.refresh_token !== refreshToken) return { ok: false, error: 'Invalid refresh token' };
 
     user.refresh_token = null;
     user.markModified('refresh_token');
