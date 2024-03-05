@@ -2,15 +2,13 @@ const { Relation } = require('../models');
 
 async function connectUser({selfUserId, friendUserId}) {
     // check if a relation already exists between the two users
-    const relation = await Relation.find({
-        $or: [
-            {user1_id: selfUserId, user2_id: friendUserId}, 
-            {user1_id: friendUserId, user2_id: selfUserId}
-        ]
+    const relation = await Relation.findOne({
+        user1_id: selfUserId, 
+        user2_id: friendUserId
     });
 
-    if (relation.length > 0) {
-        return relation[0];
+    if (relation) {
+        return relation;
     }
 
     // create a new relation if none exists
@@ -22,31 +20,27 @@ async function connectUser({selfUserId, friendUserId}) {
     return newRelation;
 }
 
-async function getFriendIds(userId) {
-    // find all relations of the user
-    const relations = await Relation.find({
-        $or: [ {user1_id: userId}, {user2_id: userId} ]
-    });
+// get followings and followersof a user
+async function getRelatedUsers({userId}) {
 
-    // get the ids of the other users in the relations
-    const friendIds = relations.map(relation => {
-        if (relation.user1_id === userId) {
-            return relation.user2_id;
-        } else {
-            return relation.user1_id;
-        }
-    });
+    const usersFollowedBySelf = await Relation.find({
+        user1_id: userId
+    }).populate('user2_id');
 
-    return friendIds;
+    const usersSelfFollows = await Relation.find({
+        user2_id: userId
+    }).populate('user1_id');
+
+    return {
+        following: usersFollowedBySelf.map(relation => relation.user2_id),
+        followers: usersSelfFollows.map(relation => relation.user1_id)
+    };
 }
 
 async function disconnectUser({selfUserId, friendUserId}) {
-    // find the relation between the two users
-    const relation = await Relation.deleteMany({
-        $or: [
-            {user1_id: selfUserId, user2_id: friendUserId}, 
-            {user1_id: friendUserId, user2_id: selfUserId}
-        ]
+    // unfollow the other user
+    const relation = await Relation.deleteOne({
+        user1_id: selfUserId, user2_id: friendUserId 
     });
 
     return relation.acknowledged;
@@ -55,6 +49,6 @@ async function disconnectUser({selfUserId, friendUserId}) {
 
 module.exports = {
     connectUser,
-    getFriendIds,
+    getRelatedUsers,
     disconnectUser
 }
