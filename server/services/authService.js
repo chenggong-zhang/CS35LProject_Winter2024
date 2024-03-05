@@ -2,6 +2,8 @@ const { User } = require('../models');
 
 const otpGenerator = require('otp-generator');
 const JWT = require('jsonwebtoken');
+const passport = require('passport');
+const { ExtractJwt, Strategy: JwtStrategy } = require('passport-jwt');
 
 const expireTimeInMinutes = 10;
 
@@ -11,6 +13,36 @@ const refreshTokenExp = 30 * 24 * 60 * 60   // 30 days
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
+// Create middleware to authenticate JWT tokens
+const jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: ACCESS_TOKEN_SECRET
+};
+
+const jwt_strategy = new JwtStrategy(
+    jwtOptions,
+    async (payload, done) => {
+        try {
+            // Find the user specified in token
+            const user = await User.findById(payload.sub);
+
+            // If user doesn't exists, handle it
+            if (!user) {
+                return done(null, false);
+            }
+
+            // console.log("user exists and is authorized", user._id.toString());
+            // Otherwise, return the user
+            done(null, user);
+
+        } catch (error) {
+            done(error, false);
+        }
+    }
+);
+
+passport.use(jwt_strategy);
+const passportJWT = passport.authenticate('jwt', { session: false })
 
 
 // create a new OTP for the user
@@ -114,6 +146,7 @@ function signRefreshToken(user_id, refreshTokenExp) {
 }
 
 module.exports = {
+    passportJWT,
     emailOTPAuth,
     emailOTPVerify,
     refreshAccessToken,
