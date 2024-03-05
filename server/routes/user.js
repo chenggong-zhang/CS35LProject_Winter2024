@@ -15,21 +15,21 @@ router.get('/:user_id', (req, res) => {
 
 router.post('/', (req, res) => {
 
-    // TODO: update user profile data
-    res.status(200).json({
-      ok: true,
-      message: `endpoint: ${req.baseUrl}/${req.route.path}`
-    });
-    
+  // TODO: update user profile data
+  res.status(200).json({
+    ok: true,
+    message: `endpoint: ${req.baseUrl}/${req.route.path}`
   });
-
-  router.get('/', (req, res) => {
-    // TODO: search users
-    res.status(200).json({
-      ok: true,
-      message: `endpoint: ${req.baseUrl}/${req.route.path}`
-    });
     
-  });
+});
 
-  module.exports = router;
+router.get('/', (req, res) => {
+  // TODO: search users
+  res.status(200).json({
+    ok: true,
+    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+  });
+    
+});
+
+module.exports = router;

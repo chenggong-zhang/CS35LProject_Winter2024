@@ -15,13 +15,13 @@ router.post('/connect/:user_id', (req, res) => {
 
 router.get('/disconnect/:user_id', (req, res) => {
 
-    // TODO: Disconnect another user
-    res.status(200).json({
-      ok: true,
-      message: `endpoint: ${req.baseUrl}/${req.route.path}`
-    });
-    
+  // TODO: Disconnect another user
+  res.status(200).json({
+    ok: true,
+    message: `endpoint: ${req.baseUrl}/${req.route.path}`
   });
+    
+});
 
 
 module.exports = router;
