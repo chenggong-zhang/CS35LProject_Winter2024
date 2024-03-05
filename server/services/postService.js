@@ -96,13 +96,13 @@ async function reactToPost(post_id, user_id, reaction) {
     return post;
 }
 
-async function getTrendingMoods({friend_user_ids, createdAfter}) {
+async function getTrendingMoods({createdAfter}) {
     const posts = await Post.aggregate([
         {
             $match: {
-              _id: {
-                $in: friend_user_ids
-              },
+            //   _id: {
+            //     $in: friend_user_ids
+            //   },
               created_at: {
                 $gte: createdAfter
               }
