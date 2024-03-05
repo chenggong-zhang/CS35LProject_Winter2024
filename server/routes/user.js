@@ -2,32 +2,78 @@ const express = require('express');
 
 const router = express.Router();
 
+const { userService, postService, relationService, authService } = require('../services/index');
 
-router.get('/:user_id', (req, res) => {
+// protect routes with JWT auth
+router.use(authService.passportJWT);
 
-  // TODO: retrieve user profile data
+// retrieve user profile data
+router.get('/:user_id', async (req, res) => {
+
+  const { user_id } = req.params;
+
+  // check input data
+  if (!user_id) {
+    return res.status(400).json({
+      ok: false,
+      error: 'user_id is missing'
+    });
+  }
+
+  // retrieve user data
+  const user = await userService.getUserById(user_id);
+
   res.status(200).json({
     ok: true,
-    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+    user: user,
+    is_self: req.user.id === user_id,
   });
   
 });
 
-router.post('/', (req, res) => {
+// update user profile data
+router.post('/', async (req, res) => {
 
-  // TODO: update user profile data
+  const user_id = req.user.id;
+  const { username, handle } = req.body;
+
+  if(!username ||!handle) {
+    return res.status(400).json({
+      ok: false,
+      error: 'username and handle are mising'
+    });
+  }
+
+  const updateOptions = {
+    user_id,
+    username: username || None,
+    handle: handle || None,
+  };
+  
+  const newUser = await userService.updateUser(updateOptions);
+
   res.status(200).json({
     ok: true,
-    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+    user: newUser,
   });
     
 });
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+  const {queryString } = req.query;
+
+  if(!queryString) {
+    return res.status(400).json({
+      ok: false,
+      error: 'queryString is mising'
+    });
+  }
+
+  const users = await userService.searchUsers({queryString});
   // TODO: search users
   res.status(200).json({
     ok: true,
-    message: `endpoint: ${req.baseUrl}/${req.route.path}`
+    users: users,
   });
     
 });
