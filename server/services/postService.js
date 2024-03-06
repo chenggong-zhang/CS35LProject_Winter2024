@@ -7,42 +7,42 @@ async function createPost({user_id, song, artists, mood}) {
     return post;    
 }
 
-async function getPostsByUser(user_id, {limit, offset, sort={createdAt: -1}}) {
+async function getPostsByUser(user_id, {limit, offset, sort={created_at: -1}}) {
     const posts = await Post.find({user_id})
         .sort(sort)
         .skip(offset)
         .limit(limit)
         .populate('user_id')
-        .populate('like_by')
-        .populate('handshake_by')
-        .populate('fire_by')
-        .populate('sad_by')
-        .populate('lol_by')
-        .populate('gg_by');
+        // .populate('like_by')
+        // .populate('handshake_by')
+        // .populate('fire_by')
+        // .populate('sad_by')
+        // .populate('lol_by')
+        // .populate('gg_by');
 
     return posts;
 }
 
-async function getFeedPosts(friend_user_ids, {limit, offset, sort={createdAt: -1}}) {
+async function getFeedPosts(friend_user_ids, {limit, offset, sort={created_at: -1}}) {
 
     const posts = await Post.find({user_id: {$in: friend_user_ids}})
         .sort(sort)
         .skip(offset)
         .limit(limit)
         .populate('user_id')
-        .populate('like_by')
-        .populate('handshake_by')
-        .populate('fire_by')
-        .populate('sad_by')
-        .populate('lol_by')
-        .populate('gg_by');;
+        // .populate('like_by')
+        // .populate('handshake_by')
+        // .populate('fire_by')
+        // .populate('sad_by')
+        // .populate('lol_by')
+        // .populate('gg_by');
 
     return posts;
 }
 
 // add a reaction if not already added
 // remove a reaction if already added
-async function reactToPost(post_id, user_id, reaction) {
+async function reactToPost({post_id, user_id, reaction}) {
     const post = await Post.findById(post_id);
 
     switch (reaction) {
@@ -97,7 +97,7 @@ async function reactToPost(post_id, user_id, reaction) {
 }
 
 async function getTrendingMoods({createdAfter}) {
-    const posts = await Post.aggregate([
+    const moods = await Post.aggregate([
         {
             $match: {
             //   _id: {
@@ -118,7 +118,10 @@ async function getTrendingMoods({createdAfter}) {
 
     // const sorted_moods = Object.entries(posts).sort((a, b) => b[1] - a[1]);
 
-    return posts;
+    // sort moods by count
+    const sorted_moods = moods.sort((a, b) => b.count - a.count);
+
+    return sorted_moods;
 }
 
 
