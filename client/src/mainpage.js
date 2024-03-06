@@ -53,13 +53,12 @@ class Mainpage extends React.Component{
         </div>
     </div>
     <div>
-        
         <div style ={{position: 'absolute', marginTop: '100px', marginLeft: '-70px'}}>
-            <p style ={{position: 'absolute', color: 'white',fontSize: '35px', textAlign: 'Right', right: '40px', marginTop: '-65px', marginBottom:'15px'}}>
+            <p style ={{position: 'absolute', color: 'white',fontSize: '35px', textAlign: 'Right', right: '70px', marginTop: '-65px', marginBottom:'15px'}}>
                 Trending Vibes
             </p>
             <div className = "trending_container">
-                <TrendingBar content = "1,233 vibes" width = "80%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/> 
+                <TrendingBar content = "1,300 vibes" width = "80%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/> 
             </div>
             <div className = "trending_container"> 
                 <TrendingBar content = "792 vibes"  width = "65%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
@@ -74,7 +73,18 @@ class Mainpage extends React.Component{
                 <TrendingBar content = "70 vibes"  width = "1%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
             </div>
         </div>
+        <div>
+            <div className = "search_bar" style = {{position: 'absolute', top: '500px', right: '235px'}}>
+                <p style ={{position: 'absolute', color: 'white',fontSize: '15px', right: '285px', top: '-4px'}}>
+                    <img src ={`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon"></img>
+                </p>
+                <p style = {{position: 'absolute', color: 'white', fontSize: '15px', right: '220px', top: '-2px'}}>
+                    Search...
+                </p>
+            </div>                                   
+        </div>
     </div>
+    
 </div>
 
         )
