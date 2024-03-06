@@ -5,7 +5,6 @@ const baseURL = 'http://localhost:4000/'
     
 
 const loginWithEmail = async (email) => {
-  console.log("login entered")
     try {
       const response = await axios.post('http://localhost:4000/auth/email', {
         email: email
@@ -18,9 +17,8 @@ const loginWithEmail = async (email) => {
       }
 
     } catch (error) {
-      // console.error('Login failed', error);
-      console.log(error)
-      throw error;
+      console.log('Login failed');
+      console.log(error);
     }
   };
 
