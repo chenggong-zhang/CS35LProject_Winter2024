@@ -27,3 +27,12 @@
 .spacer {
     height: 20px; /* Adjust the height as needed for spacing */
 }
+
+.search_bar{
+    height: 10px;
+    width: 290px; 
+    background-color: rgba(155,155,155,0.2); 
+    padding: 17px 10px 17px 26px;
+    align-items: center;
+    border-radius: 20px;
+}

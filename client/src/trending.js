@@ -2,7 +2,6 @@ import './trending.css';
 
 function TrendingBar(props)
 {
-    console.log('Width:', props.width);
     const combinedStyles = {width: props.width}
     
     return(
