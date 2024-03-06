@@ -17,10 +17,12 @@ router.post('/email', async (req, res) => {
   }
 
   // get or create user in database using email
-  const user = await userService.upsertUser({ email });
+  let user = await userService.upsertUser({ email });
+
+  user = await authService.emailOTPAuth({ user });
 
   // send verification email to user
-  const emailSuccess = await emailService.sendOTPEmail(user);
+  const emailSuccess = await emailService.sendOTPEmail({ receiver: email, otp: user.temp_code.otp });
 
   if (!emailSuccess) {
     // return error response
@@ -109,7 +111,8 @@ router.get('/token', async (req, res) => {
 
 
 // logout
-router.post('/logout', async (req, res) => {
+router.post('/logout', authService.passportJWT, async (req, res) => {
+
 
   const user_id = req.user.id;
 
