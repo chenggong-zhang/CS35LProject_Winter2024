@@ -24,6 +24,6 @@ const relationSchema = new mongoose.Schema(
 const Relation = mongoose.model('Relation', relationSchema);
 
 // Add compound unique index on user1_id and user2_id
-Relation.index({ user1_id: 1, user2_id: 1}, { unique: true });
+Relation.createIndexes({ user1_id: 1, user2_id: 1}, { unique: true });
 
 module.exports = Relation;

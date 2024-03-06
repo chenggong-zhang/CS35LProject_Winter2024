@@ -61,7 +61,7 @@ async function emailOTPVerify({email, otp}) {
 
     if (!user) return { ok: false, error: 'User not found' };
 
-    if (user.temp_code !== otp) return { ok: false, error: 'Invalid OTP' };
+    if (user.temp_code.otp !== otp) return { ok: false, error: 'Invalid OTP' };
 
     if (user.temp_code.exp < Date.now()) return { ok: false, error: 'OTP expired' };
 
