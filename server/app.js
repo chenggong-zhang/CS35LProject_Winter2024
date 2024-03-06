@@ -1,23 +1,40 @@
 require('dotenv').config();
 // require the express module
 const express = require('express');
-// const cors = require('cors');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-// // create an instance of the express app
-// const app = express();
-// app.use(cors({
-//   origin: 'http://localhost:3000', // Specify the origin of requests that are allowed
-//   methods: ['POST', 'PUT', 'PATCH', 'GET', 'DELETE', 'OPTIONS'], // Specify the methods allowed
-// }));
+// connect to the database
+mongoose.connect(process.env.MONGODB_URI);
 
-
-
-
+// create an instance of the express app
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cors())
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+const routes = require('./routes');
+
+// app.get('/', (req, res) => {
+//   res.send('Hello World!');
+// });
+
+// connect api routes
+app.use('/auth', routes.auth);
+app.use('/user', routes.user);
+app.use('/relation', routes.relation);
+app.use('/post', routes.post);
+
+// handle errors
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).json({ 
+        ok: false,
+        error: err.message || 'Something went wrong' 
+    });
 });
 
 // start server
