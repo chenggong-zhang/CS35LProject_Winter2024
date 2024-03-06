@@ -14,7 +14,13 @@ const userSchema = new mongoose.Schema(
         },
         username: {
             type: String,
-        }
+        },
+        temp_code: {
+            type: Object
+        },
+        refresh_token: {
+            type: String,
+        },
     },
     {
         timestamps: {
