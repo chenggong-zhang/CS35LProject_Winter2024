@@ -37,6 +37,15 @@ async function getRelatedUsers({userId}) {
     };
 }
 
+// get ids of users that self follows
+async function getUserIdsSelfFollows({userId}) {
+    const userIdsFollowedBySelf = await Relation.find({
+        user1_id: userId
+    }).select('user2_id');
+
+    return userIdsFollowedBySelf.map(relation => relation.user2_id);
+}
+
 async function disconnectUser({selfUserId, friendUserId}) {
     // unfollow the other user
     const relation = await Relation.deleteOne({
@@ -50,5 +59,6 @@ async function disconnectUser({selfUserId, friendUserId}) {
 module.exports = {
     connectUser,
     getRelatedUsers,
+    getUserIdsSelfFollows,
     disconnectUser
 }
