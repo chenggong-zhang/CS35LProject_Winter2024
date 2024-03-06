@@ -1,0 +1,23 @@
+.trending_bar{
+    text-align: left;
+    display: flex;
+    width: 370px;
+    height: 61px;
+    background-color: #B50D65; 
+    padding: 17px 268px 17px 26px;
+    align-items: center;
+    border-radius: 20px;
+    margin-left: -200px; 
+}
+.word_font{
+    color: #E6EAEF;
+    font-family: Quicksand;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.trending_container{
+    width: 370px;
+
+}

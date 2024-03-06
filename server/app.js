@@ -6,7 +6,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 // connect to the database
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(process.env.MONGODB_URI).then(() => {
+  console.log('Connected to database');
+}).catch(err => {
+  console.error('Could not connect to database', err);
+//   process.exit();
+});
 
 // create an instance of the express app
 const app = express();
