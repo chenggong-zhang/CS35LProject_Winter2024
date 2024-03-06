@@ -1,8 +1,11 @@
 const express = require('express');
 
-const { relationService } = require('../services');
+const { relationService, authService } = require('../services');
 
 const router = express.Router();
+
+// protect routes with JWT auth
+router.use(authService.passportJWT);
 
 router.get('/:user_id', async (req, res, next) => {
   try {
