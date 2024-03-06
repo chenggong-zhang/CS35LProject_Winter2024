@@ -1,8 +1,11 @@
 const express = require('express');
 
-const { postService, relationService } = require('../services')
+const { postService, relationService, authService } = require('../services')
 
 const router = express.Router();
+
+// protect routes with JWT auth
+router.use(authService.passportJWT);
 
 // create a post
 router.post('/', async (req, res, next) => {
