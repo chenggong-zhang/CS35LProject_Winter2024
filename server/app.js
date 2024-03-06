@@ -26,6 +26,15 @@ app.use('/user', routes.user);
 app.use('/relation', routes.relation);
 app.use('/post', routes.post);
 
+// handle errors
+app.use((err, req, res, next) => {
+    console.error('Error:', err.message);
+    res.status(500).json({ 
+        ok: false,
+        error: err.message || 'Something went wrong' 
+    });
+});
+
 // start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
