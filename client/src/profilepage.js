@@ -1,6 +1,22 @@
 // Navigation.js
 
 import React from 'react';
+import axios from 'axios';
+
+
+// function getToken(){
+//     const [token, setToken]=React.useState(null);
+//     React.useEffect(()=>{
+//         axios.get('${baseURL}').then((response)=>{
+//             setToken(response.data);
+//         });
+//     },[]);
+
+// }
+
+
+
+
 
 class Profilepage extends React.Component{
     render(){
@@ -178,16 +194,6 @@ class Profilepage extends React.Component{
 }
 
 
-// class button extends React.Component{
-//     render(){
-//         const{request}=this.props;
-//         return(
-
-//         )
-//     }
-// }
-
-
 
 
 class NavigationBar extends React.Component{
@@ -242,6 +248,18 @@ class Logo extends React.Component{
 }
 
 class UserDisplay extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            username: null,
+            handle: null
+        };
+    }
+
+    componentDidMount(){
+
+    }    
+
     render(){
         const {name, handle}=this.props
         return(
