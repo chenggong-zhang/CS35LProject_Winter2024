@@ -1,7 +1,6 @@
-import React, {useRef,useState, useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import axios from 'axios';
-
-const baseURL = 'http://localhost:4000/'
+import { Link } from 'react-router-dom';
     
 
 const loginWithEmail = async (email) => {
@@ -15,7 +14,6 @@ const loginWithEmail = async (email) => {
       } else {
         throw new Error(response.data.error || 'Unknown error occurred');
       }
-
     } catch (error) {
       console.log('Login failed');
       console.log(error);
@@ -25,7 +23,7 @@ const loginWithEmail = async (email) => {
 
 const verifyEmailWithOtp = async (email, otp) => {
     try {
-      const response = await axios.post('${baseURL}/auth/email/verify', {
+      const response = await axios.post('http://localhost:4000/auth/email/verify', {
         email: email,
         otp: otp
       });
@@ -34,7 +32,7 @@ const verifyEmailWithOtp = async (email, otp) => {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('userObject', response.data.user)
-  
+        console.log("email verified")
         return response.data.user; 
       } else {
         throw new Error(response.data.error || 'Unknown error occurred');
@@ -47,39 +45,75 @@ const verifyEmailWithOtp = async (email, otp) => {
 
 
 class Main extends React.Component{
-    render(){
+  constructor(props){
+    super(props);
+    this.state={
+      opt: null,
+      email: null,
+      current: null
+    };
+  }
+  setEmail=(email)=>{
+    this.setState({email});
+  }
+  setCurrent=(current)=>{
+    this.setState({current});
+  }
+  setOpt=(opt)=>{
+    this.setState({opt});
+  }
+    render()
+    {
       return(
 <div style={{width: '100%', height: '100%', position: 'relative', background: '#E6EAEF'}}>
   <div style={{ width: 320, height: 50, left: '40%', top: 155, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
-  {/* <div style={{ width: 320, height: 50, bottom: 0, position: 'absolute', background: '#F95337', borderRadius: 100 }}> */}
-        <UserTypingBoard/>
-  {/* </div> */}
+  <div style={{position: 'absolute', bottom: 55, color: '#F2F2F2', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.20, wordWrap: 'break-word'}}>email</div>
+        <UserTypingBoard propsData={{state:this.state.email, setState:this.setEmail, current:this.state.current, setCurrent:this.setCurrent}}/>
   </div>
+  <PassWord email={this.state.email} current={this.state.current} opt={this.state.opt} setOpt={this.setOpt} setCurrent={this.setCurrent}/>
 </div>
       )
     }
 }
 
-function UserTypingBoard() {
+function PassWord({email, current, opt, setOpt, setCurrent}){
+  if (email==null){
+    return null;
+  }
+  else{
+    return (
+  <div style={{ width: 320, height: 50, left: '40%', top: 250, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
+      <div style={{position: 'absolute', bottom: 55, color: '#F2F2F2', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.20, wordWrap: 'break-word'}}>password</div>
+    <UserTypingBoard propsData={{state: opt, setState: setOpt, current: current, setCurrent:setCurrent}}/>
+  </div>
+    );
+  }
+}
 
-  const[email, setEmail]=useState(null)
-  const[opt, setOpt]=useState(null)
-
+function UserTypingBoard({propsData}) {
+  const {state, setState, current, setCurrent}=propsData
   const inputRef = useRef();
   const focusTextInput = () => {
     inputRef.current.focus();
   };
   const handleKeyPress = (event)=>{
-    if (event.key=='Enter'){
-      setEmail(inputRef.current.value)
-      inputRef.current.value = '';
+    if (event.key==='Enter'){
+      setState(inputRef.current.value)
     }
   }
   useEffect(()=>{
-    if (email){
-      loginWithEmail(email);
+    if (state){
+      if (current===null){
+        loginWithEmail(state);
+        setCurrent(inputRef.current.value)
+      }
+      else{
+        console.log(current)
+        verifyEmailWithOtp(current, state)
+        <Link to="/profilepage.js"></Link>
+      }
     }
-  },[email]);
+  },[state]);
 
   return (
     <div>
