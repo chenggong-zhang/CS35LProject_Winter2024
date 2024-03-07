@@ -46,8 +46,15 @@ async function sendVibeNotificationEmail({receivers}) {
     return true;
 }
 
+function validateEmail(email) {
+    const re = /^([a-zA-Z0-9_\.\-]+)@([\da-zA-Z\.\-]+)\.([a-zA-Z\.]{2,6})$/;
+    return re.test(email);
+
+}
+
 
 module.exports = {
     sendOTPEmail,
-    sendVibeNotificationEmail
+    sendVibeNotificationEmail,
+    validateEmail
 }
