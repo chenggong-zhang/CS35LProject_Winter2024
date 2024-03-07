@@ -73,18 +73,10 @@ class Mainpage extends React.Component{
                 <TrendingBar content = "70 vibes"  width = "1%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
             </div>
         </div>
-        <div>
-            <div className = "search_bar" style = {{position: 'absolute', top: '500px', right: '235px'}}>
-                <p style ={{position: 'absolute', color: 'white',fontSize: '15px', right: '285px', top: '-4px'}}>
-                    <img src ={`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon"></img>
-                </p>
-                <p style = {{position: 'absolute', color: 'white', fontSize: '15px', right: '220px', top: '-2px'}}>
-                    Search...
-                </p>
-            </div>                                   
+        <div style ={{position: 'absolute', left: 1200, marginTop: '500px'}}>
+            <SearchButton/>                                  
         </div>
     </div>
-    
 </div>
 
         )
@@ -94,18 +86,17 @@ class Mainpage extends React.Component{
 class SearchButton extends React.Component{
     handleClick = () => {
         console.log('button clicked!'); 
-    }
+    };
     render(){
         return(
-            <div style={{width: 132, height: 40, left: '1110px', top: '500px', position: 'absolute'}}>
-                <img src = {`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon" style = {{marginTop: '8px', marginLeft: '10px'}}></img>
-                <div style={{width: 350, height: 40, left: 0, top: 0, position: 'absolute', background: 'rgba(155,155,155,0.25)', borderRadius: 100}} onClick = {this.handleClick}/>
+            <div style={{width: 132, height: 40, left: -50, top:-25, position: 'absolute'}}>
+                <img src ={`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon" style={{marginTop: '8px', marginLeft: '10px'}}></img>
+                <div style={{width:350, height: 40, left: 0, top: 0, position: 'absolute', background: 'rgba(155,155,155,0.25)', borderRadius: 100}} onClick = {this.handleClick}/>
                 <div style={{width: 100, height: 23, left: 27, top: 9, position: 'absolute', textAlign: 'center', color: 'rgba(175,175,175,0.85)', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} onClick = {this.handleClick}>Search...</div>
             </div>
         )
     }
 }
-
 class NavigationBar extends React.Component{
     render(){
         const {imageSource, barName} = this.props;
