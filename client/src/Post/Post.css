@@ -2,15 +2,10 @@
 .Post {
     position: relative;
     width: 600px;
-    /* Set the width of the post */
     height: 565px;
-    /* Set the height of the post */
     max-width: 100%;
-    /* Ensure it doesn't exceed the width of the parent */
     max-height: 100%;
-    /* Ensure it doesn't exceed the height of the parent */
     margin: auto;
-    /* Center the post horizontally */
     background: #C5D7ED;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -20,15 +15,11 @@
 /*dividing line*/
 .Post::after {
     content: 'dividing line';
-    /* This is required for pseudo-elements */
     position: absolute;
     left: 0;
     bottom: 0;
-    /* Position at the bottom */
     width: 600px;
-    /* Match the width of the post */
     height: 3px;
-    /* Height of 1 pixel for the line */
     background: #787070;
     /* Set the color of the dividing line */
 }
@@ -83,24 +74,6 @@
     width: 550px;
     height: 45px;
     flex-shrink: 0;
-}
-
-.AliasFrame {
-    position: absolute;
-    bottom: 16px;
-    width: 45px;
-    /* Set the desired width */
-    height: 45px;
-    /* Set the height to be the same as the width for a circle */
-    border-radius: 50%;
-    /* This creates the circular shape */
-    overflow: hidden;
-    /* This ensures the image doesn't overflow the circular shape */
-    background-color: #ccc;
-    /* A light grey placeholder color */
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 
@@ -183,7 +156,7 @@
 .SongINFO_BV {
     position: absolute;
     left: 30px;
-    bottom: 62px;
+    bottom: 67px;
     width: 550px;
     height: 88px;
     flex-shrink: 0;
@@ -193,7 +166,7 @@
 .SongName {
     position: absolute;
     left: 105px;
-    bottom: 45px;
+    bottom: 55px;
     display: flex;
     width: 350px;
     height: 30px;
@@ -213,7 +186,7 @@
 .ArtistName {
     position: absolute;
     left: 105px;
-    bottom: 20px;
+    bottom: 30px;
     display: flex;
     width: 185px;
     height: 23px;
@@ -246,20 +219,25 @@
     flex-shrink: 0;
 }
 
-/*Interaction button and interactive buttons*/
-.InteractionBar {
+
+.InterCounter{
     position: absolute;
-    bottom: 55px;
-    width: 600px;
-    height: 32px;
+    bottom: 63px;
+    width: 100%;
+    height: 20px;
     flex-shrink: 0;
     justify-content: space-around;
+    font-family: 'Pacifico';
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 450;
+    text-align: center;
+    line-height: normal;
+    color: #F0A193;
+    pointer-events: none;
 }
-
-.InteractionBar button {
+.InterCounter span{
     background: transparent;
     border: none;
-    cursor: pointer;
-    padding: 30px;
-    /* Adjust padding as necessary */
+    padding: 40.5px;
 }

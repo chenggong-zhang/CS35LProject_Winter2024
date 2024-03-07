@@ -20,6 +20,7 @@ const PlaybackButton = ({ isVibing, setIsVibing }) => {
 
   // Event handler for click events on the playback button
   const togglePlayback = () => {
+    /* API request for audio */
     setIsPlaying(!isPlaying);
     setIsVibing(!isVibing);
   };

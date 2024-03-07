@@ -1,7 +1,7 @@
 /*Interaction button and interactive buttons*/
 .InteractionButton {
     position: absolute;
-    bottom: 55px;
+    bottom: 48px;
     width: 600px;
     height: 32px;
     flex-shrink: 0;
