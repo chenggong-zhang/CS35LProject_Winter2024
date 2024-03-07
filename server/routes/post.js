@@ -18,6 +18,9 @@ router.post('/', async (req, res, next) => {
     if (!artists) return res.status(400).json({ ok: false, error: 'artists is missing' });
     if (!mood) return res.status(400).json({ ok: false, error:'mood is missing' });
 
+    // check if mood is valid
+    if (!postService.MOODS.includes(mood)) return res.status(400).json({ ok: false, error: 'invalid mood' });
+
     // create a new post in the database
     const newPost = await postService.createPost({ user_id, song, artists, mood });
 
@@ -38,7 +41,7 @@ router.get('/', async (req, res, next) => {
   try {
     const { sort, limit, offset, user_id: other_user_id } = req.query;
     const user_id = req.user.id;
-    
+
     if (other_user_id) {
       // if other_user_id is provided, get posts from that user
       const opts = { 
@@ -61,7 +64,7 @@ router.get('/', async (req, res, next) => {
         sort: { created_at: -1 }  // temporarily only sort by createdAt
       };
 
-      const followed_user_ids = await relationService.getUserIdsSelfFollows({ user_id });
+      const followed_user_ids = await relationService.getUserIdsSelfFollows({ userId: user_id });
 
       const posts = await postService.getFeedPosts(followed_user_ids, opts);
 

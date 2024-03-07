@@ -131,5 +131,6 @@ module.exports = {
     getPostsByUser,
     getFeedPosts,
     reactToPost,
-    getTrendingMoods
+    getTrendingMoods,
+    MOODS
 }
