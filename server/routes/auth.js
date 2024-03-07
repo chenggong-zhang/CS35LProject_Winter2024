@@ -16,6 +16,9 @@ router.post('/email', async (req, res, next) => {
       });
     }
 
+    // check if email is valid
+    if (!emailService.validateEmail(email)) return res.status(400).json({ ok: false, error: 'invalid email' });
+
     // get or create user in database using email
     let user = await userService.upsertUser({ email });
 
@@ -61,6 +64,9 @@ router.post('/email/verify', async (req, res, next) => {
         error: 'OTP is missing'
       });
     }
+
+    // check if email is valid
+    if (!emailService.validateEmail(email)) return res.status(400).json({ ok: false, error: 'invalid email' });
 
     // verify OTP and login user
     const verifyResult = await authService.emailOTPVerify({ email, otp });
