@@ -48,7 +48,7 @@ router.post('/', async (req, res, next) => {
     }
   
     const updateOptions = {
-      user_id,
+      userId: user_id,
       username: username || None,
       handle: handle || None,
     };
