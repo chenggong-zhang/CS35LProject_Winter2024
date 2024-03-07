@@ -5,26 +5,80 @@ import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
 
 
-function Post({ userhandle, publicname, timestamp, albumCover, songName, artistName, moodEmoji }) {
+function Post({ timestamp, albumCover, moodEmoji }) {
   const [isVibing, setIsVibing] = useState(false);
-  /* Button handling functions*/
-  const handleInterButtonClick = () => {
-    // Handle the button click event
-  };
+
+
+  /* User info setting*/
+  const [userHandle , setUserHandle] = useState([]);
+  const [userPubName , setUserPubName] = useState([]);
+  useEffect(()=>{
+    const fetchUserInfo = async () => {
+      const RawInfo = await fetch('http://localhost:4000/post')
+      const UH = RawInfo.
+      const UPN = RawInfo.
+      setUserHandle(UH)
+      setUserPubName(UPN)
+    }
+
+    fetchUserInfo()
+  } , []);
+
+
+
+  /* Time stamp calc and setting */
+
+
+  /* Song and artist info setting*/
+  const [songName , setSongName] = useState([]);
+  const [artistName, setArtistName] = useState([]);
+  useEffect(()=>{
+    const fetchSongInfo= async () => {
+      const RawInfo = await fetch('http://localhost:4000/post')
+      const SN = await RawInfo.song;
+      const AN = await RawInfo.artisits;
+      setSongName(SN)
+      setArtistName(AN)
+    }
+
+    fetchSongInfo()
+  } , [])
+
+
+  /* Vibing button */
+
+  /* Mood Status*/
+  const [moodEmoji , setMoodEmoji] = useState([]);
+  useEffect(()=>{
+    const fetchMood= async () => {
+      const RawInfo = await fetch('http://localhost:4000/post')
+      const MoodRaw = await RawInfo.mood;
+      const MD = MoodRaw[0];
+      setMoodEmoji(MD)
+    }
+
+    fetchMood()
+  } , [])
+
+
 
   return (
     <div className="Post">
 
       <div className="VibeStatus">
         <div className='vibe-text'>{isVibing ? 'VIBING NOW...' : 'VIBE'}</div>
-        <div className='vibeEmoji'>{moodEmoji = '🥵'}</div>
+        <div className='vibeEmoji'>{moodEmoji}</div>
       </div>
 
       <div className="UserInfo">
         <div className="AliasFrame">{ }</div>
-        <div className="PublicName">{publicname = 'Rubato_Usr1'}</div>
-        <div className="UserHandle">@{userhandle = 'tester1'}</div>
+        <div className="PublicName">{userPubName}</div>
+        <div className="UserHandle">@{userHandle}</div>
         <div className="Timestamp">• {timestamp = '4h'}</div>
+
+        <script>
+
+        </script>
       </div>
 
 
@@ -41,28 +95,18 @@ function Post({ userhandle, publicname, timestamp, albumCover, songName, artistN
             <path d="M60.2595 55.4116C64.2719 55.4116 67.5245 52.0634 67.5245 47.9331C67.5245 43.8028 64.2719 40.4545 60.2595 40.4545C56.2472 40.4545 52.9945 43.8028 52.9945 47.9331C52.9945 52.0634 56.2472 55.4116 60.2595 55.4116Z" fill="#241E52" />
           </svg>
         </div>
-        <div className="SongName">{songName = 'Set the fire to the rain'}</div>
-        <div className="ArtistName">{artistName = 'Adele'}</div>
+        <div className="SongName">{songName}</div>
+        <div className="ArtistName">{artistName}</div>
         <div className="PlayButtonFrame">
           <PlaybackButton isVibing={isVibing} setIsVibing={setIsVibing} />
         </div>
-
       </div>
 
-
-
-      <div className="InteractionBar">
-        <InteractionButton.LikeButton onClick={handleInterButtonClick} />
-        <InteractionButton.HandshakeButton onClick={handleInterButtonClick} />
-        <InteractionButton.FireButton onClick={handleInterButtonClick} />
-        <InteractionButton.SadButton onClick={handleInterButtonClick} />
-        <InteractionButton.LOLButton onClick={handleInterButtonClick} />
-        <InteractionButton.GGsButton onClick={handleInterButtonClick} />
-      </div>
-
+      <InteractionButton />
 
     </div>
   );
 };
+
 
 export default Post;
