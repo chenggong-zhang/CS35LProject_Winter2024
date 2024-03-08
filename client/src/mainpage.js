@@ -1,7 +1,7 @@
 // mainpage.js
 
 import React from 'react';
-import TrendingBar from './trending.js';
+import TrendingContainer from './trending.js';
 
 class Mainpage extends React.Component{
     render(){
@@ -53,29 +53,8 @@ class Mainpage extends React.Component{
         </div>
     </div>
     <div>
-        <div style ={{position: 'absolute', marginTop: '100px', marginLeft: '-70px'}}>
-            <p style ={{position: 'absolute', color: 'white',fontSize: '35px', textAlign: 'Right', right: '70px', marginTop: '-65px', marginBottom:'15px'}}>
-                Trending Vibes
-            </p>
-            <div className = "trending_container">
-                <TrendingBar content = "1,300 vibes" width = "80%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/> 
-            </div>
-            <div className = "trending_container"> 
-                <TrendingBar content = "792 vibes"  width = "65%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
-            </div>
-            <div className = "trending_container"> 
-                <TrendingBar content = "456 vibes"  width = "50%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
-            </div>
-            <div className = "trending_container"> 
-                <TrendingBar content = "102 vibes"  width = "12.5%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
-            </div>
-            <div className = "trending_container"> 
-                <TrendingBar content = "70 vibes"  width = "1%" imageSource={`${process.env.PUBLIC_URL}/Union.svg`}/>
-            </div>
-        </div>
-        <div style ={{position: 'absolute', left: 1200, marginTop: '500px'}}>
-            <SearchButton/>                                  
-        </div>
+        <TrendingContainer/>
+        <SearchButton/>
     </div>
 </div>
 
@@ -86,17 +65,18 @@ class Mainpage extends React.Component{
 class SearchButton extends React.Component{
     handleClick = () => {
         console.log('button clicked!'); 
-    };
+    }
     render(){
         return(
-            <div style={{width: 132, height: 40, left: -50, top:-25, position: 'absolute'}}>
-                <img src ={`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon" style={{marginTop: '8px', marginLeft: '10px'}}></img>
-                <div style={{width:350, height: 40, left: 0, top: 0, position: 'absolute', background: 'rgba(155,155,155,0.25)', borderRadius: 100}} onClick = {this.handleClick}/>
+            <div style={{width: 132, height: 40, left: '1110px', top: '500px', position: 'absolute'}}>
+                <img src = {`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon" style = {{marginTop: '8px', marginLeft: '10px'}}></img>
+                <div style={{width: 350, height: 40, left: 0, top: 0, position: 'absolute', background: 'rgba(155,155,155,0.25)', borderRadius: 100}} onClick = {this.handleClick}/>
                 <div style={{width: 100, height: 23, left: 27, top: 9, position: 'absolute', textAlign: 'center', color: 'rgba(175,175,175,0.85)', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} onClick = {this.handleClick}>Search...</div>
             </div>
         )
     }
 }
+
 class NavigationBar extends React.Component{
     render(){
         const {imageSource, barName} = this.props;
