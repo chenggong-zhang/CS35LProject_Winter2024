@@ -32,6 +32,12 @@ app.use('/auth', routes.auth);
 app.use('/user', routes.user);
 app.use('/relation', routes.relation);
 app.use('/post', routes.post);
+app.use('*', (req, res) => {
+  res.status(404).json({
+    ok: false,
+    error: 'Resource not found'
+  });
+});
 
 // handle errors
 app.use((err, req, res, next) => {
