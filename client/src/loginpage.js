@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-    
+import { useNavigate } from 'react-router-dom';
+
 
 const loginWithEmail = async (email) => {
     try {
@@ -21,30 +21,33 @@ const loginWithEmail = async (email) => {
   };
 
 
-const verifyEmailWithOtp = async (email, otp) => {
+const verifyEmailWithOtp = async (email, otp, navigate) => {
     try {
       const response = await axios.post('http://localhost:4000/auth/email/verify', {
         email: email,
         otp: otp
       });
-  
       if (response.data.ok) {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
-        localStorage.setItem('userObject', response.data.user)
+        localStorage.setItem('userObject',JSON.stringify(response.data.user))
         console.log("email verified")
         return response.data.user; 
-      } else {
+      } if (response.status === 401){
+        navigate('/')
+      }
+      else {
         throw new Error(response.data.error || 'Unknown error occurred');
       }
     } catch (error) {
+      console.log(error)
       console.error('Email verification failed', error);
       throw error;
     }
 };
 
 
-class Main extends React.Component{
+class MainLogin extends React.Component{
   constructor(props){
     super(props);
     this.state={
@@ -92,6 +95,7 @@ function PassWord({email, current, opt, setOpt, setCurrent}){
 
 function UserTypingBoard({propsData}) {
   const {state, setState, current, setCurrent}=propsData
+  const navigate = useNavigate();
   const inputRef = useRef();
   const focusTextInput = () => {
     inputRef.current.focus();
@@ -108,9 +112,8 @@ function UserTypingBoard({propsData}) {
         setCurrent(inputRef.current.value)
       }
       else{
-        console.log(current)
-        verifyEmailWithOtp(current, state)
-        <Link to="/profilepage.js"></Link>
+        verifyEmailWithOtp(current, state, navigate)
+        navigate('/profile')
       }
     }
   },[state]);
@@ -124,5 +127,6 @@ function UserTypingBoard({propsData}) {
 }
 
 
-export default Main;
+
+export default MainLogin;
 

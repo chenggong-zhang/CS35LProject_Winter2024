@@ -45,8 +45,9 @@ const verifyEmailWithOtp = async (email, otp) => {
 };
 
 
-class main extends React.Component{
+class Main extends React.Component{
     render(){
+      return(
         <div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
     <div style={{width: 88, height: 110, left: 50, top: 49, position: 'absolute', background: 'rgba(255, 255, 255, 0)'}}>
         <div style={{width: 57.58, height: 57.22, left: 4.55, top: 3.36, position: 'absolute', border: '10px #E6EAEF solid'}}></div>
@@ -86,19 +87,8 @@ class main extends React.Component{
         <div style={{width: 48, height: 48, left: 0, top: 0, position: 'absolute'}} />
     </div>
 </div>
+      )
     }
 }
 
-
-// class mainpage extends React.Component{
-//     render(){
-//         const email='18801482557@163.com'
-
-//         loginWithEmail(email);
-//         verifyEmailWithOtp()
-
-//         return(
-            
-//         )
-//     }
-// }
+export default Main;
