@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Post.css';
 import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
