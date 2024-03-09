@@ -22,7 +22,7 @@ const TimeStamp = ({ createdAt }) => {
     return () => clearInterval(intervalId);
   }, [createdAt]); // Only rerun if createdAt changes
 
-  return <span className="TimeStamp">{timeStamp}</span>;
+  return <span className="TimeStamp">{timeStamp} h</span>;
 };
 
 export default TimeStamp;

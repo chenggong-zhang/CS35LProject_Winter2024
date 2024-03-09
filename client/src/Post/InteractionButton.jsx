@@ -3,84 +3,45 @@ import './InteractionButton.css'
 import './GenInteractiveButton'
 import GenInteractiveButton from "./GenInteractiveButton";
 
-const InteractionButton = (PID , key) => {
+const InteractionButton = ({likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
   const [interactions, setInteractions] = useState({
-    like: { count: 0, isSelected: false },
-    handshake: { count: 0, isSelected: false },
-    fire: { count: 0, isSelected: false },
-    sad: { count: 0, isSelected: false },
-    lol: { count: 0, isSelected: false },
-    gg: { count: 0, isSelected: false }
+    like: { count: likeArr.length, isSelected: false },
+    handshake: { count: HandshakeArr.length, isSelected: false },
+    fire: { count: fireArr.length, isSelected: false },
+    sad: { count: sadArr.length, isSelected: false },
+    lol: { count: lolArr.length, isSelected: false },
+    gg: { count: ggArr.length, isSelected: false }
   });  
 
-  useEffect(() => {
-    const fetchReaction = async () => {
-      try {
-        const response = await fetch(`http://localhost:4000/post?user_id=${PID}` , {
-          method: 'GET',
-          headers:{
-            'Authorization':`Bearer ${key}`
-          }
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json(); // Correctly parsing the JSON data
-  
-        // Now access the properties directly without await
-        const like_array = data.like_by;
-        const handshake_array = data.handshake_by;
-        const fire_array = data.fire_by;
-        const sad_array = data.sad_by;
-        const lol_array = data.lol_by; // Check this key, there's a typo in your original code (artisits)
-        const gg_array = data.gg_by;
-
-        // Set the state with the fetched data
-        setInteractions(
-          {
-            like: { count: like_array.length, isSelected: false },
-            handshake: { count: handshake_array.length, isSelected: false },
-            fire: { count: fire_array.length, isSelected: false },
-            sad: { count: sad_array.length, isSelected: false },
-            lol: { count: lol_array.length, isSelected: false },
-            gg: { count: gg_array.length, isSelected: false }
-          })
-  
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-    fetchReaction();
-  }, []);
-
   const handleInteractionClick = (type) => {
+    updateBackend(type);
     const updatedInteractions = { ...interactions };
     const check_inter = updatedInteractions[type];
 
     check_inter.isSelected = !check_inter.isSelected;
 
     // Send data to the backend
-    updateBackend(type);
 
     setInteractions(updatedInteractions);
   };
 
   const updateBackend = async (type) => {
     try {
-        const response = await fetch(`http://localhost:4000/post/${PID}/reaction`, {
+        const response = await fetch(`http://localhost:4000/post/:${PID}/reaction`, {
             method: 'POST',
             headers:{
-              'Authorization': `Bearer ${key}`
+              'Authorization': `bearer ${token}`,
             },
-            body: JSON.stringify({reaction:type})
+            body: `reaction: ${type}`
         });
+        console.log(response);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
     } catch (error) {
         console.error('Failed to update interaction:', error);
     }
-};
+  };
 
 const renderButton = (type, svgPath) => (
   <GenInteractiveButton
@@ -106,3 +67,46 @@ const renderButton = (type, svgPath) => (
 };
 
 export default InteractionButton;
+
+
+ // useEffect(() => {
+  //   const fetchReaction = async () => {
+  //     try {
+  //       const response = await fetch(url , {
+  //         method: 'GET',
+  //         headers:{
+  //           'Authorization':`bearer ${token}`,
+  //           'Content-Type': 'application/json'
+  //         }
+  //       });
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
+
+  //       const data =  await response.json(); // Correctly parsing the JSON data
+  //       console.log(data)
+  //       // Now access the properties directly without await
+  //       const like_array = data.like_by;
+  //       const handshake_array = data.handshake_by;
+  //       const fire_array = data.fire_by;
+  //       const sad_array = data.sad_by;
+  //       const lol_array = data.lol_by; // Check this key, there's a typo in your original code (artisits)
+  //       const gg_array = data.gg_by;
+
+  //       // Set the state with the fetched data
+  //       setInteractions(
+  //         {
+  //           like: { count: like_array.length, isSelected: false },
+  //           handshake: { count: handshake_array.length, isSelected: false },
+  //           fire: { count: fire_array.length, isSelected: false },
+  //           sad: { count: sad_array.length, isSelected: false },
+  //           lol: { count: lol_array.length, isSelected: false },
+  //           gg: { count: gg_array.length, isSelected: false }
+  //         })
+  
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+  //   fetchReaction();
+  // }, []);

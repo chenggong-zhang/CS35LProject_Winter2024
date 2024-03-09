@@ -88,7 +88,7 @@
     justify-content: center;
     flex-shrink: 0;
     color: #222932;
-    font-family: Quattrocento;
+    font-family: 'Quattrocento';
     font-size: 17px;
     font-style: normal;
     font-weight: 550;
@@ -108,7 +108,7 @@
     justify-content: center;
     flex-shrink: 0;
     color: #6f7072;
-    font-family: Quattrocento;
+    font-family: 'Quattrocento';
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
@@ -166,7 +166,7 @@
 .SongName {
     position: absolute;
     left: 105px;
-    bottom: 55px;
+    bottom: 45px;
     display: flex;
     width: 350px;
     height: 30px;
@@ -186,7 +186,7 @@
 .ArtistName {
     position: absolute;
     left: 105px;
-    bottom: 30px;
+    bottom: 23px;
     display: flex;
     width: 185px;
     height: 23px;
@@ -194,7 +194,7 @@
     justify-content: center;
     flex-shrink: 0;
     color: #222932;
-    font-family: Quattrocento;
+    font-family: 'Quattrocento';
     font-size: 17px;
     font-style: normal;
     font-weight: 450;
@@ -240,7 +240,7 @@
     font-weight: 450;
     text-align: center;
     line-height: normal;
-    color: #F0A193;
+    color: #E3DFDF;
     pointer-events: none;
 }
 .InterCounter span{
