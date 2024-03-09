@@ -14,3 +14,4 @@ const GenInteractiveButton = ({ name, svgPath, onClick , isSelected, count}) => 
 };
 
 export default GenInteractiveButton;
+
