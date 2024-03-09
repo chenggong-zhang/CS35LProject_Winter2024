@@ -16,13 +16,16 @@ router.post('/email', async (req, res, next) => {
       });
     }
 
+    // check if email is valid
+    if (!emailService.validateEmail(email)) return res.status(400).json({ ok: false, error: 'invalid email' });
+
     // get or create user in database using email
     let user = await userService.upsertUser({ email });
 
     user = await authService.emailOTPAuth({ user });
 
     // send verification email to user
-    const emailSuccess = await emailService.sendOTPEmail({ receiver: email, otp: user.temp_code.otp });
+    const emailSuccess = await emailService.sendOTPEmail({ receiver: email, otp: user.temp_code.otp, expireTimeInMinutes: authService.expireTimeInMinutes });
 
     if (!emailSuccess) {
       // return error response
@@ -61,6 +64,9 @@ router.post('/email/verify', async (req, res, next) => {
         error: 'OTP is missing'
       });
     }
+
+    // check if email is valid
+    if (!emailService.validateEmail(email)) return res.status(400).json({ ok: false, error: 'invalid email' });
 
     // verify OTP and login user
     const verifyResult = await authService.emailOTPVerify({ email, otp });

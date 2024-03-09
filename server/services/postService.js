@@ -12,7 +12,7 @@ async function getPostsByUser(user_id, {limit, offset, sort={created_at: -1}}) {
         .sort(sort)
         .skip(offset)
         .limit(limit)
-        .populate('user_id')
+        .populate({path: 'user_id', select: {_id: 1, username: 1, handle: 1}})
         // .populate('like_by')
         // .populate('handshake_by')
         // .populate('fire_by')
@@ -29,7 +29,7 @@ async function getFeedPosts(friend_user_ids, {limit, offset, sort={created_at: -
         .sort(sort)
         .skip(offset)
         .limit(limit)
-        .populate('user_id')
+        .populate({path: 'user_id', select: {_id: 1, username: 1, handle: 1}})
         // .populate('like_by')
         // .populate('handshake_by')
         // .populate('fire_by')
@@ -131,5 +131,6 @@ module.exports = {
     getPostsByUser,
     getFeedPosts,
     reactToPost,
-    getTrendingMoods
+    getTrendingMoods,
+    MOODS
 }
