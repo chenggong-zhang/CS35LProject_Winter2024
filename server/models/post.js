@@ -15,6 +15,9 @@ const postSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        yt_link: {
+            type: String,
+        },
         mood: {
             type: String,
             required: true,

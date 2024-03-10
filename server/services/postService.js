@@ -2,8 +2,8 @@ const { Post } = require('../models');
 
 const MOODS = ['😄 happy', '😢 sad', '😴 tired', '😠 angry', '🌈 hopeful', '😰 anxious', '✨ inspired', '🧘 calm', '🤩 excited', '😂 amused'];
 
-async function createPost({user_id, song, artists, mood}) {
-    const post = await Post.create({user_id, song, artists, mood});
+async function createPost({user_id, song, artists, mood, yt_link}) {
+    const post = await Post.create({user_id, song, artists, mood, yt_link});
     return post;    
 }
 

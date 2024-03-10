@@ -10,19 +10,20 @@ router.use(authService.passportJWT);
 // create a post
 router.post('/', async (req, res, next) => {
   try {
-    const { song, artists, mood } = req.body;
+    const { song, artists, mood, yt_link } = req.body;
     const user_id = req.user.id;
 
     // check if song, artists, and mood are valid
     if (!song) return res.status(400).json({ ok: false, error: 'song is missing'});
     if (!artists) return res.status(400).json({ ok: false, error: 'artists is missing' });
     if (!mood) return res.status(400).json({ ok: false, error:'mood is missing' });
+    if (!yt_link) return res.status(400).json({ ok: false, error:'yt_link is missing' });
 
     // check if mood is valid
     if (!postService.MOODS.includes(mood)) return res.status(400).json({ ok: false, error: 'invalid mood' });
 
     // create a new post in the database
-    const newPost = await postService.createPost({ user_id, song, artists, mood });
+    const newPost = await postService.createPost({ user_id, song, artists, mood, yt_link });
 
     res.status(200).json({
       ok: true,
