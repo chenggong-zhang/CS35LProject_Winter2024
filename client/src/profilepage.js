@@ -236,10 +236,11 @@ function UserName({}){
 
     useEffect(()=>{
         if(name){
-            console.log(username)
-            console.log(handle)
-            console.log(token)
+            // console.log(username)
+            // console.log(handle)
+            // console.log(token)
             const result=changeName(username, handle, token)
+            console.log(name)
         }
     },[name]);
 
@@ -258,9 +259,9 @@ function UserName({}){
 
 const changeName = async (username, handle, token) => {
     try {
-        console.log(username)
-        console.log(handle)
-        console.log(token)
+        // console.log(username)
+        // console.log(handle)
+        // console.log(token)
       const response = await axios.post('http://localhost:4000/user/', {
         handle: handle,
         username: username
