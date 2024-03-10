@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const schedule = require('node-schedule');
 
 // connect to the database
 mongoose.connect(process.env.MONGODB_URI).then(() => {
@@ -22,6 +23,7 @@ app.use(cors())
 const PORT = process.env.PORT || 5000;
 
 const routes = require('./routes');
+const { emailService, userService} = require('./services');
 
 // app.get('/', (req, res) => {
 //   res.send('Hello World!');
@@ -51,4 +53,18 @@ app.use((err, req, res, next) => {
 // start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
+  // start a scheduled job to send emails every day at 12:00 PM
+  const emailJob = schedule.scheduleJob('0 12 * * *', async function(){
+      const users = await userService.getAllUsers();
+
+      if(users.length === 0) {
+          console.log('No users found');
+          return;
+      }
+
+    //   console.log(`Sending emails to users: ${users.map(user => user.email)}`);
+
+    //   await emailService.sendVibeNotificationEmail({receivers: users.map(user => user.email)});
+  });
+
 });

@@ -63,11 +63,17 @@ async function deleteUser(userId) {
     await user.remove();
 }
 
+async function getAllUsers() {
+    const users = await User.find();
+    return users || [];
+}
+
 module.exports = {
     upsertUser,
     getUserById,
     getUserByHandle,
     updateUser,
     searchUsers,
-    deleteUser
+    deleteUser,
+    getAllUsers
 };
