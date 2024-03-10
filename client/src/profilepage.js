@@ -86,7 +86,10 @@ class Profilepage extends React.Component{
             <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
             <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post2 </div>
         </div>
+
+
         <div style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <FollowButton/>
             <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
             <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Follow</div>
         </div>
@@ -432,6 +435,31 @@ function UserDisplay(){
     )
     
 }
+
+function FollowButton({}){
+    const [isFollowing, setIsFollowing] = useState(false);
+    const handleFollow = async () => {
+        try {
+            // Replace with your API endpoint and necessary data
+            const response = await axios.post('/http://localhost:4000/relation/connect/:'+{/* user id*/}, {
+                headers: {
+                'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+              }});
+            
+            if (response.status === 200) {
+                setIsFollowing(true);
+            }
+        } catch (error) {
+            console.error('Error following user:', error);
+        }
+    };
+
+    return (
+        <button onClick={handleFollow}>
+            {isFollowing ? 'Following' : 'Follow'}
+        </button>
+    );
+};
 
 
 export default Profilepage;
