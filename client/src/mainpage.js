@@ -1,51 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+import TrendingContainer from './trendingcontainer.js';
 
-const baseURL = 'http://localhost:4000/'
-    
-
-const loginWithEmail = async (email) => {
-    try {
-      const response = await axios.post('${baseURL}/auth/email', {
-        email: email
-      });
-      if (response.data.ok) {  
-        return response.data; 
-      } else {
-        throw new Error(response.data.error || 'Unknown error occurred');
-      }
-
-    } catch (error) {
-      console.error('Login failed', error);
-      throw error;
-    }
-  };
-
-
-const verifyEmailWithOtp = async (email, otp) => {
-    try {
-      const response = await axios.post('${baseURL}/auth/email/verify', {
-        email: email,
-        otp: otp
-      });
-  
-      if (response.data.ok) {
-        localStorage.setItem('accessToken', response.data.accessToken);
-        localStorage.setItem('refreshToken', response.data.refreshToken);
-        localStorage.setItem('userObject', response.data.user)
-  
-        return response.data.user; 
-      } else {
-        throw new Error(response.data.error || 'Unknown error occurred');
-      }
-    } catch (error) {
-      console.error('Email verification failed', error);
-      throw error;
-    }
-};
-
-
-class Main extends React.Component{
+class Mainpage extends React.Component{
     render(){
       return(
         <div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
