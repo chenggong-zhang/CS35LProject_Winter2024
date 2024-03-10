@@ -21,20 +21,24 @@ const InteractionButton = ({likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggAr
     check_inter.isSelected = !check_inter.isSelected;
 
     // Send data to the backend
-
     setInteractions(updatedInteractions);
   };
-
   const updateBackend = async (type) => {
+    const payload = JSON.stringify({reaction: type});
     try {
-        const response = await fetch(`http://localhost:4000/post/:${PID}/reaction`, {
+        const response = await fetch(`http://localhost:4000/post/${PID}/reaction`, {
             method: 'POST',
             headers:{
               'Authorization': `bearer ${token}`,
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
             },
-            body: `reaction: ${type}`
+            body: payload
         });
-        console.log(response);
+
+        const data = await response.json()
+
+        console.log('data:', data);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }

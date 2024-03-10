@@ -10,7 +10,7 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
 
   const moodEmoji = moodList.slice(0,3);
 
-  const APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MDk5MTA1NjcsImV4cCI6MTcwOTkxMTE2N30.yiD0K4qHfRB3VxzQlcKzOVnh-bNTLHSN6cBwVkrObxM';
+  const APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAwMjg0NTAsImV4cCI6MTcxMDAyOTA1MH0._Q6gnU3tdZ4Fcd_NJaNM3IXNnsqo5gOfv1CNgoHAJ-c';
   const [isVibing, setIsVibing] = useState(false);
 
 
@@ -42,7 +42,7 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
   }
   
   let initials = getInitials(userPubName);
-  let color = generateBackground(userPubName);
+  let randColor = generateBackground(userPubName);
   const Alias_style = {
       position: 'absolute',
       bottom: '16px',
@@ -53,7 +53,7 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
       overflow: 'hidden',
       color: '#fff',
       margin: 'auto',
-      background: color,
+      background: randColor,
       justifyContent: 'center',
       alignItems: 'center'
   }

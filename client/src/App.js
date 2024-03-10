@@ -1,6 +1,5 @@
 import './App.css';
 import CreatePost from './CreatePost/CreatePost.jsx';
-import Post from './Post/Post.jsx';
 import PostList from './Post_list.jsx';
 
 function App() {
