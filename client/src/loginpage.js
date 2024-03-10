@@ -8,7 +8,7 @@ const loginWithEmail = async (email) => {
       const response = await axios.post('http://localhost:4000/auth/email', {
         email: email
       });
-      console.log("axios sucessed");
+      // console.log("axios sucessed");
       if (response.data.ok) {  
         return response.data; 
       } else {
@@ -16,7 +16,7 @@ const loginWithEmail = async (email) => {
       }
     } catch (error) {
       console.log('Login failed');
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -31,7 +31,7 @@ const verifyEmailWithOtp = async (email, otp, navigate) => {
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('userObject',JSON.stringify(response.data.user))
-        console.log("email verified")
+        // console.log("email verified")
         return response.data.user; 
       } if (response.status === 401){
         navigate('/')

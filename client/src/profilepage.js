@@ -213,6 +213,8 @@ function UserName({}){
     const username=obj.username;
     const handle=obj.handle;
     const token=localStorage.getItem('accessToken')
+    const refresh=localStorage.getItem('refreshToken')
+    console.log(refresh)
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
@@ -239,8 +241,8 @@ function UserName({}){
             // console.log(username)
             // console.log(handle)
             // console.log(token)
-            const result=changeName(username, handle, token)
-            console.log(name)
+            const result=changeName(name, handle, token)
+            // console.log(name)
         }
     },[name]);
 
@@ -257,14 +259,14 @@ function UserName({}){
 
 
 
-const changeName = async (username, handle, token) => {
+const changeName = async (name, handle, token) => {
     try {
-        // console.log(username)
+        // console.log(name)
         // console.log(handle)
         // console.log(token)
       const response = await axios.post('http://localhost:4000/user/', {
         handle: handle,
-        username: username
+        username: name
       },  {headers: {
         'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
       }});
