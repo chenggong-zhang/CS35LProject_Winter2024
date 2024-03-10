@@ -1,7 +1,7 @@
 // mainpage.js
 
 import React from 'react';
-import TrendingContainer from './trending.js';
+import TrendingContainer from './trendingcontainer.js';
 
 class Mainpage extends React.Component{
     render(){
