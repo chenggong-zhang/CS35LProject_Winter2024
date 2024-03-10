@@ -6,7 +6,10 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-
+const object=localStorage.getItem('userObject');
+const obj=JSON.parse(object);
+const username=obj.username;
+const handle=obj.handle;
 
 
 
@@ -93,21 +96,11 @@ class Profilepage extends React.Component{
 
 
         <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
-            <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: '400', wordWrap: 'break-word'}}>@User_handle</div>
-{/* Outter box containning username */}
-
+            <UserHandle/>
             <UserName/>
-
-            <div style={{width: 120, height: 120, left: 67, top: 20, position: 'absolute'}}>
-                <div style={{width: 100, height: 99.91, left: 10, top: 10, position: 'absolute', background: '#E6EAEF'}}></div> 
-            </div> 
-            {/* profile picture spce */}
-
-
-
-            
-            <div style={{width: 160, height: 160, left: 50, top: 0, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 9999, border: '3px #E6EAEF solid'}} />
-            {/* outter circle enclosing the profile picture */}
+            <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
+                <UserPic/>
+            </div>  
         </div>
 
 
@@ -205,16 +198,78 @@ class Profilepage extends React.Component{
 }
 
 
-function userPic(){}
-
-function UserName({}){
+function UserHandle(){
     const object=localStorage.getItem('userObject');
     const obj=JSON.parse(object);
-    const username=obj.username;
     const handle=obj.handle;
+    return(
+    <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
+    )
+}
+
+function UserPic(){
+    let initials = getInitials(username);
+    let color = generateBackground(username);
+    const Alias_style = {
+        position: 'absolute',
+        bottom: '2px',
+        display: 'flex',
+        width: '180px',
+        height: '180px',
+        borderRadius: '100px',
+        overflow: 'hidden',
+        color: '#fff',
+        margin: 'auto',
+        background: color,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+    return(
+        <div style={Alias_style}>
+            <div style={{fontSize: 100}}>{initials}</div>
+        </div>
+    )
+}
+
+
+
+
+function getInitials(name) {
+    if (typeof name === 'string') {
+      const names = name.split(' ');
+      if (names.length >= 2) {
+        return `${names[0][0]}${names[1][0]}`;
+      } else if (names.length === 1) {
+        return names[0][0];
+      }
+    }
+    return ''; 
+  }
+
+  function generateBackground(name) {
+    let hash = 0;
+    let i;
+     for (i = 0; i < name.length; i += 1) {
+       hash = name.charCodeAt(i) + ((hash << 5) - hash);
+     } 
+    let color = '#';
+     for (i = 0; i < 3; i += 1) {
+       const value = (hash >> (i * 8)) & 0xff;
+       color += `00${value.toString(16)}`.slice(-2);
+     }
+     return color;
+  }
+  
+
+
+
+
+
+
+function UserName({}){
     const token=localStorage.getItem('accessToken')
-    const refresh=localStorage.getItem('refreshToken')
-    console.log(refresh)
+    // const refresh=localStorage.getItem('refreshToken')
+    // console.log(refresh)
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
@@ -249,7 +304,7 @@ function UserName({}){
     return(
         <div>
             <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
-            {!visible && (<div style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
+            {!visible && (<div style={{width: 150, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
             <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} defaultValue={name} ></input>}
         </div>
@@ -334,7 +389,7 @@ function LogoutButton(){
         <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
             <div onClick={()=> logout(token)}style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
-            {errMess && <div style={{ color: 'grey' }}>{errMess}</div>}
+            {/* {errMess && <div style={{ color: 'grey' }}>{errMess}</div>} */}
         </div>
     );
 }
@@ -360,15 +415,18 @@ function UserDisplay(){
     // const[name, setName]=useState('')
     // const[handle, setHandle]=useState('')
     // const token=localStorage.getItem('accessToken');
-    const handle=localStorage.getItem('userObject').handle;
-    const username=localStorage.getItem('userObject').username;
     const object=localStorage.getItem('userObject');
+    const obj=JSON.parse(object);
+    const handle=obj.handle;
+    const username=obj.username;
+    console.log(username)
+    console.log(handle)
     
 
     return(
         <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}temp username</div>
-            <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}temp handle</div>
+            <div style={{left: 49, top: 0, width: 200, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
+            <div style={{left: 49, top: 20, width: 100, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
             <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
         </div>
     )
