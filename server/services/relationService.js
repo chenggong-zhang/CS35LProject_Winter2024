@@ -25,11 +25,11 @@ async function getRelatedUsers({userId}) {
 
     const usersFollowedBySelf = await Relation.find({
         user1_id: userId
-    }).populate('user2_id');
+    }).populate({path: 'user2_id', select: {_id: 1, username: 1, handle: 1}});
 
     const usersSelfFollows = await Relation.find({
         user2_id: userId
-    }).populate('user1_id');
+    }).populate({path: 'user1_id', select: {_id: 1, username: 1, handle: 1}});
 
     return {
         following: usersFollowedBySelf.map(relation => relation.user2_id),
