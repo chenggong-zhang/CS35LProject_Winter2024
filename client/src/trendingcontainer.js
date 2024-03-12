@@ -26,8 +26,15 @@ function TrendingContainer(props)
             }
             }
         getMood();
-        
     },[]);
+    if (mood.length < 5)
+    {
+        for (let i = mood.length;i<5; i++)
+        {
+            mood[i] = {_id: ' Unavailable', count: 0}
+        }
+    }
+      
     return( 
         <div className = "trending_container" style = {{position: 'absolute', left: '1112px'}}>
             <p style = {{fontSize: '35px', color: 'white', textAlign: 'center', fontFamily: 'Quicksand'}}>
@@ -37,7 +44,7 @@ function TrendingContainer(props)
             <TrendingBar content = {`${mood[1].count} vibes`} id = {mood[1]._id} width = "80%"></TrendingBar>
             <TrendingBar content = {`${mood[2].count} vibes`} id = {mood[2]._id} width = "50%"></TrendingBar>
             <TrendingBar content = {`${mood[3].count} vibes`} id = {mood[3]._id} width = "30%"></TrendingBar>
-
+            <TrendingBar content = {`${mood[4].count} vibes`} id = {mood[4]._id} width = "10%"></TrendingBar>
         </div> 
     )
 }

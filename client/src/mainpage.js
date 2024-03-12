@@ -1,7 +1,7 @@
 // mainpage.js
 
-import React from 'react';
 import TrendingContainer from './trendingcontainer.js';
+import React, {Component, useEffect, useState} from 'react';
 
 class Mainpage extends React.Component{
     render(){
@@ -27,34 +27,12 @@ class Mainpage extends React.Component{
         // Codes for the center part of the main page
     }
     <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
-    <div style={{width: 556, height: 671, left: 424, top: 123, position: 'absolute'}}>
-        <div style={{width: 556, height: 671, left: 0, top: 0, position: 'absolute'}} />
-        <div style={{width: 448, height: 3, left: 54, top: 397, position: 'absolute', background: '#FFFDFD'}} />
-        <div style={{width: 327, height: 64, left: 112, top: 440, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post</div>
-        </div>
-        <div style={{width: 327, height: 64, left: 112, top: 543, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post2 </div>
-        </div>
-        <div style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Follow</div>
-        </div>
-        <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
-            <div style={{left: 45, top: 196, position: 'absolute', color: '#FFFDFD', fontSize: 30, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>User_name</div>
-            <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: '400', wordWrap: 'break-word'}}>@User_handle</div>
-            <div style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
-            <div style={{width: 120, height: 120, left: 67, top: 20, position: 'absolute'}}>
-                <div style={{width: 100, height: 99.91, left: 10, top: 10, position: 'absolute', background: '#E6EAEF'}}></div>
-            </div>
-            <div style={{width: 160, height: 160, left: 50, top: 0, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 9999, border: '3px #E6EAEF solid'}} />
-        </div>
+    <div> 
+        {/*insert post list here */}
     </div>
     <div>
         <TrendingContainer/>
-        <SearchButton/>
+        <SearchBar/>
     </div>
 </div>
 
@@ -62,19 +40,93 @@ class Mainpage extends React.Component{
     }
 }
 
-class SearchButton extends React.Component{
-    handleClick = () => {
-        console.log('button clicked!'); 
+function SearchBar() {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [users, setUsers] = useState([{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0}]);
+    const [submitted, setSubmitted] = useState(false);
+
+    const handleChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault(); // Prevent the form from causing a page reload
+        console.log('Search term:', searchTerm);
+        setSubmitted(true);
+        const getUsers = async () => {
+            try {
+                const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {}, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization':`bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MDk3NjU2MjksImV4cCI6MTcwOTc2NjIyOX0.lQzFf1_VX1b1Z-z-OAwGdvIR2JfphnUE1MWmXR2KKu0`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setUsers(data);
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }};
+        getUsers();
+    };
+    //below is test code that was written for fetching moods and filtering through the counts
+    // just an example to how i planned to parse througuh usernames that get fetched
+    //current issue is that i get 401 unauthorized when fetching from /user?query.... 
+    // my other fetch in trendingcontainer fetching /post/moods is working fine...
+    /*if (users.length < 5)
+    {
+        for (let i = users.length;i<5; i++)
+        {
+            users[i] = {_id: ' Unavailable', count: 0}
+        }
     }
-    render(){
-        return(
-            <div style={{width: 132, height: 40, left: '1110px', top: '500px', position: 'absolute'}}>
-                <img src = {`${process.env.PUBLIC_URL}/Union.svg`} alt = "search icon" style = {{marginTop: '8px', marginLeft: '10px'}}></img>
-                <div style={{width: 350, height: 40, left: 0, top: 0, position: 'absolute', background: 'rgba(155,155,155,0.25)', borderRadius: 100}} onClick = {this.handleClick}/>
-                <div style={{width: 100, height: 23, left: 27, top: 9, position: 'absolute', textAlign: 'center', color: 'rgba(175,175,175,0.85)', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} onClick = {this.handleClick}>Search...</div>
+    // test condition if the count is not 2, dont display it
+    for (let i = 0; i<users.length; i++)
+    {
+        if (users[i].count !== 2)
+        {
+            users.splice(i, 1);
+        }
+    }
+    if (users[users.length] !== 2)
+    {
+        users.pop();
+    }*/
+    return (
+        <div style={{ position: 'relative', width: 350, height: 40, left: '1110px', top: '500px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', background: 'rgba(155,155,155,0.25)', borderRadius: 100 }}>
+                <input
+                    type="text"
+                    placeholder="Search..."
+                    style={{ flexGrow: 1, border: 'none', background: 'transparent', paddingLeft: 20, color: 'rgba(0, 0, 0, 0.85)', fontSize: 18, fontFamily: 'Quicksand' }}
+                    value={searchTerm}
+                    onChange={handleChange}
+                />
+                <button type="submit" style={{ border: 'none', background: 'transparent', marginRight: 10 }}>
+                    <img src={`${process.env.PUBLIC_URL}/Union.svg`} alt="Search" style={{ width: 24, height: 24 }} />
+                </button>
+            </form>
+            <div>
+                {submitted && (users.length > 0 ? (
+                    <>
+                        {/*<p>Hello</p>*/}
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                            {users.map((user, index) => (
+                                <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc' }}>
+                                    {user.count}
+                                </li>
+                            ))}
+                        </ul>
+                    </>
+                ) : (
+                    <p>No results found</p>
+                ))}
             </div>
-        )
-    }
+        </div>
+    );
 }
 
 class NavigationBar extends React.Component{

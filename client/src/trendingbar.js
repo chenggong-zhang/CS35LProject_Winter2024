@@ -5,7 +5,6 @@ function TrendingBar(props)
 {
     
     const count = props.content; 
-    const givenWidth = props.width;
     const feeling = props.id;
     return(
         <div>
