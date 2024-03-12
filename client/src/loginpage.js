@@ -23,6 +23,7 @@ const loginWithEmail = async (email) => {
 
 const verifyEmailWithOtp = async (email, otp, navigate) => {
     try {
+      console.log(email)
       const response = await axios.post('http://localhost:4000/auth/email/verify', {
         email: email,
         otp: otp

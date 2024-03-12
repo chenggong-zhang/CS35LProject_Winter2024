@@ -334,7 +334,6 @@ class VibeButton extends React.Component{
 }
 
 function LogoutButton(){
-    const [errMess, seterrMess]=useState('');
     const token=localStorage.getItem('accessToken');
     const navigate = useNavigate();
     const logout = async (token) => {
@@ -345,14 +344,15 @@ function LogoutButton(){
             }
           });
           if (response.data.ok) {  
-            seterrMess('Sueccessfully logged out');
             navigate('/')
-          } else {
-            seterrMess('Unkown error occurred');
+          } else if(response.status === 401){
+            navigate('/')
+          }
+          else {
             throw new Error(response.data.error || 'Unknown error occurred');
           }
         } catch (error) {
-          seterrMess('logout failed');
+            navigate('/')
         }
       };
 
@@ -417,13 +417,34 @@ function FollowButton(){
 
 
 
-const handleFollow = async ({setIsFollowing}) => {
+const handleFollow = async (setIsFollowing) => {
     const jwt = require('jsonwebtoken');
     console.log(userid);
     console.log(obj._id)
     try {
         // Replace with your API endpoint and necessary data
-        const response = await axios.post('/http://localhost:4000/relation/connect/'+userid, {
+        const response = await axios.post('http://localhost:4000/relation/connect/'+userid,{}, {
+            headers: {
+            'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+            }});
+        if (response.data.ok) {
+            setIsFollowing('Following');
+            console.log("follow is invoked and request no error")
+        }
+    } catch (error) {
+        // console.log("General error")
+        console.error('Error following user:', error);
+        console.log("Error here")
+    }
+};
+
+const handleUnfollow = async (setIsFollowing) => {
+    const jwt = require('jsonwebtoken');
+    console.log(userid);
+    console.log(obj._id)
+    try {
+        // Replace with your API endpoint and necessary data
+        const response = await axios.post('http://localhost:4000/relation/connect/'+userid,{}, {
             headers: {
             'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
             }});
