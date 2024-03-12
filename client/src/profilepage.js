@@ -5,11 +5,45 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-
+// user's data
 const object=localStorage.getItem('userObject');
 const obj=JSON.parse(object);
 const username=obj.username;
 const handle=obj.handle;
+const token=localStorage.getItem('accessToken');
+
+
+const otherObj=localStorage.getItem('otherObject');
+const obj2=JSON.parse(otherObj);
+// const decode=jwt.decode(token);
+const userid=obj2._id;
+
+
+//gets the user followers and following
+const getFollow=async (userid, navigate) => {
+    try {
+      const response = await axios.get('http://localhost:4000/relation/:'+{userid}, {
+        _id: userid
+      }, 
+      {headers: {
+        'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+      }});
+      if (response.data.ok) {
+        localStorage.setItem('following',response.data.following);
+        localStorage.setItem('followers', response.data.followers);
+      } if (response.status === 401){
+        navigate('/')
+      }
+      else {
+        throw new Error(response.data.error || 'Unknown error occurred');
+      }
+    } catch (error) {
+      console.log(error)
+      console.error('Email verification failed', error);
+      throw error;
+    }
+};
+
 
 
 
@@ -18,43 +52,7 @@ class Profilepage extends React.Component{
     render(){
         return(
 <div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
-    <div style={{width: 360, height: 70, left: 1052, top: 98, position: 'absolute'}}>
-        <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-        <div style={{left: 245, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 978 vibes</div>
-        <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Alexa</div>
-            <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@alexa001</div>
-            <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-        </div>
-    </div>
-    <div style={{width: 360, height: 70, left: 1052, top: 168, position: 'absolute'}}>
-        <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-        <div style={{left: 254, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 34 vibes</div>
-        <div style={{width: 88, height: 40, left: 13, top: 15, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Benji</div>
-            <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@bnj</div>
-            <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-        </div>
-    </div>
-    <div style={{width: 360, height: 70, left: 1052, top: 238, position: 'absolute'}}>
-        <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-        <div style={{left: 247, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 201 vibes</div>
-        <div style={{width: 120, height: 40, left: 13, top: 15, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>casey</div>
-            <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@cacylee</div>
-            <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-        </div>
-    </div>
-    <div style={{width: 360, height: 70, left: 1052, top: 308, position: 'absolute'}}>
-        <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-        <div style={{left: 262, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 8 vibes</div>
-        <div style={{width: 105, height: 40, left: 13, top: 15, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>doug</div>
-            <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@dawg</div>
-            <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-        </div>
-    </div>
-
+    {/* Left part of the page */}
     <div style={{width: 227, height: 1136, left: 54, top: 40, position: 'absolute'}}>
         <VibeButton />
         <LogoutButton />
@@ -69,11 +67,7 @@ class Profilepage extends React.Component{
         <UserDisplay />
     </div>
 
-
-
-
-
-
+    {/* Middle part of the page */}
     <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
     <div style={{width: 556, height: 671, left: 424, top: 123, position: 'absolute'}}>
         <div style={{width: 556, height: 671, left: 0, top: 0, position: 'absolute'}} />
@@ -86,118 +80,89 @@ class Profilepage extends React.Component{
             <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
             <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post2 </div>
         </div>
-
-
-        <div style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <FollowButton/>
-            <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Follow</div>
-        </div>
-
-
-
-
-
-        <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
-            <UserHandle/>
-            <UserName/>
-            <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
-                <UserPic/>
-            </div>  
-        </div>
-
-
-
-
-        
+    {/* </div> */}
+    <FollowButton/>
+    {/* User display in Middle */}
+    <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
+        <UserHandle/>
+        <UserName/>
+        <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
+            <UserPic/>
+        </div>  
     </div>
+
+{/* Following and followers bars on the right */}
+</div>
     <div style={{width: 360, height: 338, left: 1052, top: 39, position: 'absolute'}}>
-        <div style={{width: 360, height: 70, left: 0, top: 58, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 245, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 978 vibes</div>
-            <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Alexa</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@alexa001</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 128, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 254, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 34 vibes</div>
-            <div style={{width: 88, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Benji</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@bnj</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 198, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 247, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 201 vibes</div>
-            <div style={{width: 120, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>casey</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@cacylee</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 268, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 262, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 8 vibes</div>
-            <div style={{width: 105, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>doug</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@dawg</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 126, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Following</div>
-        </div>
+        <Following/>
     </div>
     <div style={{width: 360, height: 349, left: 1052, top: 478, position: 'absolute'}}>
-        <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 245, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 978 vibes</div>
-            <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Alexa</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@alexa001</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 254, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 34 vibes</div>
-            <div style={{width: 88, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Benji</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@bnj</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 247, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 201 vibes</div>
-            <div style={{width: 120, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>casey</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@cacylee</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
-            <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-            <div style={{left: 262, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· 8 vibes</div>
-            <div style={{width: 105, height: 40, left: 13, top: 15, position: 'absolute'}}>
-                <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>doug</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@dawg</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
-            </div>
-        </div>
-        <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
-            <div style={{left: 115, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>FOLLOWERS</div>
-        </div>
+        <Followers/>
     </div>
 </div>
         )
     }
+}
+
+function Followers(){
+    return(
+<div>
+<   div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
+            <div style={{left: 115, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>FOLLOWERS</div>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
+        <FollowBar numVibe='999' uname='Alexa' uhandle='@bigpig'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
+        <FollowBar  numVibe='999' uname='Gene Block' uhandle='@UCLA'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
+        <FollowBar  numVibe='999' uname='UCB' uhandle='@UCB'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
+    <FollowBar  numVibe='999' uname='UCI' uhandle='@UCI'/>
+    </div>
+</div>
+    );
+}
+
+function Following(){
+    return(
+<div>
+    <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
+            <div style={{width: 87, height: 23, left: 126, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Following</div>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
+        <FollowBar numVibe='999' uname='Alexa' uhandle='@bigpig'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
+        <FollowBar  numVibe='999' uname='Gene Block' uhandle='@UCLA'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
+        <FollowBar  numVibe='999' uname='UCB' uhandle='@UCB'/>
+    </div>
+    <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
+    <FollowBar  numVibe='999' uname='UCI' uhandle='@UCI'/>
+    </div>
+</div>
+    );
+}
+
+function FollowBar({numVibe, uname, uhandle}){
+        return(
+            <div>
+                <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
+                {/* Above is a line separating each follower/following  */}
+                <div style={{left: 245, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· {numVibe} vibes</div> 
+                <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
+                    <div style={{left: 49, width:200,top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{uname}</div>
+                    <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{uhandle}</div>
+                    <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
+                </div>
+            </div>
+        )
 }
 
 
@@ -271,8 +236,10 @@ function getInitials(name) {
 
 function UserName({}){
     const token=localStorage.getItem('accessToken')
-    // const refresh=localStorage.getItem('refreshToken')
-    // console.log(refresh)
+    const refresh=localStorage.getItem('refreshToken')
+    const navigate=useNavigate();
+    // console.log(token)
+    // console.log("This is refresh"+refresh)
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
@@ -299,7 +266,7 @@ function UserName({}){
             // console.log(username)
             // console.log(handle)
             // console.log(token)
-            const result=changeName(name, handle, token)
+            const result=changeName(name, handle, token, navigate)
             // console.log(name)
         }
     },[name]);
@@ -317,11 +284,11 @@ function UserName({}){
 
 
 
-const changeName = async (name, handle, token) => {
+const changeName = async (name, handle, token, navigate) => {
     try {
         // console.log(name)
         // console.log(handle)
-        // console.log(token)
+        // console.log("This is "+token)
       const response = await axios.post('http://localhost:4000/user/', {
         handle: handle,
         username: name
@@ -329,6 +296,7 @@ const changeName = async (name, handle, token) => {
         'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
       }});
       if (response.data.ok) {  
+        // navigate('/')
         return ""; 
       } else {
         throw new Error(response.data.error || 'Unknown error occurred');
@@ -422,8 +390,6 @@ function UserDisplay(){
     const obj=JSON.parse(object);
     const handle=obj.handle;
     const username=obj.username;
-    console.log(username)
-    console.log(handle)
     
 
     return(
@@ -436,30 +402,42 @@ function UserDisplay(){
     
 }
 
-function FollowButton({}){
-    const [isFollowing, setIsFollowing] = useState(false);
-    const handleFollow = async () => {
-        try {
-            // Replace with your API endpoint and necessary data
-            const response = await axios.post('/http://localhost:4000/relation/connect/:'+{/* user id*/}, {
-                headers: {
-                'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-              }});
-            
-            if (response.status === 200) {
-                setIsFollowing(true);
-            }
-        } catch (error) {
-            console.error('Error following user:', error);
-        }
-    };
 
-    return (
-        <button onClick={handleFollow}>
-            {isFollowing ? 'Following' : 'Follow'}
-        </button>
-    );
+function FollowButton(){
+    const [isFollowing, setIsFollowing] = useState('Follow');
+    return(
+        <div onClick={()=>handleFollow(setIsFollowing)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
+            <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{isFollowing}</div>
+        </div>
+    )
+}
+
+
+
+
+
+const handleFollow = async ({setIsFollowing}) => {
+    const jwt = require('jsonwebtoken');
+    console.log(userid);
+    console.log(obj._id)
+    try {
+        // Replace with your API endpoint and necessary data
+        const response = await axios.post('/http://localhost:4000/relation/connect/'+userid, {
+            headers: {
+            'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+            }});
+        if (response.data.ok) {
+            setIsFollowing('Following');
+            console.log("follow is invoked and request no error")
+        }
+    } catch (error) {
+        // console.log("General error")
+        console.error('Error following user:', error);
+        console.log("Error here")
+    }
 };
+
 
 
 export default Profilepage;

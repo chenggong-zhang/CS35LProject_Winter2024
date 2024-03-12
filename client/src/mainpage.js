@@ -47,4 +47,4 @@ class Mainpage extends React.Component{
     }
 }
 
-export default Main;
+export default Mainpage;

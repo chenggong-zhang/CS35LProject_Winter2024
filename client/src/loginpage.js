@@ -47,6 +47,32 @@ const verifyEmailWithOtp = async (email, otp, navigate) => {
 };
 
 
+// other's data, for testing purpose only
+// retrieving user's information
+const getUser = async (userid, navigate, token) => {
+  try {
+    const response = await axios.get('http://localhost:4000/user/'+userid, 
+    {headers: {
+      'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+    }});
+    if (response.data.ok) {
+      localStorage.setItem('otherObject',JSON.stringify(response.data.user));
+      localStorage.setItem('isSelf', response.data.is_self);
+      console.log("other user's object sucessflly retrieved")
+    }else if (response.status === 401){
+      navigate('/')
+    }
+    else {
+      throw new Error(response.data.error || 'Unknown error occurred/other user');
+    }
+  } catch (error) {
+    console.log(error)
+    console.error("Failed to retrieve other user's information", error);
+    throw error;
+  }
+};
+
+
 class MainLogin extends React.Component{
   constructor(props){
     super(props);
@@ -97,6 +123,12 @@ function UserTypingBoard({propsData}) {
   const {state, setState, current, setCurrent}=propsData
   const navigate = useNavigate();
   const inputRef = useRef();
+
+
+  const userid="65e9221302d5aecd2692a33e"
+  const token=localStorage.getItem('accessToken');
+
+
   const focusTextInput = () => {
     inputRef.current.focus();
   };
@@ -113,6 +145,7 @@ function UserTypingBoard({propsData}) {
       }
       else{
         verifyEmailWithOtp(current, state, navigate)
+        getUser(userid, navigate, token)
         navigate('/profile')
       }
     }
