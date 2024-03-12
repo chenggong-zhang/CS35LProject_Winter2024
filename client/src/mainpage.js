@@ -5,23 +5,15 @@ import React, {Component, useEffect, useState} from 'react';
 
 class Mainpage extends React.Component{
     render(){
-        return(
-<div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
-    {
-    // codes for the left side of the main page
-    }
-    <div style={{width: 227, height: 1136, left: 54, top: 40, position: 'absolute'}}>
-        <VibeButton />
-        <LogoutButton />
-        <div style={{right: 20, bottom: 15, position: 'relative'}}>
-            <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
-        </div>
-        <Logo />
-        <div style={{left: 10, top: 140, position: 'relative'}}>
-            <NavigationBar imageSource={`${process.env.PUBLIC_URL}/Union.svg`}  barName='home' />
-            <div style={{marginTop: '20px'}}><NavigationBar imageSource={`${process.env.PUBLIC_URL}/Vector.svg`} barName='profile' /></div>
-        </div>
-        <UserDisplay name='name' handle='handle' />
+      return(
+        <div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
+    <div style={{width: 88, height: 110, left: 50, top: 49, position: 'absolute', background: 'rgba(255, 255, 255, 0)'}}>
+        <div style={{width: 57.58, height: 57.22, left: 4.55, top: 3.36, position: 'absolute', border: '10px #E6EAEF solid'}}></div>
+        <div style={{width: 58.13, height: 56.43, left: 13.10, top: 9.29, position: 'absolute', border: '2px #E6EAEF solid'}}></div>
+        <div style={{width: 59.97, height: 56.83, left: 19.05, top: 45.96, position: 'absolute', border: '10px #E6EAEF solid'}}></div>
+        <div style={{width: 13.85, height: 30.93, left: 27.06, top: 78.08, position: 'absolute', border: '2.20px #E6EAEF solid'}}></div>
+        <div style={{width: 38.21, height: 18.70, left: 48.82, top: 52.58, position: 'absolute', border: '2.20px #E6EAEF solid'}}></div>
+        <div style={{width: 4.07, height: 3.60, left: 44.78, top: 74.25, position: 'absolute', background: '#FFFDFD'}}></div>
     </div>
     {
         // Codes for the center part of the main page
@@ -192,6 +184,5 @@ class UserDisplay extends React.Component{
         )
     }
 }
-
 
 export default Mainpage;
