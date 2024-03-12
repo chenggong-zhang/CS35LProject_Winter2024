@@ -18,7 +18,7 @@ async function upsertUser({email}) {
 }
 
 async function getUserById(userId) {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select({_id: 1, username: 1, handle: 1});
     if (!user) {
         throw new Error('User not found');
     }
@@ -26,7 +26,7 @@ async function getUserById(userId) {
 }
 
 async function getUserByHandle(handle) {
-    const user = await User.findOne({handle});
+    const user = await User.findOne({handle}).select({_id: 1, username: 1, handle: 1});
     if (!user) {
         throw new Error('User not found');
     }
@@ -36,7 +36,7 @@ async function getUserByHandle(handle) {
 
 // users are only allowed to update handle and username
 async function updateUser({userId, handle, username}) {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).select({_id: 1, username: 1, handle: 1});
 
     if(!user) {
         throw new Error('User not found');
@@ -51,7 +51,7 @@ async function updateUser({userId, handle, username}) {
 
 async function searchUsers({queryString}) {
     const regex = new RegExp(queryString, 'i');
-    const users = await User.find({$or: [{handle: regex}, {username: regex}]});
+    const users = await User.find({$or: [{handle: regex}, {username: regex}]}).select({_id: 1, username: 1, handle: 1});
     return users;
 }
 
