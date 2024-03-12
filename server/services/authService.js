@@ -23,11 +23,8 @@ const jwt_strategy = new JwtStrategy(
     jwtOptions,
     async (payload, done) => {
         try {
-            
             // Find the user specified in token
             const user = await User.findById(payload.sub);
-
-            console.log('user: ', user);
 
             // If user doesn't exists, handle it
             if (!user) {
