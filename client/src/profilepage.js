@@ -37,7 +37,7 @@ class Profilepage extends React.Component{
         </div>
         <Logo />
         <div style={{left: 10, top: 140, position: 'relative'}}>
-            <NavigationBar imageSource={`${process.env.PUBLIC_URL}/Union.svg`}  barName='home' barPath='/main'/>
+            <NavigationBar imageSource={`${process.env.PUBLIC_URL}/Union.svg`}  barName='home' barPath='/home'/>
             <div style={{marginTop: '20px'}}><NavigationBar imageSource={`${process.env.PUBLIC_URL}/Vector.svg`} barName='profile' barPath='/profile'/></div>
         </div>
         <UserDisplay />

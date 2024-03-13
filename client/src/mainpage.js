@@ -3,6 +3,7 @@
 import TrendingContainer from './trendingcontainer.js';
 import React, {Component, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 class Mainpage extends React.Component{
     render(){
@@ -19,8 +20,8 @@ class Mainpage extends React.Component{
         </div>
         <Logo />
         <div style={{left: 10, top: 140, position: 'relative'}}>
-            <NavigationBar imageSource={`${process.env.PUBLIC_URL}/Union.svg`}  barName='home' />
-            <div style={{marginTop: '20px'}}><NavigationBar imageSource={`${process.env.PUBLIC_URL}/Vector.svg`} barName='profile' /></div>
+            <NavigationBar imageSource={`${process.env.PUBLIC_URL}/Union.svg`}  barName='home' barPath = '/home' />
+            <div style={{marginTop: '20px'}}><NavigationBar imageSource={`${process.env.PUBLIC_URL}/Vector.svg`} barName='profile' barPath ='/profile'/></div>
         </div>
         <UserDisplay name='name' handle='handle' />
     </div>
@@ -43,6 +44,7 @@ class Mainpage extends React.Component{
 
 
 function SearchBar() {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([]);
     const [submitted, setSubmitted] = useState(false);
@@ -51,7 +53,7 @@ function SearchBar() {
     const handleChange = (event) => {
         setSearchTerm(event.target.value);
     };
-    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyOTg3NTQsImV4cCI6MTcxMDI5OTM1NH0.6i3cqo4Ptr8-25KbjO7v0krBau98FooXi68Uiewibco';
+    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzNzEwMDYsImV4cCI6MTcxMDM3MTYwNn0.nUp3nh00It1U__-Pmn598RSOSm92C1fDF0t0f5OYYu8';
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the form from causing a page reload
         console.log('Search term:', searchTerm);
@@ -70,6 +72,7 @@ function SearchBar() {
                 }
                 const data = await response.json();
                 setUsers(data.users);
+                console.log(data.users);
                 const newUsers = data.users.filter(user => user.handle.toLowerCase().includes(lowerCaseKeyword));
                 setNewUsers(newUsers);
                 
@@ -78,8 +81,74 @@ function SearchBar() {
             }};
         getUsers();
     };
-    const handleUserClick = (username) => {
+
+    // other's data, for testing purpose only
+// retrieving user's information
+    const getUser = async (userid, navigate, token) => {
+        try {
+            const response = await axios.get('http://localhost:4000/user/'+userid, 
+            {headers: {
+                'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+            }});
+            if (response.data.ok) {
+           localStorage.setItem('otherObject',JSON.stringify(response.data.user));
+           localStorage.setItem('isSelf', response.data.is_self);
+           console.log("other user's object sucessflly retrieved")
+           const event = new CustomEvent('otherObjUpdated', {});
+           console.log("event dispatched")
+           window.dispatchEvent(event);
+          }else if (response.status === 401){
+           navigate('/')
+          }
+          else {
+           throw new Error(response.data.error || 'Unknown error occurred/other user');
+          }
+         } catch (error) {
+          console.log(error)
+          console.error("Failed to retrieve other user's information", error);
+          navigate('/')
+          throw error;
+         }
+    };
+    
+    //gets the user followers and following
+    const getFollow=async (userid, navigate, token) => {
+     try {
+      const response = await axios.get('http://localhost:4000/relation/'+userid, 
+      {headers: {
+       'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+      }});
+      if (response.data.ok) {
+       localStorage.setItem('following',JSON.stringify(response.data.following));
+       // console.log(response.data.following===null);
+       // console.log(localStorage.getItem('following')==null);
+       localStorage.setItem('followers', JSON.stringify(response.data.followers));
+       // console.log(response.data.following);
+       // console.log(response.data.followers);
+       console.log(localStorage.getItem('following'));
+       console.log(localStorage.getItem('followers'));
+       console.log("The following and followers are suecessfully retrieved")
+      }else if (response.status === 401){
+       navigate('/')
+      }
+      else {
+       throw new Error(response.data.error || 'Unknown error occurred for getting following and follwers');
+      }
+     } catch (error) {
+      console.log(error)
+      console.error('Getting followers and following failed', error);
+      throw error;
+     }
+    };
+
+
+
+    const handleUserClick = (_id) => {
         //navigate(`/users/profile`);
+        const token = localStorage.getItem("accessToken");
+        getUser(_id, navigate, token);
+        getFollow(_id, navigate, token);
+        navigate('/profile');
     };
     return (
         <div style={{ position: 'relative', width: 350, height: 40, left: '1110px', top: '500px' }}>
@@ -98,14 +167,12 @@ function SearchBar() {
             <div>
                 {submitted && (newUsers.length > 0 ? (
                     <>
-                        {/*<p>Hello</p>*/}
-                        
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <div>
                                 {newUsers.map((user, index) => (
-                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }} onClick={() => handleUserClick(user.username)}>
+                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }} >
                                         {user.username} 
-                                        <p style = {{fontSize: '10px'}}>
+                                        <p style = {{fontSize: '10px'}} onClick={() => handleUserClick(user._id)}>
                                             @{user.handle}
                                         </p>
                                     </li>
@@ -121,16 +188,14 @@ function SearchBar() {
     );
 }
 
-class NavigationBar extends React.Component{
-    render(){
-        const {imageSource, barName} = this.props;
-        return(
-            <div style={{ display: 'flex', flexDirection: 'row'}}>
-                    <img style={{width: 24, height: 24, position:'absolute'}} alt='pic'src={imageSource} />
-                    <div style={{marginLeft: '40px', color: '#E6EAEF', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{barName}</div>
-            </div>
-        )
-    }
+function NavigationBar({imageSource, barName, barPath}){
+    const navigate = useNavigate();
+    return(
+        <div style={{ display: 'flex', flexDirection: 'row'}}>
+                <img style={{width: 24, height: 24, position:'absolute'}} alt='pic'src={imageSource} />
+                <div onClick={()=>navigate(barPath)} style={{marginLeft: '40px', color: '#E6EAEF', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{barName}</div>
+        </div>
+    );
 }
 
 class VibeButton extends React.Component{

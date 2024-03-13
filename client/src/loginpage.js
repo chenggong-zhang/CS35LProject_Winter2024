@@ -185,10 +185,10 @@ function UserTypingBoard({propsData}) {
       }
       else{
         await verifyEmailWithOtp(current, state, navigate)
-        await getUser(userid, navigate, token)
-        await getFollow(userid, navigate, token)
+        // await getUser(userid, navigate, token)
+        // await getFollow(userid, navigate, token)
         // console.log(localStorage.getItem("otherObject"));
-        navigate('/profile')
+        navigate('/home')
       }
     }
   }
