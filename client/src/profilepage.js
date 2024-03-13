@@ -429,7 +429,6 @@ function UserDisplay(){
 function FollowButton({userid, token}){
     const [isFollowing, setIsFollowing] = useState('Follow');
     const [Flag, setFlag]=useState(false);
-    const [Flag, setFlag]=useState(false);
     return(
         <div onClick={()=> Flag ? handleUnfollow(setIsFollowing, setFlag, userid, token) :handleFollow(setIsFollowing, setFlag, userid, token)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
@@ -464,7 +463,6 @@ const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
 const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
         // Replace with your API endpoint and necessary data
-        const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
         const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
             headers: {
             'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
