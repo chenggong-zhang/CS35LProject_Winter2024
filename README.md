@@ -49,14 +49,39 @@ npm start
 
 
 ---
+## Resources
 
-## Running the server
-To run the server, run the following command in the server directory:
+### Server-side
+packages:
+- express
+- mongoose
+- body-parser
+- @sendgrid/mail
+- cors
+- dotenv
+- jsonwebtoken
+- node-schedule
+- otp-generator
+- passport
+- passport-jwt
+- nodemon
 
-```
-cd server
-npm install
-nodemon app.js
-```
+database instance:
+- MongoDB Atlas
 
-This will start the server on port 5000.
+email service:
+- SendGrid
+
+Youtube API:
+- Youtube Data API v3
+
+### Client-side
+packages:
+- axios
+- react
+
+
+### Other tools
+- Postman: API
+- MongoDB Compass: Database management
+- Figma: UI Design
