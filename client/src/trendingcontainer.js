@@ -1,6 +1,8 @@
 import './trending.css';
 import TrendingBar from './trendingbar.js';
 import React, {useEffect, useState} from 'react';
+import { refreshAccessToken, logout} from './authUtil.js';
+
 
 
 function TrendingContainer(props)
@@ -10,6 +12,10 @@ function TrendingContainer(props)
     useEffect(()=>{
         const getMood = async() =>{
             try{
+                const API_key = localStorage.getItem('accessToken');
+                if(API_key == null) {
+                    throw new Error('User is not logged in')
+                }
                 const response = await fetch(`http://localhost:4000/post/moods` , {
                     method: 'GET',
                     headers:{
@@ -17,7 +23,15 @@ function TrendingContainer(props)
                     }
                 });
                 if (!response.ok){
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    if (response.status == 401)
+                    {
+                        console.log('trying to refresh access token...');
+                        await refreshAccessToken();
+                        getMood();
+                        return;
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
                 }
                 const data = await response.json();
                 setMood(data.moods);

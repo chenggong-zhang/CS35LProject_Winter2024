@@ -4,6 +4,7 @@ import TrendingContainer from './trendingcontainer.js';
 import React, {Component, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { refreshAccessToken, logout} from './authUtil.js';
 
 class Mainpage extends React.Component{
     render(){
@@ -43,7 +44,7 @@ class Mainpage extends React.Component{
 }
 
 
-function SearchBar() {
+function SearchBar()  {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [users, setUsers] = useState([]);
@@ -52,8 +53,8 @@ function SearchBar() {
 
     const handleChange = (event) => {
         setSearchTerm(event.target.value);
-    };
-    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzNzEwMDYsImV4cCI6MTcxMDM3MTYwNn0.nUp3nh00It1U__-Pmn598RSOSm92C1fDF0t0f5OYYu8';
+    }; 
+    
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the form from causing a page reload
         console.log('Search term:', searchTerm);
@@ -61,6 +62,10 @@ function SearchBar() {
         setSubmitted(true);
         const getUsers = async () => {
             try {
+                const API_key = localStorage.getItem('accessToken');
+                if(API_key == null) {
+                    throw new Error('User is not logged in')
+                }
                 const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {
                     method: 'GET',
                     headers: {
@@ -68,7 +73,16 @@ function SearchBar() {
                     }
                 });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    if (response.status == 401)
+                    {
+                        console.log('trying to refresh access token...');
+                        await refreshAccessToken();
+                        getUsers();
+                        return;
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
                 }
                 const data = await response.json();
                 setUsers(data.users);

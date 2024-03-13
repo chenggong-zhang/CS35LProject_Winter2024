@@ -10,7 +10,7 @@ async function refreshAccessToken() {
         }
 
         // send refresh token to server to get new access token
-        const response = await axios.get(`/http:localhost:4000/auth/token?refreshToken=${refreshToken}`);
+        const response = await axios.get(`http://localhost:4000/auth/token?refreshToken=${refreshToken}`);
 
         // check if server response fails
         if (response.status == 500) {
@@ -30,7 +30,7 @@ async function refreshAccessToken() {
 
 async function logout() {
     try {
-        const response = await axios.post('/http:localhost:4000/auth/logout', {
+        const response = await axios.post('http://localhost:4000/auth/logout', {
             headers: {
                 'Authorization': `bearer ${localStorage.getItem('accessToken')}` // Include the JWT token in the Authorization header
             }
@@ -57,7 +57,7 @@ async function logout() {
     }
 }   
 
-module.exports = {
+export {
     refreshAccessToken,
     logout
 }
