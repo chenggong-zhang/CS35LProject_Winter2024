@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const schedule = require('node-schedule');
+const mongoSanitize = require('express-mongo-sanitize')
+
 
 // connect to the database
 mongoose.connect(process.env.MONGODB_URI).then(() => {
@@ -19,6 +21,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors())
+app.use(mongoSanitize()) // remove $ and . in object keys in req.body, req.params, req.headers, req.query
 
 const PORT = process.env.PORT || 5000;
 
