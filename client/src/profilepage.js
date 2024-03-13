@@ -12,7 +12,7 @@ const username=obj.username;
 const handle=obj.handle;
 const token=localStorage.getItem('accessToken');
 
-
+//other user data
 const otherObj=localStorage.getItem('otherObject');
 const obj2=JSON.parse(otherObj);
 const userid=obj2._id;
