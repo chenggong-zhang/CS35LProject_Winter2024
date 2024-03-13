@@ -15,11 +15,12 @@ const token=localStorage.getItem('accessToken');
 
 const otherObj=localStorage.getItem('otherObject');
 const obj2=JSON.parse(otherObj);
-// const decode=jwt.decode(token);
 const userid=obj2._id;
-const following=localStorage.getItem('followings');
-const followers=localStorage.getItem('followers');
+const storedFollowing=localStorage.getItem('followings');
+const storedFollowers=localStorage.getItem('followers');
 
+const following=storedFollowing? JSON.parse(storedFollowing):[];
+const followers=storedFollowers? JSON.parse(storedFollowers):[];
 
 
 
@@ -80,6 +81,14 @@ class Profilepage extends React.Component{
 }
 
 function Followers(){
+    const parsedFollowers=new Array(4).fill(null);
+    if (followers !=null){
+        console.log(followers.length);
+    for (let i=0; i<followers.length; i++){
+        parsedFollowers[i]=(followers[i]);
+        }
+    }
+
     return(
 <div>
 <   div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
@@ -87,31 +96,28 @@ function Followers(){
             <div style={{left: 115, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>FOLLOWERS</div>
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
-        <FollowBar numVibe='999' uname='Alexa' uhandle='@bigpig'/>
+        {parsedFollowers[0]!=null?<FollowBar numVibe={parsedFollowers[0].postCount} uname={parsedFollowers[0].username} uhandle={parsedFollowers[0].handle}/>: <></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
-        <FollowBar  numVibe='999' uname='Gene Block' uhandle='@UCLA'/>
+        {parsedFollowers[1]!=null?<FollowBar  numVibe={parsedFollowers[1].postCount} uname={parsedFollowers[1].username} uhandle={parsedFollowers[1].handle}/>:<></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
-        <FollowBar  numVibe='999' uname='UCB' uhandle='@UCB'/>
+        {parsedFollowers[2]!=null?<FollowBar  numVibe={parsedFollowers[2].postCount} uname={parsedFollowers[2].username} uhandle={parsedFollowers[2].handle}/>:<></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
-    <FollowBar  numVibe='999' uname='UCI' uhandle='@UCI'/>
+        {parsedFollowers[3]!=null?<FollowBar  numVibe={parsedFollowers[3].postCount} uname={parsedFollowers[3].username} uhandle={parsedFollowers[3].handle}/>:<></>}
     </div>
 </div>
     );
 }
 
 function Following(){
-    // const first=following[0]!=null? JSON.parse(following[0]): null;
-    // const second=following[1]!=null? JSON.parse(following[1]): null;
-    // const third=following[2]!=null? JSON.parse(following[2]): null;
-    // const fourth=following[3]!=null? JSON.parse(following[3]): null;
-
-    // const parsedFollowing = following.map(item => item != null ? JSON.parse(item) : null);
     const parsedFollowing=new Array(4).fill(null);
+    console.log(following ==null);
+    if (following !=null){
     for (let i=0; i<following.length; i++){
-        parsedFollowing[i]=JSON.parse(following[i]);
+        parsedFollowing[i]=(following[i]);
+        }
     }
 
     return(
@@ -121,16 +127,16 @@ function Following(){
             <div style={{width: 87, height: 23, left: 126, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Following</div>
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
-        {parsedFollowing[0]!=null? <FollowBar numVibe='999' uname={parsedFollowing[0].username} uhandle={parsedFollowing[0].handle}/>: <></>}
+        {parsedFollowing[0]!=null? <FollowBar numVibe={parsedFollowing[0].postCount} uname={parsedFollowing[0].username} uhandle={parsedFollowing[0].handle}/>: <></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
-        {parsedFollowing[1]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[1].username} uhandle={parsedFollowing[1].handle}/>: <></>}
+        {parsedFollowing[1]!=null? <FollowBar  numVibe={parsedFollowing[1].postCount} uname={parsedFollowing[1].username} uhandle={parsedFollowing[1].handle}/>: <></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
-        {parsedFollowing[2]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[2].username} uhandle={parsedFollowing[2].handle}/>:<></>}
+        {parsedFollowing[2]!=null? <FollowBar  numVibe={parsedFollowing[2].postCount} uname={parsedFollowing[2].username} uhandle={parsedFollowing[2].handle}/>:<></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
-        {parsedFollowing[3]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[3].username} uhandle={parsedFollowing[3].handle}/>:<></>}
+        {parsedFollowing[3]!=null? <FollowBar  numVibe={parsedFollowing[3].postCount} uname={parsedFollowing[3].username} uhandle={parsedFollowing[3].handle}/>:<></>}
     </div>
 </div>
     );
@@ -224,16 +230,13 @@ function UserName({}){
     const token=localStorage.getItem('accessToken')
     const refresh=localStorage.getItem('refreshToken')
     const navigate=useNavigate();
-    // console.log(token)
-    // console.log("This is refresh"+refresh)
+
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
     const divRef = useRef("");
     const update=()=>{
         setVisible(true)
-        // console.log(divRef.current.value)
-        // console.log("update")
     }
     const handleKeyPress = (event)=>{
         if (event.key==='Enter'){
@@ -249,18 +252,14 @@ function UserName({}){
 
     useEffect(()=>{
         if(name){
-            // console.log(username)
-            // console.log(handle)
-            // console.log(token)
             const result=changeName(name, handle, token, navigate)
-            // console.log(name)
         }
     },[name]);
 
     return(
         <div>
             <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
-            {!visible && (<div style={{width: 150, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
+            {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
             <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} defaultValue={name} ></input>}
         </div>
@@ -272,9 +271,6 @@ function UserName({}){
 
 const changeName = async (name, handle, token, navigate) => {
     try {
-        // console.log(name)
-        // console.log(handle)
-        // console.log("This is "+token)
       const response = await axios.post('http://localhost:4000/user/', {
         handle: handle,
         username: name
@@ -369,9 +365,6 @@ class Logo extends React.Component{
 }
 
 function UserDisplay(){
-    // const[name, setName]=useState('')
-    // const[handle, setHandle]=useState('')
-    // const token=localStorage.getItem('accessToken');
     const object=localStorage.getItem('userObject');
     const obj=JSON.parse(object);
     const handle=obj.handle;
@@ -380,8 +373,8 @@ function UserDisplay(){
 
     return(
         <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, width: 200, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
-            <div style={{left: 49, top: 20, width: 100, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
+            <div style={{left: 49, top: 0, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
+            <div style={{left: 49, top: 20, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
             <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
         </div>
     )
@@ -418,7 +411,6 @@ const handleFollow = async (setIsFollowing, setFlag) => {
             console.log("follow is invoked and request no error")
         }
     } catch (error) {
-        // console.log("General error")
         console.error('Error following user:', error);
         console.log("Error here")
     }
@@ -438,7 +430,6 @@ const handleUnfollow = async (setIsFollowing, setFlag) => {
             console.log("unfollow is invoked and request no error")
         }
     } catch (error) {
-        // console.log("General error")
         console.error('Error unfollowing user:', error);
         console.log("Error here")
     }

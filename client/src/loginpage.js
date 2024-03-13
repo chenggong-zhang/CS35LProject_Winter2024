@@ -81,8 +81,12 @@ const getFollow=async (userid, navigate, token) => {
       'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
     }});
     if (response.data.ok) {
-      localStorage.setItem('following',response.data.following);
-      localStorage.setItem('followers', response.data.followers);
+      localStorage.setItem('following',JSON.stringify(response.data.following));
+      localStorage.setItem('followers', JSON.stringify(response.data.followers));
+      // console.log(response.data.following);
+      // console.log(response.data.followers);
+      // console.log(localStorage.getItem('following'));
+      // console.log(localStorage.getItem('followers'));
       console.log("The following and followers are suecessfully retrieved")
     }else if (response.status === 401){
       navigate('/')
@@ -163,18 +167,21 @@ function UserTypingBoard({propsData}) {
     }
   }
   useEffect(()=>{
+    const executeAsynchOperations=async()=>{
     if (state){
       if (current===null){
         loginWithEmail(state);
         setCurrent(inputRef.current.value)
       }
       else{
-        verifyEmailWithOtp(current, state, navigate)
-        getUser(userid, navigate, token)
-        getFollow(userid, navigate, token)
+        await verifyEmailWithOtp(current, state, navigate)
+        await getUser(userid, navigate, token)
+        await getFollow(userid, navigate, token)
         navigate('/profile')
       }
     }
+  }
+    executeAsynchOperations();
   },[state]);
 
   return (
