@@ -6,7 +6,7 @@ import React, {useEffect, useState} from 'react';
 function TrendingContainer(props)
 {
     const [mood, setMood] = useState([{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0}]);
-    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyODgxMDcsImV4cCI6MTcxMDI4ODcwN30.VtLlBLh2FheNYJ1MdrHluwwK__s8e6Sk5ZnEyVHKkGM';
+    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyOTg3NTQsImV4cCI6MTcxMDI5OTM1NH0.6i3cqo4Ptr8-25KbjO7v0krBau98FooXi68Uiewibco';
     useEffect(()=>{
         const getMood = async() =>{
             try{

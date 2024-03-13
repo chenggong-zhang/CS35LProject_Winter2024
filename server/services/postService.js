@@ -104,7 +104,7 @@ async function getTrendingMoods({createdAfter}) {
             //     $in: friend_user_ids
             //   },
               created_at: {
-                $gte: createdAfter
+                $gte: new Date('2022-01-01T00:00:00.00Z') //createdAfter
               }
             }
         },
