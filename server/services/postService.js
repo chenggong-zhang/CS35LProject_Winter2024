@@ -104,7 +104,7 @@ async function getTrendingMoods({createdAfter}) {
             //     $in: friend_user_ids
             //   },
               created_at: {
-                $gte: createdAfter
+                $gte: new Date('2022-01-01T00:00:00.00Z') //createdAfter
               }
             }
         },
@@ -124,6 +124,29 @@ async function getTrendingMoods({createdAfter}) {
     return sorted_moods;
 }
 
+async function countPostsByUserIds({user_ids}) {
+    const userPostsCount = await Post.aggregate([
+        {
+            $match: {
+                user_id: {
+                    $in: user_ids
+                }
+            }
+        },
+        { 
+            $group: { 
+                _id: '$user_id', 
+                count: { $sum: 1 }
+            } 
+        }
+    ]);
+
+    // return an object with user_id as key and count as value
+    return userPostsCount.reduce((acc, cur) => {
+        acc[cur._id.toString()] = cur.count;
+        return acc;
+      }, {});
+}
 
 
 module.exports = {
@@ -132,5 +155,6 @@ module.exports = {
     getFeedPosts,
     reactToPost,
     getTrendingMoods,
+    countPostsByUserIds,
     MOODS
 }

@@ -6,13 +6,14 @@ import React, {useEffect, useState} from 'react';
 function TrendingContainer(props)
 {
     const [mood, setMood] = useState([{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0}]);
+    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyOTg3NTQsImV4cCI6MTcxMDI5OTM1NH0.6i3cqo4Ptr8-25KbjO7v0krBau98FooXi68Uiewibco';
     useEffect(()=>{
         const getMood = async() =>{
             try{
-                const response = await fetch(`http://localhost:4000/post/moods` ,{}, {
+                const response = await fetch(`http://localhost:4000/post/moods` , {
                     method: 'GET',
                     headers:{
-                      'Authorization':`bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MDk3NjU2MjksImV4cCI6MTcwOTc2NjIyOX0.lQzFf1_VX1b1Z-z-OAwGdvIR2JfphnUE1MWmXR2KKu0`
+                      'Authorization':`bearer ${API_key}`
                     }
                 });
                 if (!response.ok){
@@ -20,6 +21,7 @@ function TrendingContainer(props)
                 }
                 const data = await response.json();
                 setMood(data.moods);
+                //console.log(data.moods);
             } catch (error) 
             {
                 console.error('Error fetching data1:', error);

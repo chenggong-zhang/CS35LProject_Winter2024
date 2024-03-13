@@ -272,6 +272,7 @@ function UserName({username, handle}){
     const navigate=useNavigate();
 
 
+
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
     const divRef = useRef("");
@@ -299,6 +300,7 @@ function UserName({username, handle}){
     return(
         <div>
             <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
+            {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
             <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} defaultValue={name} ></input>}
@@ -415,6 +417,8 @@ function UserDisplay(){
         <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
             <div style={{left: 49, top: 0, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
             <div style={{left: 49, top: 20, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
+            <div style={{left: 49, top: 0, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
+            <div style={{left: 49, top: 20, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
             <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
         </div>
     )
@@ -424,6 +428,7 @@ function UserDisplay(){
 
 function FollowButton({userid, token}){
     const [isFollowing, setIsFollowing] = useState('Follow');
+    const [Flag, setFlag]=useState(false);
     const [Flag, setFlag]=useState(false);
     return(
         <div onClick={()=> Flag ? handleUnfollow(setIsFollowing, setFlag, userid, token) :handleFollow(setIsFollowing, setFlag, userid, token)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
@@ -447,6 +452,7 @@ const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
         if (response.data.ok) {
             setIsFollowing('Following');
             setFlag(true);
+            setFlag(true);
             console.log("follow is invoked and request no error")
         }
     } catch (error) {
@@ -459,6 +465,7 @@ const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
         // Replace with your API endpoint and necessary data
         const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
+        const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
             headers: {
             'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
             }});
@@ -466,8 +473,12 @@ const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
             setIsFollowing('Follow');
             setFlag(false);
             console.log("unfollow is invoked and request no error")
+            setIsFollowing('Follow');
+            setFlag(false);
+            console.log("unfollow is invoked and request no error")
         }
     } catch (error) {
+        console.error('Error unfollowing user:', error);
         console.error('Error unfollowing user:', error);
         console.log("Error here")
     }

@@ -177,6 +177,7 @@ function UserTypingBoard({propsData}) {
   }
   useEffect(()=>{
     const executeAsynchOperations=async()=>{
+    const executeAsynchOperations=async()=>{
     if (state){
       if (current===null){
         loginWithEmail(state, navigate);
@@ -190,6 +191,8 @@ function UserTypingBoard({propsData}) {
         navigate('/profile')
       }
     }
+  }
+    executeAsynchOperations();
   }
     executeAsynchOperations();
   },[state]);
