@@ -40,61 +40,43 @@ class Mainpage extends React.Component{
     }
 }
 
+
 function SearchBar() {
     const [searchTerm, setSearchTerm] = useState('');
-    const [users, setUsers] = useState([{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0}]);
+    const [users, setUsers] = useState([]);
     const [submitted, setSubmitted] = useState(false);
+    const [newUsers, setNewUsers] = useState([]);
 
     const handleChange = (event) => {
         setSearchTerm(event.target.value);
     };
-
+    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyODgxMDcsImV4cCI6MTcxMDI4ODcwN30.VtLlBLh2FheNYJ1MdrHluwwK__s8e6Sk5ZnEyVHKkGM';
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the form from causing a page reload
         console.log('Search term:', searchTerm);
+        const lowerCaseKeyword = searchTerm.toLowerCase();
         setSubmitted(true);
         const getUsers = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {}, {
+                const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {
                     method: 'GET',
                     headers: {
-                        'Authorization':`bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MDk3NjU2MjksImV4cCI6MTcwOTc2NjIyOX0.lQzFf1_VX1b1Z-z-OAwGdvIR2JfphnUE1MWmXR2KKu0`
+                        'Authorization':`bearer ${API_key}`
                     }
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                setUsers(data);
-                console.log(data);
+                setUsers(data.users);
+                const newUsers = data.users.filter(user => user.handle.toLowerCase().includes(lowerCaseKeyword));
+                setNewUsers(newUsers);
+                
             } catch (error) {
                 console.error('Error fetching data:', error);
             }};
         getUsers();
     };
-    //below is test code that was written for fetching moods and filtering through the counts
-    // just an example to how i planned to parse througuh usernames that get fetched
-    //current issue is that i get 401 unauthorized when fetching from /user?query.... 
-    // my other fetch in trendingcontainer fetching /post/moods is working fine...
-    /*if (users.length < 5)
-    {
-        for (let i = users.length;i<5; i++)
-        {
-            users[i] = {_id: ' Unavailable', count: 0}
-        }
-    }
-    // test condition if the count is not 2, dont display it
-    for (let i = 0; i<users.length; i++)
-    {
-        if (users[i].count !== 2)
-        {
-            users.splice(i, 1);
-        }
-    }
-    if (users[users.length] !== 2)
-    {
-        users.pop();
-    }*/
     return (
         <div style={{ position: 'relative', width: 350, height: 40, left: '1110px', top: '500px' }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', background: 'rgba(155,155,155,0.25)', borderRadius: 100 }}>
@@ -110,19 +92,25 @@ function SearchBar() {
                 </button>
             </form>
             <div>
-                {submitted && (users.length > 0 ? (
+                {submitted && (newUsers.length > 0 ? (
                     <>
                         {/*<p>Hello</p>*/}
+                        
                         <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {users.map((user, index) => (
-                                <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc' }}>
-                                    {user.count}
-                                </li>
-                            ))}
+                            <div>
+                                {newUsers.map((user, index) => (
+                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }}>
+                                        {user.username} 
+                                        <p style = {{fontSize: '10px'}}>
+                                            @{user.handle}
+                                        </p>
+                                    </li>
+                                ))}
+                            </div>
                         </ul>
                     </>
                 ) : (
-                    <p>No results found</p>
+                    <p>No Results Found</p>
                 ))}
             </div>
         </div>
