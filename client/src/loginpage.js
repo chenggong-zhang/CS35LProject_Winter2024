@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const loginWithEmail = async (email) => {
+const loginWithEmail = async (email, navigate) => {
     try {
       const response = await axios.post('http://localhost:4000/auth/email', {
         email: email
@@ -11,7 +11,10 @@ const loginWithEmail = async (email) => {
       // console.log("axios sucessed");
       if (response.data.ok) {  
         return response.data; 
-      } else {
+      } else if (response.status==401){
+        navigate('/')
+      }
+      else {
         throw new Error(response.data.error || 'Unknown error occurred');
       }
     } catch (error) {
@@ -60,6 +63,9 @@ const getUser = async (userid, navigate, token) => {
       localStorage.setItem('otherObject',JSON.stringify(response.data.user));
       localStorage.setItem('isSelf', response.data.is_self);
       console.log("other user's object sucessflly retrieved")
+      const event = new CustomEvent('otherObjUpdated', {});
+      console.log("event dispatched")
+      window.dispatchEvent(event);
     }else if (response.status === 401){
       navigate('/')
     }
@@ -69,6 +75,37 @@ const getUser = async (userid, navigate, token) => {
   } catch (error) {
     console.log(error)
     console.error("Failed to retrieve other user's information", error);
+    navigate('/')
+    throw error;
+  }
+};
+
+//gets the user followers and following
+const getFollow=async (userid, navigate, token) => {
+  try {
+    const response = await axios.get('http://localhost:4000/relation/'+userid, 
+    {headers: {
+      'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+    }});
+    if (response.data.ok) {
+      localStorage.setItem('following',JSON.stringify(response.data.following));
+      // console.log(response.data.following===null);
+      // console.log(localStorage.getItem('following')==null);
+      localStorage.setItem('followers', JSON.stringify(response.data.followers));
+      // console.log(response.data.following);
+      // console.log(response.data.followers);
+      console.log(localStorage.getItem('following'));
+      console.log(localStorage.getItem('followers'));
+      console.log("The following and followers are suecessfully retrieved")
+    }else if (response.status === 401){
+      navigate('/')
+    }
+    else {
+      throw new Error(response.data.error || 'Unknown error occurred for getting following and follwers');
+    }
+  } catch (error) {
+    console.log(error)
+    console.error('Getting followers and following failed', error);
     throw error;
   }
 };
@@ -126,7 +163,7 @@ function UserTypingBoard({propsData}) {
   const inputRef = useRef();
 
 
-  const userid="65e9221302d5aecd2692a33e"
+  const userid="65e9552a432e6a47b903f9c9"
   const token=localStorage.getItem('accessToken');
 
 
@@ -139,17 +176,22 @@ function UserTypingBoard({propsData}) {
     }
   }
   useEffect(()=>{
+    const executeAsynchOperations=async()=>{
     if (state){
       if (current===null){
-        loginWithEmail(state);
+        loginWithEmail(state, navigate);
         setCurrent(inputRef.current.value)
       }
       else{
-        verifyEmailWithOtp(current, state, navigate)
-        getUser(userid, navigate, token)
+        await verifyEmailWithOtp(current, state, navigate)
+        await getUser(userid, navigate, token)
+        await getFollow(userid, navigate, token)
+        // console.log(localStorage.getItem("otherObject"));
         navigate('/profile')
       }
     }
+  }
+    executeAsynchOperations();
   },[state]);
 
   return (
