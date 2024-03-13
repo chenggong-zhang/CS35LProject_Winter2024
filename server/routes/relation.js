@@ -32,8 +32,8 @@ router.get('/:user_id', async (req, res, next) => {
       followers[index].postCount = postsCountForRelatedUsersObj[user._id.toString()];
     });
     following.forEach((user, index) => {
-      followers[index] = followers[index].toObject();
-      followers[index].postCount = postsCountForRelatedUsersObj[user._id.toString()];
+      following[index] = following[index].toObject();
+      following[index].postCount = postsCountForRelatedUsersObj[user._id.toString()];
     });
 
 
