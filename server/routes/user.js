@@ -20,7 +20,12 @@ router.get('/:user_id', async (req, res, next) => {
     }
 
     // retrieve user data
-    const user = await userService.getUserById(user_id);
+    let user = await userService.getUserById(user_id);
+
+    // // retrieve user's post count
+    // const postsCountForUserObj = await postService.countPostsByUserIds({user_ids: [user_id]});
+    // user = user.toObject();
+    // user.postCount = postsCountForUserObj[user_id.toString()];
 
     res.status(200).json({
       ok: true,
@@ -77,6 +82,17 @@ router.get('/', async (req, res, next) => {
     }
   
     const users = await userService.searchUsers({queryString});
+
+    // get the count of posts for each related user //
+    const userIds = users.map(user => user._id);
+    const postsCountForUsersObj = await postService.countPostsByUserIds({user_ids: userIds});
+
+    // add the count of posts to the related users
+    users.forEach((user, index) => {
+      users[index] = users[index].toObject();
+      users[index].postCount = postsCountForUsersObj[user._id.toString()];
+    });
+
     // TODO: search users
     res.status(200).json({
       ok: true,
