@@ -73,6 +73,30 @@ const getUser = async (userid, navigate, token) => {
   }
 };
 
+//gets the user followers and following
+const getFollow=async (userid, navigate, token) => {
+  try {
+    const response = await axios.get('http://localhost:4000/relation/'+userid, 
+    {headers: {
+      'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+    }});
+    if (response.data.ok) {
+      localStorage.setItem('following',response.data.following);
+      localStorage.setItem('followers', response.data.followers);
+      console.log("The following and followers are suecessfully retrieved")
+    }else if (response.status === 401){
+      navigate('/')
+    }
+    else {
+      throw new Error(response.data.error || 'Unknown error occurred for getting following and follwers');
+    }
+  } catch (error) {
+    console.log(error)
+    console.error('Getting followers and following failed', error);
+    throw error;
+  }
+};
+
 
 class MainLogin extends React.Component{
   constructor(props){
@@ -147,6 +171,7 @@ function UserTypingBoard({propsData}) {
       else{
         verifyEmailWithOtp(current, state, navigate)
         getUser(userid, navigate, token)
+        getFollow(userid, navigate, token)
         navigate('/profile')
       }
     }

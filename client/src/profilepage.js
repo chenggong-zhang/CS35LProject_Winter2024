@@ -17,33 +17,8 @@ const otherObj=localStorage.getItem('otherObject');
 const obj2=JSON.parse(otherObj);
 // const decode=jwt.decode(token);
 const userid=obj2._id;
-
-
-//gets the user followers and following
-const getFollow=async (userid, navigate) => {
-    try {
-      const response = await axios.get('http://localhost:4000/relation/:'+{userid}, {
-        _id: userid
-      }, 
-      {headers: {
-        'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-      }});
-      if (response.data.ok) {
-        localStorage.setItem('following',response.data.following);
-        localStorage.setItem('followers', response.data.followers);
-      } if (response.status === 401){
-        navigate('/')
-      }
-      else {
-        throw new Error(response.data.error || 'Unknown error occurred');
-      }
-    } catch (error) {
-      console.log(error)
-      console.error('Email verification failed', error);
-      throw error;
-    }
-};
-
+const following=localStorage.getItem('followings');
+const followers=localStorage.getItem('followers');
 
 
 
@@ -128,6 +103,17 @@ function Followers(){
 }
 
 function Following(){
+    // const first=following[0]!=null? JSON.parse(following[0]): null;
+    // const second=following[1]!=null? JSON.parse(following[1]): null;
+    // const third=following[2]!=null? JSON.parse(following[2]): null;
+    // const fourth=following[3]!=null? JSON.parse(following[3]): null;
+
+    // const parsedFollowing = following.map(item => item != null ? JSON.parse(item) : null);
+    const parsedFollowing=new Array(4).fill(null);
+    for (let i=0; i<following.length; i++){
+        parsedFollowing[i]=JSON.parse(following[i]);
+    }
+
     return(
 <div>
     <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
@@ -135,16 +121,16 @@ function Following(){
             <div style={{width: 87, height: 23, left: 126, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Following</div>
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 69, position: 'absolute'}}>
-        <FollowBar numVibe='999' uname='Alexa' uhandle='@bigpig'/>
+        {parsedFollowing[0]!=null? <FollowBar numVibe='999' uname={parsedFollowing[0].username} uhandle={parsedFollowing[0].handle}/>: <></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 139, position: 'absolute'}}>
-        <FollowBar  numVibe='999' uname='Gene Block' uhandle='@UCLA'/>
+        {parsedFollowing[1]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[1].username} uhandle={parsedFollowing[1].handle}/>: <></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 209, position: 'absolute'}}>
-        <FollowBar  numVibe='999' uname='UCB' uhandle='@UCB'/>
+        {parsedFollowing[2]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[2].username} uhandle={parsedFollowing[2].handle}/>:<></>}
     </div>
     <div style={{width: 360, height: 70, left: 0, top: 279, position: 'absolute'}}>
-    <FollowBar  numVibe='999' uname='UCI' uhandle='@UCI'/>
+        {parsedFollowing[3]!=null? <FollowBar  numVibe='999' uname={parsedFollowing[3].username} uhandle={parsedFollowing[3].handle}/>:<></>}
     </div>
 </div>
     );
@@ -405,8 +391,9 @@ function UserDisplay(){
 
 function FollowButton(){
     const [isFollowing, setIsFollowing] = useState('Follow');
+    const [Flag, setFlag]=useState(false);
     return(
-        <div onClick={()=>handleFollow(setIsFollowing)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+        <div onClick={()=> Flag ? handleUnfollow(setIsFollowing, setFlag) :handleFollow(setIsFollowing, setFlag)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
             <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{isFollowing}</div>
         </div>
@@ -417,10 +404,8 @@ function FollowButton(){
 
 
 
-const handleFollow = async (setIsFollowing) => {
+const handleFollow = async (setIsFollowing, setFlag) => {
     const jwt = require('jsonwebtoken');
-    console.log(userid);
-    console.log(obj._id)
     try {
         // Replace with your API endpoint and necessary data
         const response = await axios.post('http://localhost:4000/relation/connect/'+userid,{}, {
@@ -429,6 +414,7 @@ const handleFollow = async (setIsFollowing) => {
             }});
         if (response.data.ok) {
             setIsFollowing('Following');
+            setFlag(true);
             console.log("follow is invoked and request no error")
         }
     } catch (error) {
@@ -438,23 +424,22 @@ const handleFollow = async (setIsFollowing) => {
     }
 };
 
-const handleUnfollow = async (setIsFollowing) => {
+const handleUnfollow = async (setIsFollowing, setFlag) => {
     const jwt = require('jsonwebtoken');
-    console.log(userid);
-    console.log(obj._id)
     try {
         // Replace with your API endpoint and necessary data
-        const response = await axios.post('http://localhost:4000/relation/connect/'+userid,{}, {
+        const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
             headers: {
             'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
             }});
         if (response.data.ok) {
-            setIsFollowing('Following');
-            console.log("follow is invoked and request no error")
+            setIsFollowing('Follow');
+            setFlag(false);
+            console.log("unfollow is invoked and request no error")
         }
     } catch (error) {
         // console.log("General error")
-        console.error('Error following user:', error);
+        console.error('Error unfollowing user:', error);
         console.log("Error here")
     }
 };
