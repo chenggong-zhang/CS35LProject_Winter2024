@@ -271,16 +271,16 @@ function UserName({username, handle}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
 
-
-
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
     const divRef = useRef("");
+    const hasMounted=useRef(false);
     const update=()=>{
         setVisible(true)
     }
     const handleKeyPress = (event)=>{
         if (event.key==='Enter'){
+        console.log("name changed here");
           setName(divRef.current.value)
           setVisible(false)
         }
@@ -292,15 +292,16 @@ function UserName({username, handle}){
     }, [visible]); // Re-run the effect when showInput changes
 
     useEffect(()=>{
-        if(name){
+        if(name & hasMounted==true){
             changeName(name, handle, token, navigate)
+        }else{
+            hasMounted.current = true;
         }
     },[name]);
 
     return(
         <div>
             <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
-            {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
             <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} defaultValue={name} ></input>}
@@ -320,7 +321,8 @@ const changeName = async (name, handle, token, navigate) => {
         'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
       }});
       if (response.data.ok) {  
-        // navigate('/')
+        console.log("name change success")
+        navigate('/')
         return ""; 
       } else {
         throw new Error(response.data.error || 'Unknown error occurred');
