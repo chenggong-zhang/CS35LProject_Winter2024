@@ -2,6 +2,7 @@
 
 import TrendingContainer from './trendingcontainer.js';
 import React, {Component, useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 
 class Mainpage extends React.Component{
     render(){
@@ -50,7 +51,7 @@ function SearchBar() {
     const handleChange = (event) => {
         setSearchTerm(event.target.value);
     };
-    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyODgxMDcsImV4cCI6MTcxMDI4ODcwN30.VtLlBLh2FheNYJ1MdrHluwwK__s8e6Sk5ZnEyVHKkGM';
+    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyOTg3NTQsImV4cCI6MTcxMDI5OTM1NH0.6i3cqo4Ptr8-25KbjO7v0krBau98FooXi68Uiewibco';
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the form from causing a page reload
         console.log('Search term:', searchTerm);
@@ -77,6 +78,9 @@ function SearchBar() {
             }};
         getUsers();
     };
+    const handleUserClick = (username) => {
+        //navigate(`/users/profile`);
+    };
     return (
         <div style={{ position: 'relative', width: 350, height: 40, left: '1110px', top: '500px' }}>
             <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', background: 'rgba(155,155,155,0.25)', borderRadius: 100 }}>
@@ -88,7 +92,7 @@ function SearchBar() {
                     onChange={handleChange}
                 />
                 <button type="submit" style={{ border: 'none', background: 'transparent', marginRight: 10 }}>
-                    <img src={`${process.env.PUBLIC_URL}/Union.svg`} alt="Search" style={{ width: 24, height: 24 }} />
+                    <img src={`${process.env.PUBLIC_URL}/Group 42.svg`} alt="Search" style={{ width: 18, height: 29 }} />
                 </button>
             </form>
             <div>
@@ -99,7 +103,7 @@ function SearchBar() {
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <div>
                                 {newUsers.map((user, index) => (
-                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }}>
+                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }} onClick={() => handleUserClick(user.username)}>
                                         {user.username} 
                                         <p style = {{fontSize: '10px'}}>
                                             @{user.handle}
