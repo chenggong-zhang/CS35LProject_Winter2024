@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { relationService, authService } = require('../services');
+const { relationService, authService, postService } = require('../services');
 
 const router = express.Router();
 
@@ -20,6 +20,22 @@ router.get('/:user_id', async (req, res, next) => {
     }
 
     const { followers, following } = await relationService.getRelatedUsers({userId: user_id});
+
+    // get the count of posts for each related user //
+    // combine the two arrays to get all related user ids
+    const relatedUserIds = following.map(user => user._id).concat(followers.map(user => user._id));
+    const postsCountForRelatedUsersObj = await postService.countPostsByUserIds({user_ids: relatedUserIds});
+
+    // add the count of posts to the related users
+    followers.forEach((user, index) => {
+      followers[index] = followers[index].toObject();
+      followers[index].postCount = postsCountForRelatedUsersObj[user._id.toString()];
+    });
+    following.forEach((user, index) => {
+      followers[index] = followers[index].toObject();
+      followers[index].postCount = postsCountForRelatedUsersObj[user._id.toString()];
+    });
+
 
     // TODO: Disconnect another user
     res.status(200).json({
