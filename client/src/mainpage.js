@@ -210,7 +210,7 @@ function SearchBar()  {
                 <input
                     type="text"
                     placeholder="Search..."
-                    style={{ flexGrow: 1, border: 'none', background: 'transparent', paddingLeft: 20, color: 'rgba(0, 0, 0, 0.85)', fontSize: 18, fontFamily: 'Quicksand' }}
+                    style={{ width: 370, height: 40, flexGrow: 1, borderRadius: 40, border: 'none', background: 'transparent', paddingLeft: 20, color: 'rgba(0, 0, 0, 0.85)', fontSize: 18, fontFamily: 'Quicksand' }}
                     value={searchTerm}
                     onChange={handleChange}
                 />
@@ -235,7 +235,7 @@ function SearchBar()  {
                         </ul>
                     </>
                 ) : (
-                    <p>No Results Found</p>
+                    <p style={{fontFamily:"Quicksand", color: "#ffffff"}}>No Results Found...</p>
                 ))}
             </div>
         </div>

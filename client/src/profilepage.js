@@ -364,11 +364,11 @@ function UserName({username, handle}){
     },[name]);
 
     return(
-        <div>
-            <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
+        <div style={{alignItems: "center"}}>
+            <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '2px #E6EAEF dotted'}} />
             {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
-            <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word' }}defaultValue={name} ></input>}
+            <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{background: "transparent", width: 250, height:40, left: 3, top: 196, textAlign: 'center',position: 'absolute', color: '#ffffff', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word', borderRadius: 40}}defaultValue={name} ></input>}
         </div>
     );
 }

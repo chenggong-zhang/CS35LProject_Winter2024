@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 import './PostList.css'
-import { refreshAccessToken, logout} from './authUtil.js';
+import { refreshAccessToken} from './authUtil.js';
 function PostList({APIkey, userID}){
 
-    const [postRawData , setPostRawData] = useState([]);
+  const [postRawData , setPostRawData] = useState([]);
 
 
   let fullURL = "http://localhost:4000/post";
