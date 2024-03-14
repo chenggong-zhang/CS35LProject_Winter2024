@@ -59,7 +59,10 @@
     border: 3px solid #241E52;
     border-radius: 40px;
     overflow: hidden;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
   }
 
   

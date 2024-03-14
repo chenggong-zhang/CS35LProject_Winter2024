@@ -53,9 +53,9 @@ import { useNavigate } from 'react-router-dom';
             artists: artistInput,
             mood: moodInput,
           };
-          
           const API_key = localStorage.getItem('accessToken');
-          if(API_key == null) {throw new Error('User is not logged in')}
+          if(API_key == null) 
+            {throw new Error('User is not logged in')}
           try {
             const response = fetch('http://localhost:4000/post', {
             method: 'POST',
@@ -82,9 +82,9 @@ import { useNavigate } from 'react-router-dom';
           } catch (error) {
             console.error('Failed to update created post:', error);
           }
-          await sendPost();
         }
         
+        sendPost();
         // return to the previous page
         navigate('/home')
 
@@ -161,14 +161,13 @@ import { useNavigate } from 'react-router-dom';
           <div className="moodFrame">
             <div className="Tag">Mood</div>
             <div className="mood-input">
+                <div>{renderButton("😄 happy")}<span> </span>{renderButton("😢 sad")}</div>
                 <p></p>
-                {renderButton("😄 happy")}<span> </span>{renderButton("😢 sad")}
+                <div>{renderButton("😴 tired")}<span> </span>{renderButton("😠 angry")}<span> </span>{renderButton("🌈 hopeful")}</div>
                 <p></p>
-                {renderButton("😴 tired")}<span> </span>{renderButton("😠 angry")}<span> </span>{renderButton("🌈 hopeful")}
+                <div>{renderButton("😰 anxious")}<span> </span>{renderButton("✨ inspired")}<span> </span>{renderButton("🧘 calm")}</div>
                 <p></p>
-                {renderButton("😰 anxious")}<span> </span>{renderButton("✨ inspired")}<span> </span>{renderButton("🧘 calm")}
-                <p></p>
-                {renderButton("🤩 excited")}<span> </span> {renderButton("😂 amused")}
+                <div>{renderButton("🤩 excited")}<span> </span> {renderButton("😂 amused")}</div>
             </div>
           </div>
 
