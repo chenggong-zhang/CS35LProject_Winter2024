@@ -72,6 +72,8 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
     lol: { count: lolArray.length, isSelected: lolArray.includes(userID) },
     gg: { count: ggArray.length, isSelected: ggArray.includes(userID) }
   });  
+
+  const [isVibing, setIsVibing]=useState(false);
   
 
 
@@ -122,7 +124,7 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
           inters={inters}
           setInter={setInter}
           PID={postID} 
-          token={APIkey}
+          token={JSON.parse(localStorage.getItem('userObject')).accesstoken}
           userID={userID} />
 
       <div className="InterCounter">

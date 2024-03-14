@@ -3,6 +3,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import PostList  from './PostList.jsx';
 
 
 
@@ -95,19 +96,20 @@ class Profilepage extends React.Component{
     </div>
 
     {/* Middle part of the page */}
-    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
+    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}>   
+    </div>
+    <div style={{position: 'absolute',top: "500px", left:"355px", height: '900px', overflowY: 'scroll'}}>
+    {this.state.is_self ? (
+        <PostList APIkey={token} userID={this.state.obj1._id}/> 
+    ) : (
+        <PostList APIkey={token} userID={this.state.obj2._id}/> 
+    )}
+    </div>
     <div style={{width: 556, height: 671, left: 424, top: 123, position: 'absolute'}}>
-        <div style={{width: 556, height: 671, left: 0, top: 0, position: 'absolute'}} />
-        <div style={{width: 448, height: 3, left: 54, top: 397, position: 'absolute', background: '#FFFDFD'}} />
-        <div style={{width: 327, height: 64, left: 112, top: 440, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post</div>
-        </div>
-        <div style={{width: 327, height: 64, left: 112, top: 543, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 327, height: 64, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 120, top: 21, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Past Post2 </div>
-        </div>
-    {/* </div> */}
+    {/* <PostList APIkey={token}  userID={this.state.obj1._id}/> */}
+
+
+
     <FollowButton userid={userid} token={token}/>
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
