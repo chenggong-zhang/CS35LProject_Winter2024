@@ -3,16 +3,14 @@ import React, {useEffect, useState} from 'react';
 
 function TrendingBar(props)
 {
-    
-    const count = props.content; 
-    const feeling = props.id;
+    const { content, id, width, fontSize } = props;
     return(
         <div>
-            <div className = "trending_bar" style ={{width: props.width}}>
-                <header className = "word_font">
+            <div className = "trending_bar" style ={{width}}>
+                <header className = "word_font" style= {{fontSize}}>
                     <p>
-                        {count}
-                        {feeling}
+                        {content}
+                        {id}
                     </p>
                 </header>
                 

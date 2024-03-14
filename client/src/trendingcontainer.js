@@ -50,17 +50,17 @@ function TrendingContainer(props)
             mood[i] = {_id: ' Unavailable', count: 0}
         }
     }
-      
+
     return( 
         <div className = "trending_container" style = {{position: 'absolute', left: '1112px'}}>
             <p style = {{fontSize: '35px', color: 'white', textAlign: 'center', fontFamily: 'Quicksand'}}>
                 Trending Vibes
             </p>
             <TrendingBar content = {`${mood[0].count} vibes`} id = {mood[0]._id} width = "100%"></TrendingBar>
-            <TrendingBar content = {`${mood[1].count} vibes`} id = {mood[1]._id} width = "80%"></TrendingBar>
-            <TrendingBar content = {`${mood[2].count} vibes`} id = {mood[2]._id} width = "50%"></TrendingBar>
-            <TrendingBar content = {`${mood[3].count} vibes`} id = {mood[3]._id} width = "30%"></TrendingBar>
-            <TrendingBar content = {`${mood[4].count} vibes`} id = {mood[4]._id} width = "10%"></TrendingBar>
+            <TrendingBar content = {`${mood[1].count} vibes`} id = {mood[1]._id} width = "85%"></TrendingBar>
+            <TrendingBar content = {`${mood[2].count} vibes`} id = {mood[2]._id} width = "55%"></TrendingBar>
+            <TrendingBar content = {`${mood[3].count} vibes`} id = {mood[3]._id} width = "40%"></TrendingBar>
+            <TrendingBar content = {`${mood[4].count} vibes`} id = {mood[4]._id} width = "25%" fontSize = '13px' ></TrendingBar>
         </div> 
     )
 }

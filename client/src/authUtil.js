@@ -30,9 +30,15 @@ async function refreshAccessToken() {
 
 async function logout() {
     try {
-        const response = await axios.post('http://localhost:4000/auth/logout', {
+        const API_key = localStorage.getItem('accessToken');
+        if(API_key == null) {
+            throw new Error('User is not logged in')
+        }
+
+        const response = await fetch(`http://localhost:4000/auth/logout`, {
+            method: 'POST',
             headers: {
-                'Authorization': `bearer ${localStorage.getItem('accessToken')}` // Include the JWT token in the Authorization header
+                'Authorization':`bearer ${API_key}`
             }
         });
 
@@ -45,8 +51,11 @@ async function logout() {
         }
 
         if(response.status == 401) {
+            console.log('trying to refresh access token...');
             // try to refresh access token if server response is 401
-            await refreshAccessToken(localStorage.getItem('refreshToken'));
+            await refreshAccessToken();
+            logout();
+            return;
         }
 
         // remove access and refresh tokens from local storage
