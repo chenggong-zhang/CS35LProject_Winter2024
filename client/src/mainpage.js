@@ -9,6 +9,7 @@ import { refreshAccessToken, logout} from './authUtil.js';
 import PostList from './PostList.jsx'
 
 class Mainpage extends React.Component{
+    
     render(){
         return(
 <div style={{width: '100%', height: '100vh', overflow: 'hidden', position: 'relative', background: '#241E52'}}>
@@ -271,11 +272,14 @@ class Logo extends React.Component{
 
 class UserDisplay extends React.Component{
     render(){
-        const {name, handle}=this.props
+        
+        const user = JSON.parse(localStorage.getItem("userObject"));
+        const name = user.username;
+        const handle = user.handle;
         return(
             <div style={{width: 109, height: 40, left: 1, top: 650, position: 'absolute'}}>
                 <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
+                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 12, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
                 <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
             </div>
         )

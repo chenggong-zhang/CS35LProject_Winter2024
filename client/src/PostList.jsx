@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 import './PostList.css'
-import { refreshAccessToken } from './authUtil.js';
-
-function PostList(userID){
+import { refreshAccessToken, logout} from './authUtil.js';
+function PostList({APIkey, userID}){
 
     const [postRawData , setPostRawData] = useState([]);
 
@@ -36,22 +35,21 @@ function PostList(userID){
             });
             if (!response.ok) {
               if (response.status == 401)
-              {
-                  console.log('trying to refresh access token...');
-                  await refreshAccessToken();
-                  fetchInfo();
-                  return;
-              } else {
-                  throw new Error(`HTTP error! status: ${response.status}`);
-              }
-          }
-            
+                    {
+                        console.log('trying to refresh access token...');
+                        await refreshAccessToken();
+                        fetchInfo();
+                        return;
+                    } else {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+            }
             const data = await response.json(); // Correctly parsing the JSON data
             console.log('post data:', data);
             if (!data.ok) {
                 throw new Error('API responded with an error');
               }
-              setPostRawData(data.posts);
+            setPostRawData(data.posts);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
@@ -77,6 +75,7 @@ function PostList(userID){
                   lolArray={postItemRawData.lol_by}
                   ggArray={postItemRawData.gg_by}
                   ytlink={postItemRawData.yt_link}
+                  APIkey={APIkey}
                   userID={userID}
             />
          </li>);
