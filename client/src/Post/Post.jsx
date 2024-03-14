@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Post.css';
+import { refreshAccessToken } from './authUtil.js';
 import YouTube from 'react-youtube';
 import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
@@ -7,11 +8,9 @@ import TimeStamp from './Time_stamp';
 
 
 function Post({userHandle, userPubName, createTime, songName, artistName, moodList , postID,
-              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, APIkey, userID}) {
+              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, userID}) {
 
   const moodEmoji = moodList.split(" ")[0];
-  APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzODE4MTUsImV4cCI6MTcxMDM4MjQxNX0.6OhWW41jDv8ymlaN5OyHlCaGb6NJ4Yhhn0dP4XioCos';
-  const [isVibing, setIsVibing] = useState(false);
   const [player, setPlayer] = useState(null);
   const link = ytlink.split('v=')[1];
 

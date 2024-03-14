@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 import './PostList.css'
+import { refreshAccessToken } from './authUtil.js';
 
-function PostList({APIkey, userID}){
+function PostList(userID){
 
     const [postRawData , setPostRawData] = useState([]);
 
@@ -22,16 +23,28 @@ function PostList({APIkey, userID}){
     useEffect(() => {
         const fetchInfo = async () => {
           try {
+            const API_key = localStorage.getItem('accessToken');
+                if(API_key == null) {
+                    throw new Error('User is not logged in')
+                }
             const response = await fetch(fullURL , {
               method: 'GET',
               headers:{
-                'Authorization': `bearer ${APIkey}`,
+                'Authorization': `bearer ${API_key}`,
                 'Content-Type': 'application/json'
               }
             });
             if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
+              if (response.status == 401)
+              {
+                  console.log('trying to refresh access token...');
+                  await refreshAccessToken();
+                  fetchInfo();
+                  return;
+              } else {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+          }
             const data = await response.json(); // Correctly parsing the JSON data
             console.log('post data:', data);
             if (!data.ok) {
@@ -63,7 +76,6 @@ function PostList({APIkey, userID}){
                   lolArray={postItemRawData.lol_by}
                   ggArray={postItemRawData.gg_by}
                   ytlink={postItemRawData.yt_link}
-                  APIkey={APIkey}
                   userID={userID}
             />
          </li>);

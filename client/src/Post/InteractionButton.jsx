@@ -2,6 +2,7 @@ import React from "react";
 import './InteractionButton.css'
 import './GenInteractiveButton'
 import GenInteractiveButton from "./GenInteractiveButton";
+import { refreshAccessToken } from './authUtil.js';
 
 //const InteractionButton = ({inters, setInter, likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
 const InteractionButton = ({inters, setInter, PID , token, userID}) => {
@@ -20,10 +21,14 @@ const InteractionButton = ({inters, setInter, PID , token, userID}) => {
     const payload = JSON.stringify({reaction: type});
     console.log(payload);
     try {
+        const API_key = localStorage.getItem('accessToken');
+        if(API_key == null) {
+            throw new Error('User is not logged in')
+        }
         const response = await fetch(`http://localhost:4000/post/${PID}/reaction`, {
             method: 'POST',
             headers:{
-              'Authorization': `bearer ${token}`,
+              'Authorization': `bearer ${API_key}`,
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
@@ -41,8 +46,16 @@ const InteractionButton = ({inters, setInter, PID , token, userID}) => {
         });
         console.log('data:', data);
         if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+          if (response.status == 401)
+          {
+              console.log('trying to refresh access token...');
+              await refreshAccessToken();
+              updateBackend();
+              return;
+          } else {
+              throw new Error(`HTTP error! status: ${response.status}`);
+          }
+      }
     } catch (error) {
         console.error('Failed to update interaction:', error);
     };

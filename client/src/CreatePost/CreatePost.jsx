@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./CreatePost.css";
 import GenMoodButton from "./GenMoodButton";
+import { refreshAccessToken } from './authUtil.js';
 
  const CreatePost = () => {
 
-  const APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAyOTkyMzgsImV4cCI6MTcxMDI5OTgzOH0.eRhEMe3CSGSNJvLSeSwBo4hUlTt0ERio90leijWEA-A';
 
   const [songInput, setSongInput] = useState('');
   const [artistInput, setArtistInput] = useState('');
@@ -46,36 +46,57 @@ import GenMoodButton from "./GenMoodButton";
         // Optionally clear the mood selection as well
         // Reset moods here if needed
       } else{
-        const postData = {
-          song: songInput,
-          artists: artistInput,
-          mood: moodInput,
-        };
-    
-        fetch('http://localhost:4000/post', {
-          method: 'POST',
-          headers: {
-            'Authorization': `bearer ${APIkey}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(postData),
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+        const sendPost = async() => {
+          const postData = {
+            song: songInput,
+            artists: artistInput,
+            mood: moodInput,
+          };
 
+          const API_key = localStorage.getItem('accessToken');
+          if(API_key == null) {throw new Error('User is not logged in')}
+          try {
+            const response = fetch('http://localhost:4000/post', {
+            method: 'POST',
+            headers: {
+              'Authorization': `bearer ${API_key}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(postData),
+          })
+          const data = await response.json();
+          console.log("data: ", data);
+          if (!response.ok) { 
+            if (response.status == 401)
+            {
+                console.log('trying to refresh access token...');
+                await refreshAccessToken();
+                sendPost();
+                return;
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+          }
+
+          } catch (error) {
+            console.error('Failed to update created post:', error);
+          }
+        }
+        sendPost();
         // return to the previous page
-      }
+
+
+        }
     };
 
+
+    // return to homepage when cancel is hit
     const handleCancel = () => {
       
     };
   
+
+    
     const handleMoodClick = (moodType) => {
         const updatedMoods = { ...moods };
         const check_mood = updatedMoods[moodType];
@@ -161,46 +182,3 @@ export default CreatePost;
 
 
 
-  // document.addEventListener('DOMContentLoaded', function() {   
-  //   document.getElementById('post').addEventListener('click', () => {
-  //       // Capture the data from the input fields
-  //       const songInput = document.getElementById('songData').value;
-  //       const artistInput = document.getElementById('artistData').value;
-  //       const moodInput = getSelectedMood();
-  //       console.log(songInput);
-  //       console.log(artistInput);
-  //       console.log(moodInput);
-
-  //       if (!moodInput || !songInput || !artistInput) 
-  //            throw new Error(`Something is missing!`);
-
-        
-  //       // Create an object with the data
-  //       const postData = {
-  //           song: songInput,
-  //           artists: artistInput, 
-  //           mood: moodInput,
-  //       };
-        
-  //       // Define the API endpoint
-  //       const fullURL = 'http://localhost:4000/post';
-    
-  //       // Make an API call to the backend server
-  //       fetch(fullURL, {
-  //           method: 'POST',
-  //           headers: {
-  //               'Authorization': `bearer ${APIkey}`,
-  //               'Content-Type': 'application/json',
-  //           },
-  //           body: JSON.stringify(postData),
-  //       })
-  //       .then(response => response.json())
-  //       .then(data => {
-  //           console.log('Success:', data);
-  //       })
-  //       .catch((error) => {
-  //           console.error('Error:', error);
-  //       });
-  //   });
-  // });
-  
