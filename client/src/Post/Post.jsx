@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Post.css';
-import { refreshAccessToken } from './authUtil.js';
+import { refreshAccessToken } from '../authUtil.js';
 import YouTube from 'react-youtube';
 import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';

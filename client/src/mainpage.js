@@ -16,7 +16,7 @@ class Mainpage extends React.Component{
     // codes for the left side of the main page
     }
     <div style={{width: 227, height: 1136, left: 54, top: 40, position: 'absolute'}}>
-        <VibeButton />
+        <VibeButton barPath = '/createpost'/>
         <LogoutButton />
         <div style={{right: 20, bottom: 15, position: 'relative'}}>
             <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
@@ -230,15 +230,15 @@ function NavigationBar({imageSource, barName, barPath}){
     );
 }
 
-class VibeButton extends React.Component{
-    render(){
-        return(
-            <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
-                <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>vibe</div>
-            </div>
-        )
-    }
+function VibeButton (){
+    const navigate = useNavigate();
+    return(
+        <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
+            <div onClick={() => navigate('/createpost')} style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>vibe</div>
+        </div>
+    )
+    
 }
 
 class LogoutButton extends React.Component{

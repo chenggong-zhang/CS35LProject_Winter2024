@@ -2,7 +2,7 @@ import React from "react";
 import './InteractionButton.css'
 import './GenInteractiveButton'
 import GenInteractiveButton from "./GenInteractiveButton";
-import { refreshAccessToken } from './authUtil.js';
+import { refreshAccessToken } from '../authUtil.js';
 
 //const InteractionButton = ({inters, setInter, likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
 const InteractionButton = ({inters, setInter, PID , token, userID}) => {
