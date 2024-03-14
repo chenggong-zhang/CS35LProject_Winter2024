@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./CreatePost.css";
 import GenMoodButton from "./GenMoodButton";
 import { refreshAccessToken } from './authUtil.js';
+import { useNavigate } from 'react-router-dom';
 
  const CreatePost = () => {
 
@@ -20,7 +21,7 @@ import { refreshAccessToken } from './authUtil.js';
         "🤩 excited" : { Mstring:[] , isSelected: false},
         "😂 amused" : { Mstring:[] , isSelected: false},
     } );
-
+    const navigate = useNavigate();
     const getSelectedMood = () => {
       const selectedMood = Object.keys(moods).find(key => moods[key].isSelected);
       return selectedMood; 
@@ -52,7 +53,7 @@ import { refreshAccessToken } from './authUtil.js';
             artists: artistInput,
             mood: moodInput,
           };
-
+          
           const API_key = localStorage.getItem('accessToken');
           if(API_key == null) {throw new Error('User is not logged in')}
           try {
@@ -81,10 +82,11 @@ import { refreshAccessToken } from './authUtil.js';
           } catch (error) {
             console.error('Failed to update created post:', error);
           }
+          await sendPost();
         }
-        sendPost();
+        
         // return to the previous page
-
+        
 
         }
     };
@@ -92,7 +94,7 @@ import { refreshAccessToken } from './authUtil.js';
 
     // return to homepage when cancel is hit
     const handleCancel = () => {
-      
+      navigate('/home')
     };
   
 
@@ -129,8 +131,8 @@ import { refreshAccessToken } from './authUtil.js';
     
   return (
 
-    <div className="createPost">
-        <div className="captureYourVibe">CAPTURE YOUR VIBE!</div>
+    <div className="createPost" style = {{position: 'fixed', left: '400px'}}>
+        <div className="captureYourVibe" style = {{position: 'absolute', left: '120px'}}>CAPTURE YOUR VIBE!</div>
 
             <div className="artistFrame">
               <div className="Tag">Artist</div>
