@@ -27,11 +27,16 @@ class Mainpage extends React.Component{
         </div>
         <UserDisplay name='name' handle='handle' />
     </div>
-    {
+    <div>
+        <p>
+            hello
+        </p>
         <PostList APIkey={localStorage.getItem('accessToken')}/>
-        // Codes for the center part of the main page
+            
+    </div>
         
-    }
+        
+    
     <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
     <div> 
         {/*insert post list here */}

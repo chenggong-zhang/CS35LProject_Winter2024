@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 
-function PostList(APIkey, userID){
+function PostList({APIkey, userID}){
 
     const [postRawData , setPostRawData] = useState([]);
 
-    userID = "65e7cc4b161950c73d3a3df5";
 
   let fullURL = "http://localhost:4000/post";
 
@@ -33,17 +32,17 @@ function PostList(APIkey, userID){
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json(); // Correctly parsing the JSON data
+            console.log('post data:', data);
             if (!data.ok) {
                 throw new Error('API responded with an error');
               }
               setPostRawData(data.posts);
-
           } catch (error) {
             console.error('Error fetching data:', error);
           }
         };
         fetchInfo();
-      });
+      },[]);
 
 
       const posts = postRawData.map((postItemRawData) => {
