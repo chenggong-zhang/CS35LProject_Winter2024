@@ -4,7 +4,8 @@
   "description": "Server for CS35 final project - Rubato",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon app.js"
   },
   "author": "Yiheng Zhu",
   "license": "ISC",
