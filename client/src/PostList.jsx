@@ -5,7 +5,6 @@ function PostList(APIkey, userID){
 
     const [postRawData , setPostRawData] = useState([]);
 
-    APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzODE4MTUsImV4cCI6MTcxMDM4MjQxNX0.6OhWW41jDv8ymlaN5OyHlCaGb6NJ4Yhhn0dP4XioCos';
     userID = "65e7cc4b161950c73d3a3df5";
 
   let fullURL = "http://localhost:4000/post";
@@ -65,6 +64,7 @@ function PostList(APIkey, userID){
                   ggArray={postItemRawData.gg_by}
                   ytlink={postItemRawData.yt_link}
                   APIkey={APIkey}
+                  userID={userID}
             />
          </li>);
       } )

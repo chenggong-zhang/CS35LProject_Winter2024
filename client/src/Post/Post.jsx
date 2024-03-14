@@ -7,14 +7,13 @@ import TimeStamp from './Time_stamp';
 
 
 function Post({userHandle, userPubName, createTime, songName, artistName, moodList , postID,
-              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, APIkey}) {
+              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, APIkey, userID}) {
 
   const moodEmoji = moodList.split(" ")[0];
   APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzODE4MTUsImV4cCI6MTcxMDM4MjQxNX0.6OhWW41jDv8ymlaN5OyHlCaGb6NJ4Yhhn0dP4XioCos';
   const [isVibing, setIsVibing] = useState(false);
   const [player, setPlayer] = useState(null);
   const link = ytlink.split('v=')[1];
-  const tempID = "65e7cc4b161950c73d3a3df5";
 
   const onReady = (e) => {
     setPlayer(e.target);
@@ -67,12 +66,12 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
   
   /* Interaction counting */
   const [inters, setInter] = useState({
-    like: { count: likeArray.length, isSelected: likeArray.includes(tempID) },
-    handshake: { count: HandshakeArray.length, isSelected: HandshakeArray.includes(tempID) },
-    fire: { count: fireArray.length, isSelected: fireArray.includes(tempID) },
-    sad: { count: sadArray.length, isSelected: sadArray.includes(tempID) },
-    lol: { count: lolArray.length, isSelected: lolArray.includes(tempID) },
-    gg: { count: ggArray.length, isSelected: ggArray.includes(tempID) }
+    like: { count: likeArray.length, isSelected: likeArray.includes(userID) },
+    handshake: { count: HandshakeArray.length, isSelected: HandshakeArray.includes(userID) },
+    fire: { count: fireArray.length, isSelected: fireArray.includes(userID) },
+    sad: { count: sadArray.length, isSelected: sadArray.includes(userID) },
+    lol: { count: lolArray.length, isSelected: lolArray.includes(userID) },
+    gg: { count: ggArray.length, isSelected: ggArray.includes(userID) }
   });  
   
 
@@ -123,14 +122,9 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
       <InteractionButton 
           inters={inters}
           setInter={setInter}
-          likeArr={likeArray} 
-          HandshakeArr={HandshakeArray}
-          fireArr={fireArray}
-          sadArr={sadArray}
-          lolArr={lolArray}
-          ggArr={ggArray}
           PID={postID} 
-          token={APIkey} />
+          token={APIkey}
+          userID={userID} />
 
       <div className="InterCounter">
         <span>{inters.like.count}</span>

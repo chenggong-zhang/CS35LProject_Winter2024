@@ -19,10 +19,8 @@
 }
 .trending_container{
     width: 300px;
-    padding: 5px 30px 1px 26px;
-    margin-left: 1200px; 
-    margin-bottom: 1px;
-    position: 'absolute'; 
+    
+    position: 'fixed'; 
 }
 .spacer {
     height: 20px; /* Adjust the height as needed for spacing */

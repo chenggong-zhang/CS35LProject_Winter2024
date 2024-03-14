@@ -5,6 +5,7 @@ import React, {Component, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { refreshAccessToken, logout} from './authUtil.js';
+import PostList from './PostList.jsx'
 
 class Mainpage extends React.Component{
     render(){
@@ -27,7 +28,9 @@ class Mainpage extends React.Component{
         <UserDisplay name='name' handle='handle' />
     </div>
     {
+        <PostList APIkey={localStorage.getItem('accessToken')}/>
         // Codes for the center part of the main page
+        
     }
     <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
     <div> 

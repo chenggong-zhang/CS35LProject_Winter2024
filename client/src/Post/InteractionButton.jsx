@@ -4,9 +4,8 @@ import './GenInteractiveButton'
 import GenInteractiveButton from "./GenInteractiveButton";
 
 //const InteractionButton = ({inters, setInter, likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
-const InteractionButton = ({inters, setInter, PID , token}) => {
+const InteractionButton = ({inters, setInter, PID , token, userID}) => {
 
-  const tempID = "65e7cc4b161950c73d3a3df5"
   const handleInteractionClick = (type) => {
     updateBackend(type);
     const updatedInteractions = { ...inters };
@@ -33,12 +32,12 @@ const InteractionButton = ({inters, setInter, PID , token}) => {
 
         const data = await response.json()
         setInter({
-          like: { count: data.post.like_by.length, isSelected: data.post.like_by.includes(tempID) },
-          handshake: { count: data.post.handshake_by.length, isSelected: data.post.handshake_by.includes(tempID) },
-          fire: { count: data.post.fire_by.length, isSelected: data.post.fire_by.includes(tempID) },
-          sad: { count: data.post.sad_by.length, isSelected: data.post.sad_by.includes(tempID) },
-          lol: { count: data.post.lol_by.length, isSelected: data.post.lol_by.includes(tempID) },
-          gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(tempID) }
+          like: { count: data.post.like_by.length, isSelected: data.post.like_by.includes(userID) },
+          handshake: { count: data.post.handshake_by.length, isSelected: data.post.handshake_by.includes(userID) },
+          fire: { count: data.post.fire_by.length, isSelected: data.post.fire_by.includes(userID) },
+          sad: { count: data.post.sad_by.length, isSelected: data.post.sad_by.includes(userID) },
+          lol: { count: data.post.lol_by.length, isSelected: data.post.lol_by.includes(userID) },
+          gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(userID) }
         });
         console.log('data:', data);
         if (!response.ok) {
