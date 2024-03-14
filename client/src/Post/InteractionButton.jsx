@@ -34,6 +34,16 @@ const InteractionButton = ({inters, setInter, PID , token, userID}) => {
             },
             body: payload
         });
+        if (!response.ok) {
+          if (response.status == 401) {
+            console.log('trying to refresh access token...');
+            await refreshAccessToken();
+            updateBackend();
+            return;
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
 
         const data = await response.json()
         setInter({
@@ -45,17 +55,7 @@ const InteractionButton = ({inters, setInter, PID , token, userID}) => {
           gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(userID) }
         });
         console.log('data:', data);
-        if (!response.ok) {
-          if (response.status == 401)
-          {
-              console.log('trying to refresh access token...');
-              await refreshAccessToken();
-              updateBackend();
-              return;
-          } else {
-              throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      }
+      
     } catch (error) {
         console.error('Failed to update interaction:', error);
     };

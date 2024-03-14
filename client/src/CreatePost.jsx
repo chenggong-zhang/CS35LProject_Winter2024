@@ -57,7 +57,7 @@ import { useNavigate } from 'react-router-dom';
           if(API_key == null) 
             {throw new Error('User is not logged in')}
           try {
-            const response = fetch('http://localhost:4000/post', {
+            const response = await fetch('http://localhost:4000/post', {
             method: 'POST',
             headers: {
               'Authorization': `bearer ${API_key}`,
@@ -65,8 +65,7 @@ import { useNavigate } from 'react-router-dom';
             },
             body: JSON.stringify(postData),
           })
-          const data = await response.json();
-          console.log("data: ", data);
+          
           if (!response.ok) { 
             if (response.status == 401)
             {
@@ -78,6 +77,9 @@ import { useNavigate } from 'react-router-dom';
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
           }
+
+          const data = await response.json();
+          console.log("data: ", data);
 
           } catch (error) {
             console.error('Failed to update created post:', error);

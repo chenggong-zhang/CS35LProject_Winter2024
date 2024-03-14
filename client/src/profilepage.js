@@ -4,7 +4,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PostList  from './PostList.jsx';
-
+import { refreshAccessToken } from './authUtil.js';
 
 
 class Profilepage extends React.Component{
@@ -378,19 +378,41 @@ function UserName({username, handle}){
 
 const changeName = async (name, handle, token, navigate) => {
     try {
-      const response = await axios.post('http://localhost:4000/user/', {
-        handle: handle,
-        username: name
-      },  {headers: {
-        'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-      }});
-      if (response.data.ok) {  
-        console.log("name change success")
-        navigate('/')
+        const API_key = localStorage.getItem('accessToken');
+        if(API_key == null) {
+            throw new Error('User is not logged in')
+        }
+        
+        console.log('changing username...');
+        const response = await fetch('http://localhost:4000/user/', 
+        {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            },
+            body: JSON.stringify({
+                handle: handle,
+                username: name
+            })
+        });
+
+        if (!response.ok) {
+            if (response.status == 401)
+            {
+                console.log('trying to refresh access token...');
+                await refreshAccessToken();
+                changeName(name, handle, token, navigate);
+                return;
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }  
+        }
+
+        // const data = await response.json();
+
+        console.log("name change success");
+        navigate('/');
         return ""; 
-      } else {
-        throw new Error(response.data.error || 'Unknown error occurred');
-      }
     } catch (error) {
       console.log('Name change failed');
       console.log(error);
@@ -426,21 +448,34 @@ class VibeButton extends React.Component{
 function LogoutButton(){
     const token=localStorage.getItem('accessToken');
     const navigate = useNavigate();
-    const logout = async (token) => {
+    const logout = async (token, navigate) => {
         try {
-          const response = await axios.post('http://localhost:4000/auth/logout',{},{
-            headers: {
-              'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
+            const API_key = localStorage.getItem('accessToken');
+            if(API_key == null) {
+                throw new Error('User is not logged in')
             }
-          });
-          if (response.data.ok) {  
+
+            const response = await fetch('http://localhost:4000/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+                },
+            });
+
+            if (!response.ok) {
+                if (response.status == 401)
+                {
+                    console.log('trying to refresh access token...');
+                    await refreshAccessToken();
+                    logout(token, navigate);
+                    return;
+                } else {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }  
+            }
+
             navigate('/')
-          } else if(response.status === 401){
-            navigate('/')
-          }
-          else {
-            throw new Error(response.data.error || 'Unknown error occurred');
-          }
+
         } catch (error) {
             navigate('/')
         }
@@ -449,7 +484,7 @@ function LogoutButton(){
     return(
         <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-            <div onClick={()=> logout(token)}style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+            <div onClick={()=> logout(token, navigate)}style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
             {/* {errMess && <div style={{ color: 'grey' }}>{errMess}</div>} */}
         </div>
     );
@@ -509,17 +544,34 @@ function FollowButton({userid, token}){
 
 const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
-        // Replace with your API endpoint and necessary data
-        const response = await axios.post('http://localhost:4000/relation/connect/'+userid,{}, {
-            headers: {
-            'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-            }});
-        if (response.data.ok) {
-            setIsFollowing('Following');
-            setFlag(true);
-            setFlag(true);
-            console.log("follow is invoked and request no error")
+        const API_key = localStorage.getItem('accessToken');
+        if(API_key == null) {
+            throw new Error('User is not logged in')
         }
+
+        const response = await fetch('http://localhost:4000/relation/connect/'+userid, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status == 401)
+            {
+                console.log('trying to refresh access token...');
+                await refreshAccessToken();
+                handleFollow(setIsFollowing, setFlag, userid, token);
+                return;
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }  
+        }
+
+        setIsFollowing('Following');
+        setFlag(true);
+        setFlag(true);
+        console.log("follow is invoked and request no error")
     } catch (error) {
         console.error('Error following user:', error);
         console.log("Error here")
@@ -528,19 +580,37 @@ const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
 
 const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
-        // Replace with your API endpoint and necessary data
-        const response = await axios.post('http://localhost:4000/relation/disconnect/'+userid,{}, {
-            headers: {
-            'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-            }});
-        if (response.data.ok) {
-            setIsFollowing('Follow');
-            setFlag(false);
-            console.log("unfollow is invoked and request no error")
-            setIsFollowing('Follow');
-            setFlag(false);
-            console.log("unfollow is invoked and request no error")
+        const API_key = localStorage.getItem('accessToken');
+        if(API_key == null) {
+            throw new Error('User is not logged in')
         }
+
+        const response = await fetch('http://localhost:4000/relation/disconnect/'+userid, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            },
+        });
+
+        if (!response.ok) {
+            if (response.status == 401)
+            {
+                console.log('trying to refresh access token...');
+                await refreshAccessToken();
+                handleUnfollow(setIsFollowing, setFlag, userid, token);
+                return;
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }  
+        }
+
+        setIsFollowing('Follow');
+        setFlag(false);
+        console.log("unfollow is invoked and request no error")
+        setIsFollowing('Follow');
+        setFlag(false);
+        console.log("unfollow is invoked and request no error")
+
     } catch (error) {
         console.error('Error unfollowing user:', error);
         console.error('Error unfollowing user:', error);
