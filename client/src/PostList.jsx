@@ -45,6 +45,7 @@ function PostList(userID){
                   throw new Error(`HTTP error! status: ${response.status}`);
               }
           }
+            
             const data = await response.json(); // Correctly parsing the JSON data
             console.log('post data:', data);
             if (!data.ok) {
