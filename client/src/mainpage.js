@@ -28,11 +28,7 @@ class Mainpage extends React.Component{
         <UserDisplay name='name' handle='handle' />
     </div>
     <div>
-        <p>
-            hello
-        </p>
-        <PostList APIkey={localStorage.getItem('accessToken')}/>
-            
+        <PostList APIkey={localStorage.getItem('accessToken')}/>  
     </div>
         
         
