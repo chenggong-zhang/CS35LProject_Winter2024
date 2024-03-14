@@ -86,7 +86,7 @@ import { useNavigate } from 'react-router-dom';
         }
         
         // return to the previous page
-        
+        navigate('/home')
 
         }
     };
