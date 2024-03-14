@@ -380,7 +380,8 @@ const changeName = async (name, handle, token, navigate) => {
         {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+                'Authorization': `Bearer ${API_key}`, // Include the JWT token in the Authorization header
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 handle: handle,
