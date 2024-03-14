@@ -15,7 +15,7 @@ class Mainpage extends React.Component{
     }
     <div style={{width: 227, height: 1136, left: 54, top: 40, position: 'absolute'}}>
         <VibeButton />
-        <LogoutButton/>
+        <LogoutButton />
         <div style={{right: 20, bottom: 15, position: 'relative'}}>
             <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
         </div>
@@ -107,9 +107,9 @@ function SearchBar()  {
             if (response.data.ok) {
            localStorage.setItem('otherObject',JSON.stringify(response.data.user));
            localStorage.setItem('isSelf', response.data.is_self);
-           console.log("other user's object sucessflly retrieved")
+           console.log("getUser called 1 time")
            const event = new CustomEvent('otherObjUpdated', {});
-           console.log("event dispatched")
+        //    console.log("event dispatched")
            window.dispatchEvent(event);
           }else if (response.status === 401){
            navigate('/')
@@ -157,13 +157,13 @@ function SearchBar()  {
 
 
 
-    const handleUserClick = (_id) => {
+    const handleUserClick = async (_id) => {
         //navigate(`/users/profile`);
         const token = localStorage.getItem("accessToken");
-        getUser(_id, navigate, token);
-        getFollow(_id, navigate, token);
+        await getUser(_id, navigate, token);
+        await getFollow(_id, navigate, token);
         const event = new CustomEvent('newProfile', {});
-        console.log("event dispatched")
+        console.log("newProfile dispatched")
         window.dispatchEvent(event);
         navigate('/profile');
     };
@@ -226,18 +226,15 @@ class VibeButton extends React.Component{
     }
 }
 
-function LogoutButton(){
-    const navigate = useNavigate();
-    const onClicklogout = () => {
-        logout();
-        navigate('/');
+class LogoutButton extends React.Component{
+    render(){
+        return(
+            <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
+                <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+            </div>
+        )
     }
-    return(
-        <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-            <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-            <div onClick={onClicklogout} style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
-        </div>
-    );
 }
 
 class Rubato extends React.Component{
