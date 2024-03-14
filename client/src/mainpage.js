@@ -28,14 +28,9 @@ class Mainpage extends React.Component{
         </div>
         <UserDisplay name='name' handle='handle' />
     </div>
-<<<<<<< HEAD
     <div style={{position: 'absolute', left: '375px', height: '900px', overflowY: 'scroll'}}>
         <PostList APIkey={localStorage.getItem('accessToken')}/>
             
-=======
-    <div>
-        <PostList APIkey={localStorage.getItem('accessToken')}/>  
->>>>>>> 5ead98c028fad5c6669c328de190940f9a4122c0
     </div>
     <div>
         <TrendingContainer/>
