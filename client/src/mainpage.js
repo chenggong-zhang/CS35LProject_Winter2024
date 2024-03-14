@@ -3,6 +3,7 @@
 import TrendingContainer from './trendingcontainer.js';
 import React, {Component, useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUser, getFollow } from './loginpage.js';
 import axios from 'axios';
 import { refreshAccessToken, logout} from './authUtil.js';
 import PostList from './PostList.jsx'
@@ -10,7 +11,7 @@ import PostList from './PostList.jsx'
 class Mainpage extends React.Component{
     render(){
         return(
-<div style={{width: '100%', height: '100%', position: 'relative', background: '#241E52'}}>
+<div style={{width: '100%', height: '100vh', overflow: 'hidden', position: 'relative', background: '#241E52'}}>
     {
     // codes for the left side of the main page
     }
@@ -27,15 +28,9 @@ class Mainpage extends React.Component{
         </div>
         <UserDisplay name='name' handle='handle' />
     </div>
-    <div>
-        <PostList APIkey={localStorage.getItem('accessToken')}/>  
-    </div>
-        
-        
-    
-    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}></div>
-    <div> 
-        {/*insert post list here */}
+    <div style={{position: 'absolute', left: '375px', height: '900px', overflowY: 'scroll'}}>
+        <PostList APIkey={localStorage.getItem('accessToken')}/>
+            
     </div>
     <div>
         <TrendingContainer/>
@@ -211,10 +206,26 @@ function SearchBar()  {
 
 function NavigationBar({imageSource, barName, barPath}){
     const navigate = useNavigate();
+    const _id=JSON.parse(localStorage.getItem("userObject"))._id;
+    console.log(localStorage.getItem("userObject"));
+    const handleUserClick = async (_id) => {
+        //navigate(`/users/profile`);
+        const token = localStorage.getItem("accessToken");
+        // await getUser(_id, navigate, token);
+        // await getFollow(_id, navigate, token);
+        const event = new CustomEvent('newProfile', {});
+        console.log("newProfile dispatched")
+        window.dispatchEvent(event);
+        if (barName="profile"){
+            await getUser(_id, navigate, token);
+            await getFollow(_id, navigate, token);
+        }
+        navigate(barPath);
+    };
     return(
         <div style={{ display: 'flex', flexDirection: 'row'}}>
                 <img style={{width: 24, height: 24, position:'absolute'}} alt='pic'src={imageSource} />
-                <div onClick={()=>navigate(barPath)} style={{marginLeft: '40px', color: '#E6EAEF', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{barName}</div>
+                <div onClick={() => handleUserClick(_id)} style={{marginLeft: '40px', color: '#E6EAEF', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{barName}</div>
         </div>
     );
 }
@@ -233,7 +244,7 @@ class VibeButton extends React.Component{
 class LogoutButton extends React.Component{
     render(){
         return(
-            <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                 <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
                 <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
             </div>
@@ -262,7 +273,7 @@ class UserDisplay extends React.Component{
     render(){
         const {name, handle}=this.props
         return(
-            <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
+            <div style={{width: 109, height: 40, left: 1, top: 650, position: 'absolute'}}>
                 <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>
                 <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
                 <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />

@@ -1,7 +1,7 @@
 import React, {useRef, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { refreshAccessToken, logout} from './authUtil.js';
 
 const loginWithEmail = async (email, navigate) => {
     try {
@@ -55,23 +55,41 @@ const verifyEmailWithOtp = async (email, otp, navigate) => {
 // retrieving user's information
 const getUser = async (userid, navigate, token) => {
   try {
-    const response = await axios.get('http://localhost:4000/user/'+userid, 
-    {headers: {
-      'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-    }});
-    if (response.data.ok) {
-      localStorage.setItem('otherObject',JSON.stringify(response.data.user));
-      localStorage.setItem('isSelf', response.data.is_self);
-      console.log("other user's object sucessflly retrieved")
-      const event = new CustomEvent('otherObjUpdated', {});
-      console.log("event dispatched")
-      window.dispatchEvent(event);
-    }else if (response.status === 401){
-      navigate('/')
+    console.log('userid: ', userid);
+    const API_key = localStorage.getItem('accessToken');
+    if(API_key == null) {
+        navigate('/')
+        throw new Error('User is not logged in')
     }
-    else {
-      throw new Error(response.data.error || 'Unknown error occurred/other user');
+    const response = await fetch('http://localhost:4000/user/'+userid, 
+    {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+      }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      if (response.status == 401)
+      {
+          console.log('trying to refresh access token...');
+          await refreshAccessToken();
+          getUser(userid, navigate, token);
+          return;
+      } else {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }  
     }
+
+    localStorage.setItem('otherObject',JSON.stringify(data.user));
+    localStorage.setItem('isSelf', data.is_self);
+    console.log("other user's object sucessflly retrieved")
+    const event = new CustomEvent('otherObjUpdated', {});
+    console.log("event dispatched")
+    window.dispatchEvent(event);
+
   } catch (error) {
     console.log(error)
     console.error("Failed to retrieve other user's information", error);
@@ -208,4 +226,6 @@ function UserTypingBoard({propsData}) {
 
 
 export default MainLogin;
-
+export {
+  getUser, getFollow
+}
