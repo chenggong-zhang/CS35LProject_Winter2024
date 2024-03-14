@@ -138,16 +138,15 @@
 }
 
 /*album whole view*/
-.Album_WV {
+.player {
     position: absolute;
-    left: 175px;
-    bottom: 160px;
+    left: 0px;
+    top: 155px;
     display: flex;
     width: 250px;
-    height: 250px;
-    background-color: #ccc;
-    justify-content: center;
-    align-items: center;
+    height: 600px;
+    justify-content: left;
+    align-items: left;
     flex-shrink: 0;
 }
 

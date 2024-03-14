@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 
-function PostList(){
+function PostList(APIkey, userID){
 
     const [postRawData , setPostRawData] = useState([]);
 
-    const APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAwMjg0NTAsImV4cCI6MTcxMDAyOTA1MH0._Q6gnU3tdZ4Fcd_NJaNM3IXNnsqo5gOfv1CNgoHAJ-c';
+    APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzODE4MTUsImV4cCI6MTcxMDM4MjQxNX0.6OhWW41jDv8ymlaN5OyHlCaGb6NJ4Yhhn0dP4XioCos';
+    userID = "65e7cc4b161950c73d3a3df5";
 
+  let fullURL = "http://localhost:4000/post";
 
-  const params = {
-    // ['sort']: "string",
-    // ['filter']: "string",
-    ['user_id']: "65e7cc4b161950c73d3a3df5"
-
-  };
-  const query = new URLSearchParams(params).toString();
-
-  const fullURL = `http://localhost:4000/post?${query}`;
+  if(userID) {
+    const params = {
+      ['user_id']: userID
+    };
+    const query = new URLSearchParams(params).toString();
+  
+    fullURL = `http://localhost:4000/post?${query}`;
+  }
+  
 
     useEffect(() => {
         const fetchInfo = async () => {
@@ -60,7 +62,10 @@ function PostList(){
                   fireArray={postItemRawData.fire_by}
                   sadArray={postItemRawData.sad_by}
                   lolArray={postItemRawData.lol_by}
-                  ggArray={postItemRawData.gg_by}/>
+                  ggArray={postItemRawData.gg_by}
+                  ytlink={postItemRawData.yt_link}
+                  APIkey={APIkey}
+            />
          </li>);
       } )
 

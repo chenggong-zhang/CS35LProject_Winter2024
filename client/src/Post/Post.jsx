@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import './Post.css';
+import YouTube from 'react-youtube';
 import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
 import TimeStamp from './Time_stamp';
 
 
 function Post({userHandle, userPubName, createTime, songName, artistName, moodList , postID,
-              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray}) {
+              likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, APIkey}) {
 
-  const moodEmoji = moodList.slice(0,3);
-
-  const APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAwMjg0NTAsImV4cCI6MTcxMDAyOTA1MH0._Q6gnU3tdZ4Fcd_NJaNM3IXNnsqo5gOfv1CNgoHAJ-c';
+  const moodEmoji = moodList.split(" ")[0];
+  APIkey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzODE4MTUsImV4cCI6MTcxMDM4MjQxNX0.6OhWW41jDv8ymlaN5OyHlCaGb6NJ4Yhhn0dP4XioCos';
   const [isVibing, setIsVibing] = useState(false);
+  const [player, setPlayer] = useState(null);
+  const link = ytlink.split('v=')[1];
+  const tempID = "65e7cc4b161950c73d3a3df5";
 
+  const onReady = (e) => {
+    setPlayer(e.target);
+  };
+  
 
   /* Alias Frame related implementations */
   function getInitials(name) {
@@ -59,14 +66,15 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
   }
   
   /* Interaction counting */
-  const [interactions, setInteractions] = useState({
-    likes: 0,
-    comments: 0,
-    shares: 0,
-    saves: 0,
-    dislikes: 0,
-    reports: 0
+  const [inters, setInter] = useState({
+    like: { count: likeArray.length, isSelected: likeArray.includes(tempID) },
+    handshake: { count: HandshakeArray.length, isSelected: HandshakeArray.includes(tempID) },
+    fire: { count: fireArray.length, isSelected: fireArray.includes(tempID) },
+    sad: { count: sadArray.length, isSelected: sadArray.includes(tempID) },
+    lol: { count: lolArray.length, isSelected: lolArray.includes(tempID) },
+    gg: { count: ggArray.length, isSelected: ggArray.includes(tempID) }
   });  
+  
 
 
   return (
@@ -87,7 +95,14 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
       </div>
 
 
-      <div className="Album_WV"></div>
+      <div className="player">
+          <YouTube videoId={link} 
+                   opts={{height: '240',
+                          width: '600',
+                          playerVars: {'controls':0,}, }} 
+                   onReady={onReady}> 
+          </YouTube>
+      </div>
 
       <div className="SongINFO_BV">
         <div className="Album_BV">
@@ -101,11 +116,13 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
         <div className="SongName">{songName}</div>
         <div className="ArtistName">{artistName}</div>
         <div className="PlayButtonFrame">
-          <PlaybackButton isVibing={isVibing} setIsVibing={setIsVibing} />
+          <PlaybackButton player={player} isVibing={isVibing} setIsVibing={setIsVibing} />
         </div>
       </div>
 
       <InteractionButton 
+          inters={inters}
+          setInter={setInter}
           likeArr={likeArray} 
           HandshakeArr={HandshakeArray}
           fireArr={fireArray}
@@ -116,12 +133,12 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
           token={APIkey} />
 
       <div className="InterCounter">
-        <span>{interactions.likes}</span>
-        <span>{interactions.comments}</span>
-        <span>{interactions.shares}</span>
-        <span>{interactions.saves}</span>
-        <span>{interactions.dislikes}</span>
-        <span>{interactions.reports}</span>
+        <span>{inters.like.count}</span>
+        <span>{inters.handshake.count}</span>
+        <span>{inters.fire.count}</span>
+        <span>{inters.sad.count}</span>
+        <span>{inters.lol.count}</span>
+        <span>{inters.gg.count}</span>
       </div>
 
     </div>
