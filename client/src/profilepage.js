@@ -12,17 +12,18 @@ class Profilepage extends React.Component{
         // Initialize state
         this.state = {
             isself: localStorage.getItem("isSelf") === 'true',
-            obj: JSON.parse(localStorage.getItem('userObject')),
+            obj1: JSON.parse(localStorage.getItem('userObject')),
             obj2: JSON.parse(localStorage.getItem('otherObject')),
             username: JSON.parse(localStorage.getItem('userObject')).username,
             handle: JSON.parse(localStorage.getItem('userObject')).handle
         };
+        this.handleNewProfile = this.handleNewProfile.bind(this);
     }
 
     componentDidMount(){
         this.handleNewProfile();
         window.addEventListener('newProfile', this.handleNewProfile);
-        console.log("event listner triggered")
+        // console.log("event listner triggered")
     }
 
     componentWillUnmount() {
@@ -45,6 +46,8 @@ class Profilepage extends React.Component{
             handle: obj2.handle
             }
             console.log("incorrect setup for username")
+            // console.log(obj2.username)
+            // console.log(obj2.handle)
         }
         this.setState(newState);
 
@@ -53,13 +56,13 @@ class Profilepage extends React.Component{
     render(){
         // user's data
         const {username, handle}=this.state;
-        console.log("Checking class component")
+        // console.log("Checking class component")
         console.log(username)
-        console.log(handle)
+        // console.log(handle)
 
         const isself=localStorage.getItem("isSelf");
-        console.log("The value of isself is")
-        console.log(isself)
+        // console.log("The value of isself is")
+        // console.log(isself)
 
         const object=localStorage.getItem('userObject');
         const obj=JSON.parse(object);
@@ -109,11 +112,12 @@ class Profilepage extends React.Component{
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
+        {console.log(username)}
         <UserName username={username} handle={handle}/>
-        {console.log("THe username here is")}
+        {/* {console.log("THe username here is")}
         {console.log(username)}
         {console.log("THe handle here is")}
-        {console.log(handle)}
+        {console.log(handle)} */}
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
             <UserPic username={username}/>
         </div>  
@@ -136,26 +140,26 @@ function Followers(){
     const otherObj=localStorage.getItem('followers');
     const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
     const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-    console.log(otherObj);
-    console.log(obj2)
+    // console.log(otherObj);
+    // console.log(obj2)
     const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
-    console.log("followers called")
+    // console.log("followers called")
     const [followers, setfollowers]=useState(updatedfollowers);
 
     useEffect(()=>{
     window.addEventListener('otherObjUpdated', function(event){
         handleNewObj();
-        console.log("objects updated");
+        // console.log("objects updated");
     });
 
     function handleNewObj(){
         const otherObj=localStorage.getItem('followers');
         const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
         const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-        console.log(obj2)
+        // console.log(obj2)
         const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
         setfollowers(updatedfollowers);
-        console.log("followers called")
+        // console.log("followers called")
     }
     return () => {
         window.removeEventListener('otherObjUpdated', handleNewObj);
@@ -188,25 +192,25 @@ function Following(){
     const otherObj=localStorage.getItem('following');
     const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
     const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-    console.log(obj2)
+    // console.log(obj2)
     const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
-    console.log("following called")
+    // console.log("following called")
     const [following, setfollowing]=useState(updatedfollowers);
 
     useEffect(()=>{
     window.addEventListener('otherObjUpdated', function(event){
         handleNewObj();
-        console.log("objects updated");
+        // console.log("objects updated");
     });
 
     function handleNewObj(){
         const otherObj=localStorage.getItem('following');
         const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
         const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-        console.log(obj2)
+        // console.log(obj2)
         const updatedfollowing = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
         setfollowing(updatedfollowing);
-        console.log("following called")
+        // console.log("following called")
     }
     return () => {
         window.removeEventListener('otherObjUpdated', handleNewObj);
@@ -319,12 +323,14 @@ function getInitials(name) {
 function UserName({username, handle}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
-    console.log("Username username handle is")
-    console.log(username)
-    console.log(handle)
+    // con]sole.log("Username username handle is")
+    // console.log("Username component:")
+    // console.log(username)
+    // console.log(handle)
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
+    console.log(name);
     const divRef = useRef("");
     const hasMounted=useRef(false);
     const update=()=>{
@@ -332,7 +338,7 @@ function UserName({username, handle}){
     }
     const handleKeyPress = (event)=>{
         if (event.key==='Enter'){
-        console.log("name changed here");
+        // console.log("name changed here");
           setName(divRef.current.value)
           setVisible(false)
         }
@@ -342,6 +348,10 @@ function UserName({username, handle}){
             divRef.current.focus(); // Focus on the input when it becomes visible
         }
     }, [visible]); // Re-run the effect when showInput changes
+
+    useEffect(()=>{
+        setName(username);
+    },[username]);
 
     useEffect(()=>{
         if(name & hasMounted==true){
@@ -356,7 +366,7 @@ function UserName({username, handle}){
             <div onClick={()=>update()} style={{width: 260, height: 48, left: 0, top: 193, position: 'absolute', background: 'rgba(217, 217, 217, 0)', borderRadius: 40, border: '0.50px #E6EAEF dotted'}} />
             {!visible && (<div style={{width: 200, height:35, left: 45, top: 203, textAlign: 'center',position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>)}
             {visible &&  
-            <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}} defaultValue={name} ></input>}
+            <input ref={divRef} onKeyDown={handleKeyPress} type='text'style={{width: 150, height:35, left: 45, top: 198, textAlign: 'center',position: 'absolute', color: '#000000', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word' }}defaultValue={name} ></input>}
         </div>
     );
 }
