@@ -1,0 +1,12 @@
+.Playback-Button {
+  background: none;
+  color: #222932;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.Playback-Button svg {
+  color: #222932;
+  display: block;
+}

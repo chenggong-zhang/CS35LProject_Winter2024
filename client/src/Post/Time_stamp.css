@@ -1,0 +1,19 @@
+.TimeStamp{
+    position: absolute;
+    right: 60px;
+    bottom: 28px;
+    display: flex;
+    width: 53px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #54404d;
+    font-family: 'Quando';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 580;
+    text-align: left;
+    line-height: normal;
+    letter-spacing: -0.25px;
+}

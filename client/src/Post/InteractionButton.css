@@ -1,0 +1,17 @@
+/*Interaction button and interactive buttons*/
+.InteractionButton {
+    position: absolute;
+    bottom: 48px;
+    width: 600px;
+    height: 32px;
+    flex-shrink: 0;
+    justify-content: space-around;
+}
+
+.InteractionButton button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 30px;
+    /* Adjust padding as necessary */
+}

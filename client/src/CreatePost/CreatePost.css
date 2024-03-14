@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+.createPost {
+    position: relative;
+    border-radius: 40px;
+    height:730px;
+    width: 690px;
+    background: radial-gradient(circle at bottom left, #FFFFFF, #E1DED3, #E9D89A, #E1DED3, #E9D89A, #E1DED3, #E9D89A, #E1DED3, #E9D89A, #F8DA6E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+.songFrame{
+    position:absolute;
+    top: 110px;
+    background: transparent;
+    align-items: left;
+    justify-content: left;
+    height: 105px;
+    width: 456px;
+}
+
+.artistFrame{
+    position:absolute;
+    top: 224px;
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    height: 105px;
+    width: 456px;
+}
+
+.moodFrame{
+    position:absolute;
+    top: 340px;
+    background: transparent;
+    align-items: center;
+    justify-content: center;
+    height: 230px;
+    width: 456px;
+}
+
+.Tag{
+    color: #241E52;
+    font-family: 'Quicksand';
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+.mood-input {
+    position:absolute;
+    background: transparent;
+    height: 208px;
+    position: absolute;
+    width: 456px;
+    border: 3px solid #241E52;
+    border-radius: 40px;
+    overflow: hidden;
+    justify-content: space-between;
+  }
+
+  
+.artist-input {
+    position:absolute;
+    background: transparent;
+    border-radius: 126.61px;
+    top:35px;
+    left: 0px;
+    height: 60px;
+    width: 456px;
+    border: 3px solid #241E52;
+    font-family: 'Quicksand';
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+  }
+  
+.song-input {
+    position:absolute;
+    background: transparent;
+    top:36px;
+    left: 0px;
+    border-radius: 126.61px;
+    height: 60px;
+    width: 456px;
+    border: 3px solid #241E52;
+    font-family: 'Quicksand';
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+  }
+  
+.captureYourVibe {
+    height: 46px;
+    position: absolute;
+    top: 25px;
+    width: 690px;
+    color:#241E52;
+    font-family: 'Pacifico';
+    font-size: 34px;
+    font-weight: 660;
+    letter-spacing: 0.8px;
+  }
+  
+.pcButtons {
+  position: absolute;
+  height: auto;
+  width: 456px;
+  bottom: 45px;
+  left: 116px;
+  display: flex;
+  justify-content: space-between; /* This will space out your buttons*/
+}
+
+.postButton{
+  background-color: #f95337; /* Adjusted to match the button color */
+  color: white; /* Text color */
+  border: 3px solid #f95337;
+  height: auto;
+  width: 150px;
+  border: none;
+  padding: 10px 25px; /* Adjust padding to increase button size */
+  border-radius: 22px; /* Circular borders */
+  font-family: 'Pacifico';
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  flex: 1; /* Allows buttons to grow and take up available space */
+  margin: 0 10px; /* Adds space between buttons */
+}
+
+.cancelButton {
+  background: transparent; /* Adjusted to match the button color */
+  color: #f95337; /* Text color */
+  height: auto;
+  width: 150px;
+  border: 3px solid #f95337;
+  padding: 10px 25px; /* Adjust padding to increase button size */
+  border-radius: 22px; /* Circular borders */
+  font-family: 'Pacifico';
+  font-weight: bold;
+  font-size: 24px;
+  cursor: pointer;
+  flex: 1; /* Allows buttons to grow and take up available space */
+  margin: 0 10px; /* Adds space between buttons */
+}
