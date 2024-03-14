@@ -224,7 +224,7 @@ function SearchBar()  {
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <div>
                                 {newUsers.map((user, index) => (
-                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }} >
+                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white', fontFamily: 'Quicksand', fontWeight:'bold' }} >
                                         {user.username} 
                                         <p style = {{fontSize: '10px'}} onClick={() => handleUserClick(user._id)}>
                                             @{user.handle}

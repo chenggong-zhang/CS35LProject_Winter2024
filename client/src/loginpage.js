@@ -183,7 +183,7 @@ class MainLogin extends React.Component{
       <div style={{left: '39.85%', top: 740, position: 'absolute'}}>
             <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
       </div>
-      <div style={{width: 300, height: 53, left: '43.5%', top: 760, position: 'absolute', color: '#E6EAEF', fontSize: 45, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
+      <div style={{width: 300, height: 53, left: '44.3%', top: 760, position: 'absolute', color: '#E6EAEF', fontSize: 45, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
                 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
                 RUBATO
       </div>

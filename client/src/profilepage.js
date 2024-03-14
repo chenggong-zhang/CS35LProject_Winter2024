@@ -99,7 +99,7 @@ class Profilepage extends React.Component{
     </div>
 
     {/* Middle part of the page */}
-    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}>   
+    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', border: 'transparent'}}>   
     </div>
     <div style={{position: 'absolute',top: "500px", left:"355px", height: '900px', overflowY: 'scroll'}}>
     {this.state.is_self ? (
@@ -115,7 +115,7 @@ class Profilepage extends React.Component{
 
     <FollowButton userid={userid} token={token}/>
     {/* User display in Middle */}
-    <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
+    <div style={{width: 260, height: 241, left: 144, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
         <UserName username={username} handle={handle} isself={this.state.isself} updateUsername={this.updateUsername}/>
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
