@@ -31,6 +31,11 @@ class Profilepage extends React.Component{
         window.removeEventListener('newProfile', this.handleNewProfile);
     }
 
+    updateUsername = (newValue) => {
+        this.setState({ username: newValue });
+    };
+    
+
 
     handleNewProfile(){
         const { isself, obj1, obj2 } = this.state;
@@ -112,7 +117,7 @@ class Profilepage extends React.Component{
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
-        <UserName username={username} handle={handle} isself={this.state.isself}/>
+        <UserName username={username} handle={handle} isself={this.state.isself} updateUsername={this.updateUsername}/>
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
             <UserPic username={username}/>
         </div>  
@@ -315,13 +320,14 @@ function getInitials(name) {
 
 
 
-function UserName({username, handle, isself}){
+function UserName({username, handle, isself, updateUsername}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
 
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
+    // const [change, setChange]=useState(false)
     // console.log(name);
     const divRef = useRef("");
     const hasMounted=useRef(false);
@@ -343,13 +349,21 @@ function UserName({username, handle, isself}){
 
     useEffect(()=>{
         setName(username);
+        console.log("got to update", name)
+        // if (change){
+        //     updateUsername(name);
+        //     console.log("got to updateusername")
+        //     setChange(false);
+        // }
     },[username]);
 
 
     useEffect(()=>{        
         if(name && hasMounted.current==true && isself==true){
             console.log("changename initiated original")
+            console.log("one time useeffect")
             changeName(name, handle, token, navigate)}
+            
         else{
             hasMounted.current = true;
         }
@@ -369,6 +383,7 @@ function UserName({username, handle, isself}){
 
 
 const changeName = async (name, handle, token, navigate) => {
+    console.log("One changeName called")
     try {
         const API_key = localStorage.getItem('accessToken');
         if(API_key == null) {
@@ -380,7 +395,8 @@ const changeName = async (name, handle, token, navigate) => {
         {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+                'Authorization': `Bearer ${API_key}`, // Include the JWT token in the Authorization header
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 handle: handle,
@@ -389,6 +405,7 @@ const changeName = async (name, handle, token, navigate) => {
         });
 
         if (!response.ok) {
+            console.log("response error")
             if (response.status == 401)
             {
                 console.log('trying to refresh access token...');
@@ -403,9 +420,11 @@ const changeName = async (name, handle, token, navigate) => {
         // const data = await response.json();
 
         console.log("name change success");
-        navigate('/');
+        const data = await response.json();
+        localStorage.setItem("userObject",JSON.stringify(data.user))
         return ""; 
     } catch (error) {
+    console.log("return didn't terminate")
       console.log('Name change failed');
       console.log(error);
     }

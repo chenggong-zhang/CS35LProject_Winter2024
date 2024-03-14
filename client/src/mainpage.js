@@ -30,7 +30,7 @@ class Mainpage extends React.Component{
         <UserDisplay name='name' handle='handle' />
     </div>
     <div style={{position: 'absolute', left: '375px', height: '900px', overflowY: 'scroll'}}>
-        <PostList APIkey={localStorage.getItem('accessToken')} userID={JSON.parse(localStorage.getItem('userObject'))._id}/>
+        <PostList APIkey={localStorage.getItem('accessToken')}/>
             
     </div>
     <div>
