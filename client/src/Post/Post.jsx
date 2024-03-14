@@ -13,6 +13,8 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
   const moodEmoji = moodList.split(" ")[0];
   const [player, setPlayer] = useState(null);
   const link = ytlink.split('v=')[1];
+  const [isVibing, setIsVibing] = useState(false);
+
 
   const onReady = (e) => {
     setPlayer(e.target);
