@@ -75,7 +75,6 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
     gg: { count: ggArray.length, isSelected: ggArray.includes(userID) }
   });  
 
-  const [isVibing, setIsVibing]=useState(false);
   
 
 
