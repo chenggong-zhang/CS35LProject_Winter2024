@@ -66,7 +66,7 @@ function SearchBar()  {
                 if(API_key == null) {
                     throw new Error('User is not logged in')
                 }
-                const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {
+                const response = await fetch(`http://localhost:4000/user?queryString=${searchTerm}`, {
                     method: 'GET',
                     headers: {
                         'Authorization':`bearer ${API_key}`
