@@ -89,6 +89,12 @@ packages:
 - axios
 - react
 - react-router-dom
+- buffer
+- crypto-browserify
+- react-youtube
+- stream-browserify
+- web-vitals
+- jsonwebtoken
 
 ### Other tools
 - Postman: API
