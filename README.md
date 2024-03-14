@@ -38,14 +38,14 @@ npm install
 ```
 # from the project's root directory
 cd server
-nodemon app.js
+nodemon app.js  # run npx nodemon app.js if 'nodemon app.js' doesn't work
 
 # from the project's root directory
 cd client
 npm start
 ```
 
-5. Open the client in your browser at `http://localhost:3000`. 
+1. Open the client in your browser at `http://localhost:3000`. 
 
 
 ---
@@ -65,6 +65,7 @@ packages:
 - passport
 - passport-jwt
 - nodemon
+- express-mongo-sanitize
 
 database instance:
 - MongoDB Atlas

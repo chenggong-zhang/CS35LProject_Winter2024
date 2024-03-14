@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
+import './PostList.css'
 
 function PostList({APIkey, userID}){
 
