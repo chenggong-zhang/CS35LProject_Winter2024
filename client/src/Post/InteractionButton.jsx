@@ -5,18 +5,8 @@ import GenInteractiveButton from "./GenInteractiveButton";
 import { refreshAccessToken } from '../authUtil.js';
 
 //const InteractionButton = ({inters, setInter, likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
-const InteractionButton = ({inters, setInter, PID , token, userID}) => {
+const InteractionButton = ({inters, setInter, PID , userID}) => {
 
-  const handleInteractionClick = (type) => {
-    updateBackend(type);
-    const updatedInteractions = { ...inters };
-    const check_inter = updatedInteractions[type];
-
-    check_inter.isSelected = !check_inter.isSelected;
-    // Send data to the backend
-    //setInteractions(updatedInteractions);
-    setInter(updatedInteractions);
-  };
   const updateBackend = async (type) => {
     const payload = JSON.stringify({reaction: type});
     console.log(payload);
@@ -34,17 +24,30 @@ const InteractionButton = ({inters, setInter, PID , token, userID}) => {
             },
             body: payload
         });
+        if (!response.ok) {
+          if (response.status == 401) {
+            console.log('trying to refresh access token...');
+            await refreshAccessToken();
+            updateBackend();
+            return;
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
 
-        const data = await response.json()
+        const data = await response.json();
+        // access userID
         setInter({
-          like: { count: data.post.like_by.length, isSelected: data.post.like_by.includes(userID) },
-          handshake: { count: data.post.handshake_by.length, isSelected: data.post.handshake_by.includes(userID) },
-          fire: { count: data.post.fire_by.length, isSelected: data.post.fire_by.includes(userID) },
-          sad: { count: data.post.sad_by.length, isSelected: data.post.sad_by.includes(userID) },
-          lol: { count: data.post.lol_by.length, isSelected: data.post.lol_by.includes(userID) },
-          gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(userID) }
+          like: { count: data.post.like_by.length, isSelected: data.post.like_by.includes(userID)},
+          handshake: { count: data.post.handshake_by.length, isSelected: data.post.handshake_by.includes(userID)},
+          fire: { count: data.post.fire_by.length, isSelected: data.post.fire_by.includes(userID)},
+          sad: { count: data.post.sad_by.length, isSelected: data.post.sad_by.includes(userID)},
+          lol: { count: data.post.lol_by.length, isSelected: data.post.lol_by.includes(userID)},
+          gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(userID)}
         });
         console.log('data:', data);
+      
+        console.log(inters);
         if (!response.ok) {
           if (response.status == 401)
           {
@@ -65,11 +68,9 @@ const renderButton = (type, svgPath) => (
   <GenInteractiveButton
       name={`${type}Button`}
       svgPath={svgPath}
-      onClick={() => handleInteractionClick(type)}
+      onClick={() => updateBackend(type)}
       //isSelected={interactions[type].isSelected}
       isSelected={inters[type].isSelected}
-      //count={interactions[type].count}
-      count={inters[type].count}
   />
 );
 

@@ -67,7 +67,7 @@ app.listen(PORT, () => {
 
     //   console.log(`Sending emails to users: ${users.map(user => user.email)}`);
 
-    //   await emailService.sendVibeNotificationEmail({receivers: users.map(user => user.email)});
+      await emailService.sendVibeNotificationEmail({receivers: users.map(user => user.email)});
   });
 
 });

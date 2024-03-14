@@ -66,7 +66,7 @@ function SearchBar()  {
                 if(API_key == null) {
                     throw new Error('User is not logged in')
                 }
-                const response = await fetch(`http://localhost:4000/user?queryString=zhu`, {
+                const response = await fetch(`http://localhost:4000/user?queryString=${searchTerm}`, {
                     method: 'GET',
                     headers: {
                         'Authorization':`bearer ${API_key}`
@@ -100,60 +100,97 @@ function SearchBar()  {
 // retrieving user's information
     const getUser = async (userid, navigate, token) => {
         try {
-            const response = await axios.get('http://localhost:4000/user/'+userid, 
-            {headers: {
-                'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-            }});
-            if (response.data.ok) {
-           localStorage.setItem('otherObject',JSON.stringify(response.data.user));
-           localStorage.setItem('isSelf', response.data.is_self);
-           console.log("getUser called 1 time")
-           const event = new CustomEvent('otherObjUpdated', {});
-        //    console.log("event dispatched")
-           window.dispatchEvent(event);
-          }else if (response.status === 401){
-           navigate('/')
-          }
-          else {
-           throw new Error(response.data.error || 'Unknown error occurred/other user');
-          }
-         } catch (error) {
-          console.log(error)
-          console.error("Failed to retrieve other user's information", error);
-          navigate('/')
-          throw error;
-         }
+            console.log('running getUser...');
+            const API_key = localStorage.getItem('accessToken');
+            if(API_key == null) {
+                throw new Error('User is not logged in')
+            }
+
+            const response = await fetch('http://localhost:4000/user/'+userid, 
+            {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+              }
+            });
+
+        
+            if (!response.ok) {
+              if (response.status == 401)
+              {
+                  console.log('trying to refresh access token...');
+                  await refreshAccessToken();
+                  getUser(userid, navigate, token);
+                  return;
+              } else {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }  
+            }
+
+            const data = await response.json();
+
+            localStorage.setItem('otherObject',JSON.stringify(data.user));
+            localStorage.setItem('isSelf', data.is_self);
+            console.log("getUser called 1 time")
+            const event = new CustomEvent('otherObjUpdated', {});
+            //    console.log("event dispatched")
+            window.dispatchEvent(event);
+        } catch (error) {
+        console.log(error)
+        console.error("Failed to retrieve other user's information", error);
+        navigate('/')
+        throw error;
+        }
     };
     
     //gets the user followers and following
     const getFollow=async (userid, navigate, token) => {
-     try {
-      const response = await axios.get('http://localhost:4000/relation/'+userid, 
-      {headers: {
-       'Authorization': `Bearer ${token}` // Include the JWT token in the Authorization header
-      }});
-      if (response.data.ok) {
-       localStorage.setItem('following',JSON.stringify(response.data.following));
-       // console.log(response.data.following===null);
-       // console.log(localStorage.getItem('following')==null);
-       localStorage.setItem('followers', JSON.stringify(response.data.followers));
-       // console.log(response.data.following);
-       // console.log(response.data.followers);
-       console.log(localStorage.getItem('following'));
-       console.log(localStorage.getItem('followers'));
-       console.log("The following and followers are suecessfully retrieved")
-      }else if (response.status === 401){
-       navigate('/')
-      }
-      else {
-       throw new Error(response.data.error || 'Unknown error occurred for getting following and follwers');
-      }
-     } catch (error) {
-      console.log(error)
-      console.error('Getting followers and following failed', error);
-      throw error;
-     }
+        try {
+            const API_key = localStorage.getItem('accessToken');
+            if(API_key == null) {
+                throw new Error('User is not logged in')
+            }
+            const response = await fetch('http://localhost:4000/relation/'+userid, 
+            {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+              }
+            });
+        
+            if (!response.ok) {
+              if (response.status == 401)
+              {
+                  console.log('trying to refresh access token...');
+                  await refreshAccessToken();
+                  getFollow(userid, navigate, token);
+                  return;
+              } else {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }  
+            }
+
+            const data = await response.json();
+        
+            localStorage.setItem('following',JSON.stringify(data.following));
+            // console.log(response.data.following===null);
+            // console.log(localStorage.getItem('following')==null);
+            localStorage.setItem('followers', JSON.stringify(data.followers));
+            // console.log(response.data.following);
+            // console.log(response.data.followers);
+            console.log(localStorage.getItem('following'));
+            console.log(localStorage.getItem('followers'));
+            console.log("The following and followers are suecessfully retrieved")
+        
+          } catch (error) {
+            console.log(error)
+            console.error('Getting followers and following failed', error);
+            navigate('/')
+            throw error;
+          }
     };
+
+    
 
 
 
@@ -173,7 +210,7 @@ function SearchBar()  {
                 <input
                     type="text"
                     placeholder="Search..."
-                    style={{ flexGrow: 1, border: 'none', background: 'transparent', paddingLeft: 20, color: 'rgba(0, 0, 0, 0.85)', fontSize: 18, fontFamily: 'Quicksand' }}
+                    style={{ width: 370, height: 40, flexGrow: 1, borderRadius: 40, border: 'none', background: 'transparent', paddingLeft: 20, color: 'rgba(0, 0, 0, 0.85)', fontSize: 18, fontFamily: 'Quicksand' }}
                     value={searchTerm}
                     onChange={handleChange}
                 />
@@ -198,7 +235,7 @@ function SearchBar()  {
                         </ul>
                     </>
                 ) : (
-                    <p>No Results Found</p>
+                    <p style={{fontFamily:"Quicksand", color: "#ffffff"}}>No Results Found...</p>
                 ))}
             </div>
         </div>
@@ -265,7 +302,12 @@ class Rubato extends React.Component{
 class Logo extends React.Component{
     render(){
         return(
-            <div style={{width: 160, height: 53, left: 94, top: 10, position: 'absolute', color: '#E6EAEF', fontSize: 45, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.45, wordWrap: 'break-word'}}>rubato</div>
+            
+            <div style={{width: 160, height: 53, left: 94, top: 10, position: 'absolute', color: '#E6EAEF', fontSize: 31, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
+                <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
+                RUBATO
+            
+            </div>
         )
     }
 }

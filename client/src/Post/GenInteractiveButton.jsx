@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GenInteractiveButton = ({ name, svgPath, onClick , isSelected, count}) => {
+const GenInteractiveButton = ({ name, svgPath, onClick , isSelected}) => {
 
     const fillColor = isSelected ? "#E56363" : "#241E52";
 

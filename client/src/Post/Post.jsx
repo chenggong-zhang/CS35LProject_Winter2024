@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './Post.css';
-import { refreshAccessToken } from '../authUtil.js';
 import YouTube from 'react-youtube';
 import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
@@ -9,7 +8,8 @@ import TimeStamp from './Time_stamp';
 
 function Post({userHandle, userPubName, createTime, songName, artistName, moodList , postID,
               likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, userID}) {
-
+                
+  userID = JSON.parse(localStorage.getItem("userObject"))._id;  
   const moodEmoji = moodList.split(" ")[0];
   const [player, setPlayer] = useState(null);
   const link = ytlink.split('v=')[1];
@@ -121,12 +121,13 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
         </div>
       </div>
 
-      <InteractionButton 
+      <div className="InteractionBar">
+        <InteractionButton 
           inters={inters}
           setInter={setInter}
           PID={postID} 
-          token={JSON.parse(localStorage.getItem('userObject')).accesstoken}
           userID={userID} />
+      </div>
 
       <div className="InterCounter">
         <span>{inters.like.count}</span>
