@@ -12,7 +12,7 @@ class Profilepage extends React.Component{
         super(props);
         // Initialize state
         this.state = {
-            isself: localStorage.getItem("isSelf") === 'true',
+            isself: JSON.parse(localStorage.getItem("isSelf")),
             obj1: JSON.parse(localStorage.getItem('userObject')),
             obj2: JSON.parse(localStorage.getItem('otherObject')),
             username: JSON.parse(localStorage.getItem('userObject')).username,
@@ -61,9 +61,7 @@ class Profilepage extends React.Component{
         console.log(username)
         // console.log(handle)
 
-        const isself=localStorage.getItem("isSelf");
-        // console.log("The value of isself is")
-        // console.log(isself)
+
 
         const object=localStorage.getItem('userObject');
         const obj=JSON.parse(object);
@@ -114,12 +112,7 @@ class Profilepage extends React.Component{
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
-        {console.log(username)}
-        <UserName username={username} handle={handle}/>
-        {/* {console.log("THe username here is")}
-        {console.log(username)}
-        {console.log("THe handle here is")}
-        {console.log(handle)} */}
+        <UserName username={username} handle={handle} isself={this.state.isself}/>
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
             <UserPic username={username}/>
         </div>  
@@ -322,17 +315,14 @@ function getInitials(name) {
 
 
 
-function UserName({username, handle}){
+function UserName({username, handle, isself}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
-    // con]sole.log("Username username handle is")
-    // console.log("Username component:")
-    // console.log(username)
-    // console.log(handle)
+
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
-    console.log(name);
+    // console.log(name);
     const divRef = useRef("");
     const hasMounted=useRef(false);
     const update=()=>{
@@ -355,10 +345,12 @@ function UserName({username, handle}){
         setName(username);
     },[username]);
 
-    useEffect(()=>{
-        if(name & hasMounted==true){
-            changeName(name, handle, token, navigate)
-        }else{
+
+    useEffect(()=>{        
+        if(name && hasMounted.current==true && isself==true){
+            console.log("changename initiated original")
+            changeName(name, handle, token, navigate)}
+        else{
             hasMounted.current = true;
         }
     },[name]);
@@ -481,10 +473,8 @@ function UserDisplay(){
 
     return(
         <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
-            <div style={{left: 49, top: 0, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
-            <div style={{left: 49, top: 20, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
-            <div style={{left: 49, top: 0, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
-            <div style={{left: 49, top: 20, width: 500, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
+            <div style={{left: 49, top: 0, width: 800, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
+            <div style={{left: 49, top: 20, width: 800, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
             <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
         </div>
     )

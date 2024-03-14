@@ -85,6 +85,9 @@ const getUser = async (userid, navigate, token) => {
 
     localStorage.setItem('otherObject',JSON.stringify(data.user));
     localStorage.setItem('isSelf', data.is_self);
+    console.log("Original login page isself",  data.is_self)
+    console.log("The fetched isSelf is ")
+    console.log(data.is_self);
     console.log("other user's object sucessflly retrieved")
     const event = new CustomEvent('otherObjUpdated', {});
     console.log("event dispatched")
@@ -181,7 +184,7 @@ function UserTypingBoard({propsData}) {
   const inputRef = useRef();
 
 
-  const userid="65e9552a432e6a47b903f9c9"
+  const userid=JSON.parse(localStorage.getItem('userObject'))._id;
   const token=localStorage.getItem('accessToken');
 
 
@@ -203,7 +206,7 @@ function UserTypingBoard({propsData}) {
       }
       else{
         await verifyEmailWithOtp(current, state, navigate)
-        // await getUser(userid, navigate, token)
+        await getUser(userid, navigate, token)
         // await getFollow(userid, navigate, token)
         // console.log(localStorage.getItem("otherObject"));
         navigate('/home')
