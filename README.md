@@ -2,17 +2,32 @@
 
 ## Project set up
 To set up the project, follow these steps:
-> **_NOTE:_**  
-> - When connecting to the remote MongoDB database, we noticed that the UCLA_WEB does not work. Please switch to a different network such as eduroam. 
-> - Also, please make sure to have the latest version of Node.js and npm installed.
+> **_NOTE:_**   
+> When connecting to the remote MongoDB database, we noticed that the UCLA_WEB does not work. Please switch to a different network such as eduroam. 
+> 
+> Also, please make sure to have the latest version of Node.js and npm installed.
 
+> **_IMPORTANT:_** Before initialize the project, make sure to add a `.env` file in the `./server` directory with the provided key-value pairs.  
+>
 1. Clone the repository:
 
 ```
 git clone https://github.com/chenggong-zhang/CS35LProject_Winter2024.git
 ```
 
-2. Install the dependencies in the server and client directories:
+1. The `./initialize.sh` script can be run to initialize the project and run both the server and the client. You can then skip to step 6. If you want to manually initialize the project, you can jump to step 3.
+
+```
+# in the project's root directory
+# first enable the execute permission of the script 
+chmod u+x ./initialize.sh
+
+# then run the script, and it's good to go!
+./initialize.sh
+```
+
+
+3. (If you ran the `./initialize.sh` script, you can skip to step 6.) Install the dependencies in the server and client directories:
 
 ```
 # from the project's root directory
@@ -24,28 +39,21 @@ cd client
 npm install
 ```
 
-3. Create a `.env` file in the server directory and add the following variables:
-   > **_WARNING:_**  
-   > - Normally, you should not push sensitive information like database tokens and jwt secrets to github. 
-   > - The following information is just for testing purposes for this class project. They will be deactivated once the course is over.
-
-```
-# To be updated
-```
-
-4. Run the server and client:
+4. Install `concurrently` to run both the server and the client at the same time:
 
 ```
 # from the project's root directory
-cd server
-nodemon app.js  # run npx nodemon app.js if 'nodemon app.js' doesn't work
+npm install concurrently --save-dev
+```
 
+5. Run the server and client together:
+
+```
 # from the project's root directory
-cd client
 npm start
 ```
 
-1. Open the client in your browser at `http://localhost:3000`. 
+6. Open the client in your browser at `http://localhost:3000`. 
 
 
 ---
