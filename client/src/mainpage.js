@@ -162,6 +162,9 @@ function SearchBar()  {
         const token = localStorage.getItem("accessToken");
         getUser(_id, navigate, token);
         getFollow(_id, navigate, token);
+        const event = new CustomEvent('newProfile', {});
+        console.log("event dispatched")
+        window.dispatchEvent(event);
         navigate('/profile');
     };
     return (

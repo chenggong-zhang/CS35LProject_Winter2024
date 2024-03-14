@@ -7,13 +7,62 @@ import { useNavigate } from 'react-router-dom';
 
 
 class Profilepage extends React.Component{
+    constructor(props) {
+        super(props);
+        // Initialize state
+        this.state = {
+            isself: localStorage.getItem("isSelf") === 'true',
+            obj: JSON.parse(localStorage.getItem('userObject')),
+            obj2: JSON.parse(localStorage.getItem('otherObject')),
+            username: JSON.parse(localStorage.getItem('userObject')).username,
+            handle: JSON.parse(localStorage.getItem('userObject')).handle
+        };
+    }
+
+    componentDidMount(){
+        this.handleNewProfile();
+        window.addEventListener('newProfile', this.handleNewProfile);
+        console.log("event listner triggered")
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('newProfile', this.handleNewProfile);
+    }
+
+
+    handleNewProfile(){
+        const { isself, obj1, obj2 } = this.state;
+        let newState={};
+        if (isself){
+            newState={
+            username: obj1.username,
+            handle: obj1.handle
+            }
+            console.log("correct setup for username")
+        }else{
+            newState={
+            username: obj2.username,
+            handle: obj2.handle
+            }
+            console.log("incorrect setup for username")
+        }
+        this.setState(newState);
+
+    }
 
     render(){
         // user's data
+        const {username, handle}=this.state;
+        console.log("Checking class component")
+        console.log(username)
+        console.log(handle)
+
+        const isself=localStorage.getItem("isSelf");
+        console.log("The value of isself is")
+        console.log(isself)
+
         const object=localStorage.getItem('userObject');
         const obj=JSON.parse(object);
-        const username=obj!=null?obj.username:null;
-        const handle=obj!=null?obj.handle:null;
         const token=localStorage.getItem('accessToken');
 
         //other user data
@@ -23,7 +72,6 @@ class Profilepage extends React.Component{
 
         // const following=storedFollowing? JSON.parse(storedFollowing):[];
         // const followers=storedFollowers? JSON.parse(storedFollowers):[];
-
 
 
         return(
@@ -60,8 +108,12 @@ class Profilepage extends React.Component{
     <FollowButton userid={userid} token={token}/>
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
-        <UserHandle/>
+        <UserHandle handle={handle}/>
         <UserName username={username} handle={handle}/>
+        {console.log("THe username here is")}
+        {console.log(username)}
+        {console.log("THe handle here is")}
+        {console.log(handle)}
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
             <UserPic username={username}/>
         </div>  
@@ -199,10 +251,7 @@ function FollowBar({numVibe, uname, uhandle}){
 }
 
 
-function UserHandle(){
-    const object=localStorage.getItem('userObject');
-    const obj=JSON.parse(object);
-    const handle=obj.handle;
+function UserHandle({handle}){
     return(
     <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
     )
@@ -270,6 +319,9 @@ function getInitials(name) {
 function UserName({username, handle}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
+    console.log("Username username handle is")
+    console.log(username)
+    console.log(handle)
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
