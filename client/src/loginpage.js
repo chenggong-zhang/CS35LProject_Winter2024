@@ -201,8 +201,8 @@ function UserTypingBoard({propsData}) {
   const inputRef = useRef();
 
 
-  const userid=JSON.parse(localStorage.getItem('userObject'))._id;
-  const token=localStorage.getItem('accessToken');
+  // const userid=JSON.parse(localStorage.getItem('userObject'))._id;
+  // const token=localStorage.getItem('accessToken');
 
 
   const focusTextInput = () => {
@@ -223,7 +223,7 @@ function UserTypingBoard({propsData}) {
       }
       else{
         await verifyEmailWithOtp(current, state, navigate)
-        await getUser(userid, navigate, token)
+        // await getUser(userid, navigate, token)
         // await getFollow(userid, navigate, token)
         // console.log(localStorage.getItem("otherObject"));
         navigate('/home')
