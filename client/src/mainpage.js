@@ -148,6 +148,7 @@ function SearchBar()  {
         try {
             const API_key = localStorage.getItem('accessToken');
             if(API_key == null) {
+                navigate('/');
                 throw new Error('User is not logged in')
             }
             const response = await fetch('http://localhost:4000/relation/'+userid, 
@@ -279,15 +280,63 @@ function VibeButton (){
     
 }
 
-class LogoutButton extends React.Component{
-    render(){
-        return(
-            <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
-                <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-                <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
-            </div>
-        )
-    }
+// class LogoutButton extends React.Component{
+    
+//     render(){
+//         return(
+//             <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}} onClick={logout}>
+//                 <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
+//                 <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+//             </div>
+//         )
+//     }
+// }
+
+function LogoutButton(){
+    const navigate = useNavigate();
+
+    const handleLogout = async (navigate) => {
+        try {
+            console.log('logging user out...');
+            const API_key = localStorage.getItem('accessToken');
+            if(API_key == null) {
+                throw new Error('User is not logged in')
+            }
+
+            await logout();
+
+            // const response = await fetch('http://localhost:4000/auth/logout', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            //     },
+            // });
+
+            // if (!response.ok) {
+            //     if (response.status == 401)
+            //     {
+            //         console.log('trying to refresh access token...');
+            //         await refreshAccessToken();
+            //         handleLogout(navigate);
+            //         return;
+            //     } else {
+            //         throw new Error(`HTTP error! status: ${response.status}`);
+            //     }  
+            // }
+
+            navigate('/')
+
+        } catch (error) {
+            navigate('/')
+        }
+      };
+
+    return(
+        <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}} onClick={() => handleLogout(navigate)}>
+            <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
+            <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+        </div>
+    )
 }
 
 class Rubato extends React.Component{

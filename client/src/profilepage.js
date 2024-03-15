@@ -4,7 +4,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PostList  from './PostList.jsx';
-import { refreshAccessToken } from './authUtil.js';
+import { refreshAccessToken, logout } from './authUtil.js';
 
 
 class Profilepage extends React.Component{
@@ -456,33 +456,35 @@ class VibeButton extends React.Component{
 }
 
 function LogoutButton(){
-    const token=localStorage.getItem('accessToken');
+    // const token=localStorage.getItem('accessToken');
     const navigate = useNavigate();
-    const logout = async (token, navigate) => {
+    const handleLogout = async (navigate) => {
         try {
             const API_key = localStorage.getItem('accessToken');
             if(API_key == null) {
                 throw new Error('User is not logged in')
             }
 
-            const response = await fetch('http://localhost:4000/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
-                },
-            });
+            await logout()
 
-            if (!response.ok) {
-                if (response.status == 401)
-                {
-                    console.log('trying to refresh access token...');
-                    await refreshAccessToken();
-                    logout(token, navigate);
-                    return;
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }  
-            }
+            // const response = await fetch('http://localhost:4000/auth/logout', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            //     },
+            // });
+
+            // if (!response.ok) {
+            //     if (response.status == 401)
+            //     {
+            //         console.log('trying to refresh access token...');
+            //         await refreshAccessToken();
+            //         logout(token, navigate);
+            //         return;
+            //     } else {
+            //         throw new Error(`HTTP error! status: ${response.status}`);
+            //     }  
+            // }
 
             navigate('/')
 
@@ -492,9 +494,9 @@ function LogoutButton(){
       };
 
     return(
-        <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
+        <div onClick={()=> handleLogout(navigate)} style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-            <div onClick={()=> logout(token, navigate)}style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+            <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
             {/* {errMess && <div style={{ color: 'grey' }}>{errMess}</div>} */}
         </div>
     );
