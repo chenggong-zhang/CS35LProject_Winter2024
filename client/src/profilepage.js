@@ -6,7 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import PostList  from './PostList.jsx';
 import { refreshAccessToken, logout } from './authUtil.js';
 
-
+//This is the main class component that gets rendered when the profile page is navigated.
+//isself: stores whether the user is viewing their own profilepage, used later to determine if user has editing options
+//obj1: this variable stores the current logged in user's information.
+//obj2: this variable stores the user information of the current profilepage we are looking at. (Could be self or others)
+//username and handle are all current logged in's user information
 class Profilepage extends React.Component{
     constructor(props) {
         super(props);
@@ -24,7 +28,6 @@ class Profilepage extends React.Component{
     componentDidMount(){
         this.handleNewProfile();
         window.addEventListener('newProfile', this.handleNewProfile);
-        // console.log("event listner triggered")
     }
 
     componentWillUnmount() {
@@ -45,26 +48,19 @@ class Profilepage extends React.Component{
             username: obj1.username,
             handle: obj1.handle
             }
-            console.log("correct setup for username")
         }else{
             newState={
             username: obj2.username,
             handle: obj2.handle
             }
-            console.log("incorrect setup for username")
-            // console.log(obj2.username)
-            // console.log(obj2.handle)
         }
         this.setState(newState);
 
     }
 
     render(){
-        // user's data
         const {username, handle}=this.state;
-        // console.log("Checking class component")
-        console.log(username)
-        // console.log(handle)
+
 
 
 
@@ -72,13 +68,10 @@ class Profilepage extends React.Component{
         const obj=JSON.parse(object);
         const token=localStorage.getItem('accessToken');
 
-        //other user data
         const otherObj=localStorage.getItem('otherObject');
         const obj2=JSON.parse(otherObj);
         const userid=obj2!=null?obj2._id:null;
 
-        // const following=storedFollowing? JSON.parse(storedFollowing):[];
-        // const followers=storedFollowers? JSON.parse(storedFollowers):[];
 
 
         return(
@@ -109,7 +102,7 @@ class Profilepage extends React.Component{
     )}
     </div>
     <div style={{width: 556, height: 671, left: 424, top: 123, position: 'absolute'}}>
-    {/* <PostList APIkey={token}  userID={this.state.obj1._id}/> */}
+
 
 
 
@@ -136,30 +129,25 @@ class Profilepage extends React.Component{
     }
 }
 
+//The following function returns the followers list
 function Followers(){
     const otherObj=localStorage.getItem('followers');
     const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
     const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-    // console.log(otherObj);
-    // console.log(obj2)
     const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
-    // console.log("followers called")
     const [followers, setfollowers]=useState(updatedfollowers);
 
     useEffect(()=>{
     window.addEventListener('otherObjUpdated', function(event){
         handleNewObj();
-        // console.log("objects updated");
     });
 
     function handleNewObj(){
         const otherObj=localStorage.getItem('followers');
         const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
         const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-        // console.log(obj2)
         const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
         setfollowers(updatedfollowers);
-        // console.log("followers called")
     }
     return () => {
         window.removeEventListener('otherObjUpdated', handleNewObj);
@@ -188,29 +176,25 @@ function Followers(){
     );
 }
 
+//the following function implements the following list
 function Following(){
     const otherObj=localStorage.getItem('following');
     const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
     const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-    // console.log(obj2)
     const updatedfollowers = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
-    // console.log("following called")
     const [following, setfollowing]=useState(updatedfollowers);
 
     useEffect(()=>{
     window.addEventListener('otherObjUpdated', function(event){
         handleNewObj();
-        // console.log("objects updated");
     });
 
     function handleNewObj(){
         const otherObj=localStorage.getItem('following');
         const obj1 = otherObj ? JSON.parse(otherObj) : [null, null, null, null];
         const obj2 = Array.isArray(obj1) ? obj1 : [obj1];
-        // console.log(obj2)
         const updatedfollowing = obj2.length >= 4 ? obj2.slice(0, 4) : [...obj2, ...Array(4 - obj2.length).fill(null)];
         setfollowing(updatedfollowing);
-        // console.log("following called")
     }
     return () => {
         window.removeEventListener('otherObjUpdated', handleNewObj);
@@ -239,7 +223,7 @@ function Following(){
     );
 }
 
-
+//The following function is the individual rows within followers and following list
 function FollowBar({numVibe, uname, uhandle}){
     const Alias_style = {
         position: 'absolute',
@@ -261,7 +245,6 @@ function FollowBar({numVibe, uname, uhandle}){
         return(
             <div>
                 <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
-                {/* Above is a line separating each follower/following  */}
                 <div style={{left: 245, top: 25, position: 'absolute', textAlign: 'right', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '500', wordWrap: 'break-word'}}>· {numVibe} vibes</div> 
                 <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
                     <div style={{left: 49, width:200,top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{uname}</div>
@@ -272,13 +255,14 @@ function FollowBar({numVibe, uname, uhandle}){
         )
 }
 
-
+//The following function implements the userhandle in the middle of the page.
 function UserHandle({handle}){
     return(
     <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: 'bold', wordWrap: 'break-word'}}>@{handle}</div>
     )
 }
 
+//The following function implements the user profile picture based on their username
 function UserPic({username}){
     let initials = getInitials(username);
     let color = generateBackground(username);
@@ -308,7 +292,7 @@ function UserPic({username}){
 
 
 
-
+//Following function is used toeger with generate background to extract username initials and create their user profile pic
 function getInitials(name) {
     if (typeof name === 'string') {
       const names = name.split(' ');
@@ -336,7 +320,7 @@ function getInitials(name) {
   }
   
 
-
+//The following is the username in the middle of the page, it displays and stores usernames after name change.
 function UserName({username, handle, isself, updateUsername}){
     const token=localStorage.getItem('accessToken')
     const navigate=useNavigate();
@@ -344,8 +328,6 @@ function UserName({username, handle, isself, updateUsername}){
 
     const [visible, setVisible]=useState(false)
     const [name, setName]=useState(username)
-    // const [change, setChange]=useState(false)
-    // console.log(name);
     const divRef = useRef("");
     const hasMounted=useRef(false);
     const update=()=>{
@@ -353,7 +335,6 @@ function UserName({username, handle, isself, updateUsername}){
     }
     const handleKeyPress = (event)=>{
         if (event.key==='Enter'){
-        // console.log("name changed here");
           setName(divRef.current.value)
           setVisible(false)
         }
@@ -366,19 +347,11 @@ function UserName({username, handle, isself, updateUsername}){
 
     useEffect(()=>{
         setName(username);
-        console.log("got to update", name)
-        // if (change){
-        //     updateUsername(name);
-        //     console.log("got to updateusername")
-        //     setChange(false);
-        // }
     },[username]);
 
 
     useEffect(()=>{        
         if(name && hasMounted.current==true && isself==true){
-            console.log("changename initiated original")
-            console.log("one time useeffect")
             changeName(name, handle, token, navigate)}
             
         else{
@@ -398,16 +371,14 @@ function UserName({username, handle, isself, updateUsername}){
 
 
 
-
+//Following changeName is called when user clicked on the name bar, entered a new name, and then hit enter. 
 const changeName = async (name, handle, token, navigate) => {
-    console.log("One changeName called")
     try {
         const API_key = localStorage.getItem('accessToken');
         if(API_key == null) {
             throw new Error('User is not logged in')
         }
         
-        console.log('changing username...');
         const response = await fetch('http://localhost:4000/user/', 
         {
             method: 'POST',
@@ -422,10 +393,8 @@ const changeName = async (name, handle, token, navigate) => {
         });
 
         if (!response.ok) {
-            console.log("response error")
             if (response.status == 401)
             {
-                console.log('trying to refresh access token...');
                 await refreshAccessToken();
                 changeName(name, handle, token, navigate);
                 return;
@@ -434,15 +403,10 @@ const changeName = async (name, handle, token, navigate) => {
             }  
         }
 
-        // const data = await response.json();
-
-        console.log("name change success");
         const data = await response.json();
         localStorage.setItem("userObject",JSON.stringify(data.user))
         return ""; 
     } catch (error) {
-    console.log("return didn't terminate")
-      console.log('Name change failed');
       console.log(error);
     }
   };
@@ -451,7 +415,7 @@ const changeName = async (name, handle, token, navigate) => {
 
 
 
-
+//Following implements the individual navigation bar which combined form the navigation component on the left part of profilepage.
 function NavigationBar({imageSource, barName, barPath}){
     const navigate = useNavigate();
     return(
@@ -462,6 +426,7 @@ function NavigationBar({imageSource, barName, barPath}){
     );
 }
 
+//Following implements vibebutton in profilepage, it is not equipped with actual function of posting because user could be visiting other's profile, and should not post on others behalf
 class VibeButton extends React.Component{
     render(){
         return(
@@ -473,6 +438,8 @@ class VibeButton extends React.Component{
     }
 }
 
+
+//The following logout button calls logout function from auth.util which logout once user clicks
 function LogoutButton(){
     // const token=localStorage.getItem('accessToken');
     const navigate = useNavigate();
@@ -484,26 +451,6 @@ function LogoutButton(){
             }
 
             await logout()
-
-            // const response = await fetch('http://localhost:4000/auth/logout', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
-            //     },
-            // });
-
-            // if (!response.ok) {
-            //     if (response.status == 401)
-            //     {
-            //         console.log('trying to refresh access token...');
-            //         await refreshAccessToken();
-            //         logout(token, navigate);
-            //         return;
-            //     } else {
-            //         throw new Error(`HTTP error! status: ${response.status}`);
-            //     }  
-            // }
-
             navigate('/')
 
         } catch (error) {
@@ -520,6 +467,7 @@ function LogoutButton(){
     );
 }
 
+//Following is logo
 class Rubato extends React.Component{
     render(){
         const {imageSource}=this.props;
@@ -528,6 +476,7 @@ class Rubato extends React.Component{
         )
     }
 }
+
 
 class Logo extends React.Component{
     render(){
@@ -541,6 +490,7 @@ class Logo extends React.Component{
     }
 }
 
+//following is userdisplay section that includes profile pic, username and handle
 function UserDisplay(){
     const object=localStorage.getItem('userObject');
     const obj=JSON.parse(object);
@@ -574,7 +524,7 @@ function UserDisplay(){
     
 }
 
-
+//Following is the follow button in the middle of profile page which allows user to follow/unfollow other users
 function FollowButton({userid, token}){
     const [isFollowing, setIsFollowing] = useState('Follow');
     const [Flag, setFlag]=useState(false);
@@ -589,7 +539,7 @@ function FollowButton({userid, token}){
 
 
 
-
+//Handlefollow is called when the user follow another user.
 const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
         const API_key = localStorage.getItem('accessToken');
@@ -607,7 +557,6 @@ const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
         if (!response.ok) {
             if (response.status == 401)
             {
-                console.log('trying to refresh access token...');
                 await refreshAccessToken();
                 handleFollow(setIsFollowing, setFlag, userid, token);
                 return;
@@ -619,13 +568,13 @@ const handleFollow = async (setIsFollowing, setFlag, userid, token) => {
         setIsFollowing('Following');
         setFlag(true);
         setFlag(true);
-        console.log("follow is invoked and request no error")
     } catch (error) {
         console.error('Error following user:', error);
-        console.log("Error here")
+
     }
 };
 
+//Handlefollow is called when the user unfollow another user.
 const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
     try {
         const API_key = localStorage.getItem('accessToken');
@@ -643,7 +592,6 @@ const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
         if (!response.ok) {
             if (response.status == 401)
             {
-                console.log('trying to refresh access token...');
                 await refreshAccessToken();
                 handleUnfollow(setIsFollowing, setFlag, userid, token);
                 return;
@@ -654,15 +602,12 @@ const handleUnfollow = async (setIsFollowing, setFlag, userid, token) => {
 
         setIsFollowing('Follow');
         setFlag(false);
-        console.log("unfollow is invoked and request no error")
         setIsFollowing('Follow');
         setFlag(false);
-        console.log("unfollow is invoked and request no error")
 
     } catch (error) {
         console.error('Error unfollowing user:', error);
         console.error('Error unfollowing user:', error);
-        console.log("Error here")
     }
 };
 
