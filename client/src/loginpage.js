@@ -177,17 +177,20 @@ class MainLogin extends React.Component{
       </div>
       <PassWord email={this.state.email} current={this.state.current} opt={this.state.opt} setOpt={this.setOpt} setCurrent={this.setCurrent}/>
       
-      <div style={{width: 400, height: 53, left: '40.85%', top: 498, position: 'absolute', color: '#3CC2EF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
-      <div style={{width: 400, height: 53, left: '40.95%', top: 502, position: 'absolute', color: '#B50D65', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
-      <div style={{width: 400, height: 53, left: '40.9%', top: 500, position: 'absolute', color: '#E6EAEF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
-      <div style={{left: '39.85%', top: 740, position: 'absolute'}}>
-            <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
-      </div>
-      <div style={{width: 300, height: 53, left: '44.3%', top: 760, position: 'absolute', color: '#E6EAEF', fontSize: 45, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
+      <div style={{width: 400, height: 53, left: '41.25%', top: 458, position: 'absolute', color: '#3CC2EF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+      <div style={{width: 400, height: 53, left: '41.35%', top: 462, position: 'absolute', color: '#B50D65', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+      <div style={{width: 400, height: 53, left: '41.3%', top: 460, position: 'absolute', color: '#E6EAEF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+     
+      <div style={{width: 300, height: "auto", left: '40%', top: 650, position: 'absolute'}}>
+            <div style={{position: 'absolute'}}>
+                  <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
+            </div>
+            <div style={{left: 105, top: 20, position:'absolute', color: '#E6EAEF', fontSize: 42, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
                 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
                 RUBATO
+            </div>
+        </div>
       </div>
-    </div>
       )
     }
 }

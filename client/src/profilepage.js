@@ -239,7 +239,25 @@ function Following(){
     );
 }
 
+
 function FollowBar({numVibe, uname, uhandle}){
+    const Alias_style = {
+        position: 'absolute',
+        bottom: '2px',
+        display: 'flex',
+        width: '40px',
+        height: '40px',
+        borderRadius: '100px',
+        overflow: 'hidden',
+        color: '#fff',
+        margin: 'auto',
+        background: generateBackground(uname),
+        fontFamily: "Old Standard TT",
+        fontWeight: "bold",
+        fontSize: "23px",
+        justifyContent: 'center',
+        alignItems: 'center'
+    };
         return(
             <div>
                 <div style={{width: 320, height: 0, left: 20, top: 1, position: 'absolute', border: '1px rgba(230, 234, 239, 0.10) solid'}}></div>
@@ -248,7 +266,7 @@ function FollowBar({numVibe, uname, uhandle}){
                 <div style={{width: 128, height: 40, left: 13, top: 15, position: 'absolute'}}>
                     <div style={{left: 49, width:200,top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{uname}</div>
                     <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{uhandle}</div>
-                    <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
+                    <div style={Alias_style}>{getInitials(uname)}</div>
                 </div>
             </div>
         )
