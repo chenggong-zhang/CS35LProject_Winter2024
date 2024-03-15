@@ -1,15 +1,15 @@
 const express = require('express');
-const { authService, emailService,userService } = require('../services/index')
+const { authService, emailService, userService } = require('../services/index')
 
 const router = express.Router();
 
-// email login/signup with OTP email
+// email login/signup and trigger OTP email
 router.post('/email', async (req, res, next) => {
   try {
     const { email } = req.body;
 
     // check input data
-    if (!email) { 
+    if (!email) {
       return res.status(400).json({
         ok: false,
         error: 'email is missing'
@@ -42,23 +42,23 @@ router.post('/email', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-  
+
 });
 
-// email verification with OTP
+// verify email with OTP to authenticate user
 router.post('/email/verify', async (req, res, next) => {
 
   try {
     const { email, otp } = req.body;
 
     // check input data
-    if (!email) { 
+    if (!email) {
       return res.status(400).json({
         ok: false,
         error: 'email is missing'
       });
     }
-    if (!otp) { 
+    if (!otp) {
       return res.status(400).json({
         ok: false,
         error: 'OTP is missing'
@@ -86,7 +86,7 @@ router.post('/email/verify', async (req, res, next) => {
         refreshToken: verifyResult.refreshToken
       });
     }
-    
+
   } catch (error) {
     next(error);
   }
@@ -99,10 +99,10 @@ router.get('/token', async (req, res, next) => {
     const { refreshToken } = req.query;
 
     // check input data
-    if (!refreshToken) { 
+    if (!refreshToken) {
       return res.status(400).json({
         ok: false,
-        error:'refreshToken is missing'
+        error: 'refreshToken is missing'
       });
     }
 
@@ -122,14 +122,14 @@ router.get('/token', async (req, res, next) => {
         accessToken: refreshResult.accessToken
       });
     }
-    
+
   } catch (error) {
     next(error);
   }
 });
 
 
-// logout
+// logout (this route is protected by JWT verification)
 router.post('/logout', authService.passportJWT, async (req, res, next) => {
   try {
     const user_id = req.user.id;
@@ -149,7 +149,7 @@ router.post('/logout', authService.passportJWT, async (req, res, next) => {
         ok: true,
       });
     }
-    
+
   } catch (error) {
     next(error);
   }

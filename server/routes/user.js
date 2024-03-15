@@ -22,21 +22,16 @@ router.get('/:user_id', async (req, res, next) => {
     // retrieve user data
     let user = await userService.getUserById(user_id);
 
-    // // retrieve user's post count
-    // const postsCountForUserObj = await postService.countPostsByUserIds({user_ids: [user_id]});
-    // user = user.toObject();
-    // user.postCount = postsCountForUserObj[user_id.toString()];
-
     res.status(200).json({
       ok: true,
       user: user,
       is_self: req.user.id === user_id,
     });
-    
+
   } catch (error) {
     next(error);
   }
-  
+
 });
 
 // update user profile data
@@ -44,22 +39,23 @@ router.post('/', async (req, res, next) => {
   try {
     const user_id = req.user.id;
     const { username, handle } = req.body;
-  
-    if(!username ||!handle) {
+
+    // check input data
+    if (!username || !handle) {
       return res.status(400).json({
         ok: false,
         error: 'username and handle are mising'
       });
     }
-  
+
     const updateOptions = {
       userId: user_id,
       username: username || None,
       handle: handle || None,
     };
-    
+
     const newUser = await userService.updateUser(updateOptions);
-  
+
     res.status(200).json({
       ok: true,
       user: newUser,
@@ -67,33 +63,33 @@ router.post('/', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-    
+
 });
 
+// search users by a query string
 router.get('/', async (req, res, next) => {
   try {
-    const {queryString } = req.query;
+    const { queryString } = req.query;
 
-    if(!queryString) {
+    if (!queryString) {
       return res.status(400).json({
         ok: false,
         error: 'queryString is mising'
       });
     }
-  
-    const users = await userService.searchUsers({queryString});
 
-    // get the count of posts for each related user //
+    const users = await userService.searchUsers({ queryString });
+
+    // get the count of posts for each user //
     const userIds = users.map(user => user._id);
-    const postsCountForUsersObj = await postService.countPostsByUserIds({user_ids: userIds});
+    const postsCountForUsersObj = await postService.countPostsByUserIds({ user_ids: userIds });
 
-    // add the count of posts to the related users
+    // add the count of posts to each corresponding user
     users.forEach((user, index) => {
       users[index] = users[index].toObject();
       users[index].postCount = postsCountForUsersObj[user._id.toString()];
     });
 
-    // TODO: search users
     res.status(200).json({
       ok: true,
       users: users,
@@ -101,7 +97,7 @@ router.get('/', async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-    
+
 });
 
 module.exports = router;
