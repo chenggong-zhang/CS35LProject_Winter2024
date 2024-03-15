@@ -13,7 +13,7 @@ async function refreshAccessToken() {
         const response = await axios.get(`http://localhost:4000/auth/token?refreshToken=${refreshToken}`);
 
         // check if server response fails
-        if (!response.ok) {
+        if (!response.data.ok) {
             // log local user out if request fails
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
