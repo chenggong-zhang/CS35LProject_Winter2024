@@ -107,6 +107,7 @@ class Profilepage extends React.Component{
 
 
     <FollowButton userid={userid} token={token}/>
+    
     {/* User display in Middle */}
     <div style={{width: 260, height: 241, left: 144, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
@@ -525,15 +526,35 @@ function UserDisplay(){
 }
 
 //Following is the follow button in the middle of profile page which allows user to follow/unfollow other users
-function FollowButton({userid, token}){
-    const [isFollowing, setIsFollowing] = useState('Follow');
-    const [Flag, setFlag]=useState(false);
-    return(
-        <div onClick={()=> Flag ? handleUnfollow(setIsFollowing, setFlag, userid, token) :handleFollow(setIsFollowing, setFlag, userid, token)} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+const checkIsFollowing = (userid, token) => {
+    return new Promise(resolve => setTimeout(() => resolve(Math.random() < 0.5), 1000));
+};
+
+function FollowButton({ userid, token }) {
+    const [isFollowing, setIsFollowing] = useState(false);
+
+    useEffect(() => {
+        checkIsFollowing(userid, token).then(setIsFollowing).catch(error => console.error('Failed to check follow status', error));
+    }, [userid, token]); 
+
+
+    const toggleFollow = () => {
+        if(isFollowing) {
+            console.log('Unfollowing', userid);
+        } else {
+            console.log('Following', userid);
+        }
+        setIsFollowing(!isFollowing);
+    };
+
+    return (
+        <div onClick={toggleFollow} style={{width: 367, height: 37, left: 94, top: 317, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', cursor: 'pointer'}}>
             <div style={{width: 367, height: 37, left: 0, top: 0, position: 'absolute', background: '#37CAF9', borderRadius: 100}} />
-            <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{isFollowing}</div>
+            <div style={{width: 87, height: 23, left: 140, top: 8, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>
+                {isFollowing ? 'Following' : 'Follow'}
+            </div>
         </div>
-    )
+    );
 }
 
 
