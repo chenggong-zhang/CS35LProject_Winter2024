@@ -1,4 +1,3 @@
-/*Post frame*/
 .Post {
     position: relative;
     width: 600px;
@@ -13,7 +12,6 @@
     align-items: center;
 }
 
-/*dividing line*/
 .Post::after {
     content: 'dividing line';
     position: absolute;
@@ -22,10 +20,8 @@
     width: 600px;
     height: 3px;
     background: #787070;
-    /* Set the color of the dividing line */
 }
 
-/*Vibe status*/
 .VibeStatus {
     color: #222932;
     position: absolute;
@@ -67,7 +63,6 @@
 }
 
 
-/*User info bar*/
 .UserInfo {
     position: absolute;
     left: 28px;
@@ -138,7 +133,6 @@
     letter-spacing: -0.25px;
 }
 
-/*album whole view*/
 .player {
     position: absolute;
     left: 0px;
@@ -152,7 +146,6 @@
 }
 
 
-/*Song info brief view frame*/
 .SongINFO_BV {
     position: absolute;
     left: 30px;
@@ -215,7 +208,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 24px; /* Adjust padding as necessary */
+    padding: 24px; 
     justify-content: center;
   }
 

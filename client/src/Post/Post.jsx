@@ -5,7 +5,29 @@ import InteractionButton from './InteractionButton';
 import PlaybackButton from './Play_button';
 import TimeStamp from './Time_stamp';
 
-
+/**
+* a dynamic component that displays user-shared song information, 
+* a mood indicator, an embedded YouTube video for music playback, and interactive elements for other users to engage with the post, 
+* complete with a real-time updating timestamp and counters for reactions.
+*
+* @param {string} userHandle a string that indicates the unique identifier of user information
+* @param {string} userPubName a string that indicates the public name display of the user
+* @param {string} createTime a string that indicates the time of the post creation
+* @param {string} songName a string that indicates the name of the song
+* @param {string} artistName a string that indicates the artist name of the song
+* @param {string} moodList a string that indicates the name of the song
+* @param {string} postID a string that indicates the unique identifier of the post
+* @param {Array} likeArray an array of userID that has interacted with the post with "like"
+* @param {Array} HandshakeArray an array of userID that has interacted with the post with "handshake"
+* @param {Array} fireArray an array of userID that has interacted with the post with "fire"
+* @param {Array} sadArray an array of userID that has interacted with the post with "sad"
+* @param {Array} lolArray an array of userID that has interacted with the post with "lol"
+* @param {Array} ggArray an array of userID that has interacted with the post with "gg"
+* @param {string} ytlink a string that contains a youtube link of the music video, to be embed in the post
+* @param {string} userID a string that contains a userID to help mark the trace interaction
+*
+* @returns A single post component that is able to handle user interaction, playback music video
+*/
 function Post({userHandle, userPubName, createTime, songName, artistName, moodList , postID,
               likeArray, HandshakeArray, fireArray, sadArray, lolArray, ggArray, ytlink, userID}) {
                 
@@ -14,14 +36,18 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
   const [player, setPlayer] = useState(null);
   const link = ytlink.split('v=')[1];
   const [isVibing, setIsVibing] = useState(false);
-
-
   const onReady = (e) => {
     setPlayer(e.target);
   };
   
 
-  /* Alias Frame related implementations */
+
+/**
+* Extracts the name initials based on the Public name of a user
+*
+* @param {string} name a string of the user Public name
+* @returns a string that represents the intial of the username
+*/
   function getInitials(name) {
     if (typeof name === 'string') {
       const names = name.split(' ');
@@ -33,7 +59,12 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
     }
     return ''; 
   }
-
+/**
+* Generates a random color using a hash function as the background of the user Alias
+*
+* @param {string} name a string of the user Public name
+* @returns a string that represents a random color
+*/
   function generateBackground(name) {
     let hash = 0;
     let i;
@@ -65,7 +96,7 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
       alignItems: 'center'
   }
   
-  /* Interaction counting */
+
   const [inters, setInter] = useState({
     like: { count: likeArray.length, isSelected: likeArray.includes(userID) },
     handshake: { count: HandshakeArray.length, isSelected: HandshakeArray.includes(userID) },
@@ -74,8 +105,6 @@ function Post({userHandle, userPubName, createTime, songName, artistName, moodLi
     lol: { count: lolArray.length, isSelected: lolArray.includes(userID) },
     gg: { count: ggArray.length, isSelected: ggArray.includes(userID) }
   });  
-
-  
 
 
   return (

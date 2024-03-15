@@ -1,4 +1,3 @@
-/*Interaction button and interactive buttons*/
 .InteractionButton {
     position: absolute;
     bottom: 48px;
@@ -13,5 +12,4 @@
     border: none;
     cursor: pointer;
     padding: 30px;
-    /* Adjust padding as necessary */
 }

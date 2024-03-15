@@ -4,12 +4,25 @@ import './GenInteractiveButton'
 import GenInteractiveButton from "./GenInteractiveButton";
 import { refreshAccessToken } from '../authUtil.js';
 
-//const InteractionButton = ({inters, setInter, likeArr, HandshakeArr, fireArr, sadArr, lolArr, ggArr, PID , token}) => {
+/**
+* A subcomponent to the post, a collection of 6 different interaction buttons
+*
+* @param {Object} inters a state variable that is passed from the post to record the counts of the corresponding interactions
+* @param {function} setInters a state function setter from useState hook that is passed from the post to update dynamically the interaction counts
+* @param {string} PID a string that represents the ID of the Post; used to retrieve backend data
+* @param {string} userID a string that represents the id of the user, to mark the current user's interaction in server record
+* @returns a string that represents the intial of the username
+*/
 const InteractionButton = ({inters, setInter, PID , userID}) => {
 
+  /**
+  * interact with the server data base to update user's request to interact with a post
+  *
+  * @param type a string that indicates which button was clicked
+  * @returns this method does not return anything besides updating backend data
+  */
   const updateBackend = async (type) => {
     const payload = JSON.stringify({reaction: type});
-    console.log(payload);
     try {
         const API_key = localStorage.getItem('accessToken');
         if(API_key == null) {
@@ -45,9 +58,7 @@ const InteractionButton = ({inters, setInter, PID , userID}) => {
           lol: { count: data.post.lol_by.length, isSelected: data.post.lol_by.includes(userID)},
           gg: { count: data.post.gg_by.length, isSelected: data.post.gg_by.includes(userID)}
         });
-        console.log('data:', data);
-      
-        console.log(inters);
+
         if (!response.ok) {
           if (response.status == 401)
           {
@@ -64,12 +75,18 @@ const InteractionButton = ({inters, setInter, PID , userID}) => {
     };
   };
 
+/**
+* Defined as a method to generate interaction button by taking prop specification
+*
+* @param type a string of the user Public name
+* @param svgPath a string that manipulates the shape of the button
+* @returns a Generic interactive button with specified features dictated by the props
+*/
 const renderButton = (type, svgPath) => (
   <GenInteractiveButton
       name={`${type}Button`}
       svgPath={svgPath}
       onClick={() => updateBackend(type)}
-      //isSelected={interactions[type].isSelected}
       isSelected={inters[type].isSelected}
   />
 );

@@ -4,9 +4,14 @@ import GenMoodButton from "./GenMoodButton";
 import { refreshAccessToken } from './authUtil.js';
 import { useNavigate } from 'react-router-dom';
 
- const CreatePost = () => {
-
-
+/**
+ * A component that provides an interface for users to create a new post, selecting a song, artist, and mood. 
+ * It allows users to input the name of the song and artist, choose a mood, and submit the post.
+ * If the user is not logged in or an error occurs during post submission, appropriate feedback is provided.
+ *
+ * @returns A form allowing the user to create a post with song, artist, and mood information.
+ */
+const CreatePost = () => {
   const [songInput, setSongInput] = useState('');
   const [artistInput, setArtistInput] = useState('');
   const [moods , setMoods] = useState({
@@ -26,17 +31,19 @@ import { useNavigate } from 'react-router-dom';
       const selectedMood = Object.keys(moods).find(key => moods[key].isSelected);
       return selectedMood; 
     };
-  
+
+    /**
+     * Handles the submission of the post form. Validates the input and sends the post data to the server.
+     * @param {Event} event - The event triggered on form submission.
+     */
     const handleSubmit = (event) => {
       event.preventDefault(); // Prevent default form submission behavior
       
       const moodInput = getSelectedMood();
-      console.log(songInput, artistInput, moodInput);
   
       if (!moodInput || !songInput.trim() || !artistInput.trim()) {
         alert("Please fill out all fields and select a mood to VIBE ;)");
     
-        // Clear the input fields after alert
         setSongInput('');
         setArtistInput('');
         if(moodInput){
@@ -44,9 +51,12 @@ import { useNavigate } from 'react-router-dom';
           refreshedMoods[moodInput].isSelected = false;
           setMoods(refreshedMoods);
         }
-        // Optionally clear the mood selection as well
-        // Reset moods here if needed
       } else{
+        /**
+         * Asynchronously sends the post data to the server. If the user is not logged in or if there is an issue with the 
+         * request, appropriate error handling is performed. In case of an expired or invalid access token, an attempt to refresh
+         * the access token is made.
+         */
         const sendPost = async() => {
           const postData = {
             song: songInput,
@@ -78,29 +88,27 @@ import { useNavigate } from 'react-router-dom';
             }
           }
 
-          const data = await response.json();
-          console.log("data: ", data);
-
           } catch (error) {
             console.error('Failed to update created post:', error);
           }
         }
-        
         sendPost();
-        // return to the previous page
         navigate('/home')
-
         }
     };
 
-
-    // return to homepage when cancel is hit
+    /**
+     * Cancels the post creation and navigates the user back to the home page.
+     */
     const handleCancel = () => {
       navigate('/home')
     };
   
 
-    
+    /**
+     * Toggles the selected mood for the post, ensuring only one mood can be selected at a time.
+     * @param {string} moodType - The type of mood being toggled.
+     */
     const handleMoodClick = (moodType) => {
         const updatedMoods = { ...moods };
         const check_mood = updatedMoods[moodType];
@@ -117,10 +125,13 @@ import { useNavigate } from 'react-router-dom';
             check_mood.Mstring = moodType;
 
         check_mood.isSelected = !check_mood.isSelected;
-    
         setMoods(updatedMoods);
       };
-
+    /**
+     * Renders a mood selection button.
+     * @param {string} moodType - The type of mood the button represents.
+     * @returns A GenMoodButton component for mood selection.
+     */
     const renderButton = (moodType) => (
         <GenMoodButton
             type="button"

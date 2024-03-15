@@ -117,38 +117,38 @@
   bottom: 45px;
   left: 116px;
   display: flex;
-  justify-content: space-between; /* This will space out your buttons*/
+  justify-content: space-between; 
 }
 
 .postButton{
-  background-color: #f95337; /* Adjusted to match the button color */
-  color: white; /* Text color */
+  background-color: #f95337; 
+  color: white; 
   border: 3px solid #f95337;
   height: auto;
   width: 150px;
   border: none;
-  padding: 10px 25px; /* Adjust padding to increase button size */
-  border-radius: 22px; /* Circular borders */
+  padding: 10px 25px; 
+  border-radius: 22px; 
   font-family: 'Pacifico';
   font-weight: bold;
   font-size: 24px;
   cursor: pointer;
-  flex: 1; /* Allows buttons to grow and take up available space */
-  margin: 0 10px; /* Adds space between buttons */
+  flex: 1; 
+  margin: 0 10px; 
 }
 
 .cancelButton {
-  background: transparent; /* Adjusted to match the button color */
-  color: #f95337; /* Text color */
+  background: transparent; 
+  color: #f95337; 
   height: auto;
   width: 150px;
   border: 3px solid #f95337;
-  padding: 10px 25px; /* Adjust padding to increase button size */
-  border-radius: 22px; /* Circular borders */
+  padding: 10px 25px; 
+  border-radius: 22px; 
   font-family: 'Pacifico';
   font-weight: bold;
   font-size: 24px;
   cursor: pointer;
-  flex: 1; /* Allows buttons to grow and take up available space */
-  margin: 0 10px; /* Adds space between buttons */
+  flex: 1; 
+  margin: 0 10px;
 }

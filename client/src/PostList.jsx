@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Post from './Post/Post.jsx';
 import './PostList.css'
 import { refreshAccessToken} from './authUtil.js';
+
+/**
+ * A component that renders a list of Post components based on data fetched from an API.
+ * It dynamically generates each Post by passing down the necessary props extracted from the raw post data.
+ *
+ * @param {string} APIkey An API key used for authorization in API requests (currently not directly used in the component).
+ * @param {string} userID The ID of the user whose posts are to be fetched and displayed.
+ * @returns An ordered list (<ol>) of Post components.
+ */
+
 function PostList({APIkey, userID}){
 
   const [postRawData , setPostRawData] = useState([]);
@@ -18,7 +28,9 @@ function PostList({APIkey, userID}){
     fullURL = `http://localhost:4000/post?${query}`;
   }
   
-
+  /**
+   * Fetches post data from the server and updates the component's state with the received data.
+   */
     useEffect(() => {
         const fetchInfo = async () => {
           try {
@@ -45,7 +57,6 @@ function PostList({APIkey, userID}){
                     }
             }
             const data = await response.json(); // Correctly parsing the JSON data
-            console.log('post data:', data);
             if (!data.ok) {
                 throw new Error('API responded with an error');
               }
@@ -57,7 +68,15 @@ function PostList({APIkey, userID}){
         fetchInfo();
       },[]);
 
-
+      /**
+       * Maps each item of post raw data to a Post component, passing the necessary data as props.
+       * Each Post component represents a single user post, displaying various details such as the user's public name,
+       * the song shared, the artist's name, the mood associated with the post, and interactive elements like a like button
+       * and a playback toggle for an embedded YouTube video of the shared song.
+       *
+       * @param {Array} postRawData - An array of objects, each containing data for a single post.
+       * @returns An array of <li> elements, each containing a Post component with the corresponding post data.
+       */
       const posts = postRawData.map((postItemRawData) => {
         return (
         <li key={postItemRawData._id}>
