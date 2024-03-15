@@ -1,6 +1,7 @@
 import './trending.css';
 import React, {useEffect, useState} from 'react';
 
+//creates individual trending bars taking in props to dynamically size width, count, and the id. this function is called by trending container
 function TrendingBar(props)
 {
     const { content, id, width, fontSize } = props;
@@ -19,5 +20,4 @@ function TrendingBar(props)
         </div>
     )
 }
-//<img src ={`${process.env.PUBLIC_URL}/Union.svg`} alt= "Trending emoji"></img>
 export default TrendingBar;

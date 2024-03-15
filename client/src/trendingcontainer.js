@@ -3,7 +3,8 @@ import TrendingBar from './trendingbar.js';
 import React, {useEffect, useState} from 'react';
 import { refreshAccessToken, logout} from './authUtil.js';
 
-
+// This function renders the 5 dynamic trending bars and fetches data from the server to make the bars dynamic.
+// It is called by mainpage.js 
 
 function TrendingContainer(props)
 {
@@ -24,7 +25,6 @@ function TrendingContainer(props)
                 if (!response.ok){
                     if (response.status == 401)
                     {
-                        console.log('trying to refresh access token...');
                         await refreshAccessToken();
                         getMood();
                         return;
@@ -34,7 +34,6 @@ function TrendingContainer(props)
                 }
                 const data = await response.json();
                 setMood(data.moods);
-                //console.log(data.moods);
             } catch (error) 
             {
                 console.error('Error fetching data1:', error);
@@ -49,7 +48,6 @@ function TrendingContainer(props)
             mood[i] = {_id: ' Unavailable', count: 0}
         }
     }
-
     // dynamically computes the width of each bar based on the highest count
     const highestMoodCount = mood[0].count;
     if(highestMoodCount === 0) {
@@ -57,14 +55,11 @@ function TrendingContainer(props)
     } else {
         for (const element of mood) {
             const ratio = element.count / highestMoodCount;
-
             // the width of each bar is determined by the ratio of its count to the highest count, 
             // which is then added to 25% to give a minimum width of 25%
             element.width = (ratio * 75 + 25).toFixed(2) + '%';
         }
     }
-    
-
     return( 
         <div className = "trending_container" style = {{position: 'absolute', left: '1112px'}}>
             <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
