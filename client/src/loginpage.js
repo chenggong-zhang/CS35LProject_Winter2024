@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { refreshAccessToken, logout} from './authUtil.js';
 
-const loginWithEmail = async (email, navigate) => {
+const loginWithEmail = async (email, navigate) => { //This function is the top email input box which sends request to server for one time password
     try {
       const response = await axios.post('http://localhost:4000/auth/email', {
         email: email
@@ -24,7 +24,7 @@ const loginWithEmail = async (email, navigate) => {
   };
 
 
-const verifyEmailWithOtp = async (email, otp, navigate) => {
+const verifyEmailWithOtp = async (email, otp, navigate) => { //This function is the bottom password box which sends request to server with password and email and get user object, access/refresh token which are then stored in local storage
     try {
       console.log(email)
       const response = await axios.post('http://localhost:4000/auth/email/verify', {
@@ -32,10 +32,9 @@ const verifyEmailWithOtp = async (email, otp, navigate) => {
         otp: otp
       });
       if (response.data.ok) {
-        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('accessToken', response.data.accessToken); //storing user object, access and refresh JWT token
         localStorage.setItem('refreshToken', response.data.refreshToken);
         localStorage.setItem('userObject',JSON.stringify(response.data.user))
-        // console.log("email verified")
         return response.data.user; 
       } if (response.status === 401){
         navigate('/')
@@ -51,9 +50,8 @@ const verifyEmailWithOtp = async (email, otp, navigate) => {
 };
 
 
-// other's data, for testing purpose only
-// retrieving user's information
-const getUser = async (userid, navigate, token) => {
+
+const getUser = async (userid, navigate, token) => {//This function is called when entering another user's profilepage, which retrieves their user object file and a string called isself, used to identify if user has editing permission.
   try {
     console.log('userid: ', userid);
     const API_key = localStorage.getItem('accessToken');
@@ -84,12 +82,7 @@ const getUser = async (userid, navigate, token) => {
 
     localStorage.setItem('otherObject',JSON.stringify(data.user));
     localStorage.setItem('isSelf', data.is_self);
-    console.log("Original login page isself",  data.is_self)
-    console.log("The fetched isSelf is ")
-    console.log(data.is_self);
-    console.log("other user's object sucessflly retrieved")
     const event = new CustomEvent('otherObjUpdated', {});
-    console.log("event dispatched")
     window.dispatchEvent(event);
 
   } catch (error) {
@@ -101,7 +94,7 @@ const getUser = async (userid, navigate, token) => {
 };
 
 //gets the user followers and following
-const getFollow=async (userid, navigate, token) => {
+const getFollow=async (userid, navigate, token) => {//This function is called with getUser to retrieve the followers and followings list of the visiting user to display.
   try {
     console.log('running getFollow...');
     const API_key = localStorage.getItem('accessToken');
@@ -131,17 +124,10 @@ const getFollow=async (userid, navigate, token) => {
     const data = await response.json();
 
     localStorage.setItem('following',JSON.stringify(data.following));
-    // console.log(response.data.following===null);
-    // console.log(localStorage.getItem('following')==null);
     localStorage.setItem('followers', JSON.stringify(data.followers));
-    // console.log(response.data.following);
-    // console.log(response.data.followers);
-    console.log(localStorage.getItem('following'));
-    console.log(localStorage.getItem('followers'));
-    console.log("The following and followers are suecessfully retrieved")
+
 
   } catch (error) {
-    console.log(error)
     console.error('Getting followers and following failed', error);
     navigate('/')
     throw error;
@@ -149,7 +135,7 @@ const getFollow=async (userid, navigate, token) => {
 };
 
 
-class MainLogin extends React.Component{
+class MainLogin extends React.Component{ //This is the mainlogin component that gets rendered by default
   constructor(props){
     super(props);
     this.state={
@@ -195,7 +181,7 @@ class MainLogin extends React.Component{
     }
 }
 
-function PassWord({email, current, opt, setOpt, setCurrent}){
+function PassWord({email, current, opt, setOpt, setCurrent}){//This is the component name "password" rendered above the password input box
   if (email==null){
     return null;
   }
@@ -209,15 +195,12 @@ function PassWord({email, current, opt, setOpt, setCurrent}){
   }
 }
 
+//This is the input boxes for both email and passwords
+//
 function UserTypingBoard({propsData}) {
   const {state, setState, current, setCurrent}=propsData
   const navigate = useNavigate();
   const inputRef = useRef();
-
-
-  // const userid=JSON.parse(localStorage.getItem('userObject'))._id;
-  // const token=localStorage.getItem('accessToken');
-
 
   const focusTextInput = () => {
     inputRef.current.focus();
@@ -237,9 +220,6 @@ function UserTypingBoard({propsData}) {
       }
       else{
         await verifyEmailWithOtp(current, state, navigate)
-        // await getUser(userid, navigate, token)
-        // await getFollow(userid, navigate, token)
-        // console.log(localStorage.getItem("otherObject"));
         navigate('/home')
       }
     }
@@ -257,6 +237,7 @@ function UserTypingBoard({propsData}) {
   );
 }
 
+//This is the logo
 class Rubato extends React.Component{
   render(){
       const {imageSource}=this.props;
