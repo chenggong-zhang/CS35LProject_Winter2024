@@ -8,7 +8,6 @@ import { refreshAccessToken, logout} from './authUtil.js';
 function TrendingContainer(props)
 {
     const [mood, setMood] = useState([{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0},{_id: 'Waiting', count: 0}]);
-    const API_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJydWJhdG8iLCJzdWIiOiI2NWU3Y2M0YjE2MTk1MGM3M2QzYTNkZjUiLCJpYXQiOjE3MTAzNzEwMDYsImV4cCI6MTcxMDM3MTYwNn0.nUp3nh00It1U__-Pmn598RSOSm92C1fDF0t0f5OYYu8';
     useEffect(()=>{
         const getMood = async() =>{
             try{
@@ -51,17 +50,32 @@ function TrendingContainer(props)
         }
     }
 
+    // dynamically computes the width of each bar based on the highest count
+    const highestMoodCount = mood[0].count;
+    if(highestMoodCount === 0) {
+        mood.forEach(element => element.width = '25%');
+    } else {
+        for (const element of mood) {
+            const ratio = element.count / highestMoodCount;
+
+            // the width of each bar is determined by the ratio of its count to the highest count, 
+            // which is then added to 25% to give a minimum width of 25%
+            element.width = (ratio * 75 + 25).toFixed(2) + '%';
+        }
+    }
+    
+
     return( 
         <div className = "trending_container" style = {{position: 'absolute', left: '1112px'}}>
             <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
             <p style = {{fontSize: '30px', color: 'white', textAlign: 'center', fontFamily: 'Pacifico'}}>
                 TRENDING VIBES
             </p>
-            <TrendingBar content = {`${mood[0].count} vibes • `} id = {mood[0]._id} width = "100%"></TrendingBar>
-            <TrendingBar content = {`${mood[1].count} vibes • `} id = {mood[1]._id} width = "85%"></TrendingBar>
-            <TrendingBar content = {`${mood[2].count} vibes • `} id = {mood[2]._id} width = "55%"></TrendingBar>
-            <TrendingBar content = {`${mood[3].count} vibes • `} id = {mood[3]._id} width = "40%"></TrendingBar>
-            <TrendingBar content = {`${mood[4].count} vibes • `} id = {mood[4]._id} width = "25%" fontSize = '13px' ></TrendingBar>
+            <TrendingBar content = {`${mood[0].count} vibes • `} id = {mood[0]._id} width = {mood[0].width}></TrendingBar>
+            <TrendingBar content = {`${mood[1].count} vibes • `} id = {mood[1]._id} width = {mood[1].width}></TrendingBar>
+            <TrendingBar content = {`${mood[2].count} vibes • `} id = {mood[2]._id} width = {mood[2].width}></TrendingBar>
+            <TrendingBar content = {`${mood[3].count} vibes • `} id = {mood[3]._id} width = {mood[3].width}></TrendingBar>
+            <TrendingBar content = {`${mood[4].count} vibes • `} id = {mood[4]._id} width = {mood[4].width} fontSize = '13px' ></TrendingBar>
         </div> 
     )
 }
