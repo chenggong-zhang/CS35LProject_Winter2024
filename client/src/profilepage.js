@@ -4,7 +4,7 @@ import React, {useState, useRef, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import PostList  from './PostList.jsx';
-import { refreshAccessToken } from './authUtil.js';
+import { refreshAccessToken, logout } from './authUtil.js';
 
 
 class Profilepage extends React.Component{
@@ -99,7 +99,7 @@ class Profilepage extends React.Component{
     </div>
 
     {/* Middle part of the page */}
-    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', border: '1px #FFFDFD solid'}}>   
+    <div style={{width: 597, height: 1176, left: 397, top: 0, position: 'absolute', mixBlendMode: 'color-dodge', background: 'black', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)', border: 'transparent'}}>   
     </div>
     <div style={{position: 'absolute',top: "500px", left:"355px", height: '900px', overflowY: 'scroll'}}>
     {this.state.is_self ? (
@@ -115,7 +115,7 @@ class Profilepage extends React.Component{
 
     <FollowButton userid={userid} token={token}/>
     {/* User display in Middle */}
-    <div style={{width: 260, height: 241, left: 148, top: 60, position: 'absolute'}}>
+    <div style={{width: 260, height: 241, left: 144, top: 60, position: 'absolute'}}>
         <UserHandle handle={handle}/>
         <UserName username={username} handle={handle} isself={this.state.isself} updateUsername={this.updateUsername}/>
         <div style={{width: 120, height: 120, left: 42, top: 5, position: 'absolute'}}>
@@ -168,7 +168,7 @@ function Followers(){
 
     return(
 <div>
-<   div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+<   div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
             <div style={{left: 115, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>FOLLOWERS</div>
     </div>
@@ -219,7 +219,7 @@ function Following(){
 
     return(
 <div>
-    <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+    <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 340, height: 35, left: 0, top: 0, position: 'absolute', background: 'rgba(230, 234, 239, 0.10)', borderRadius: 100}} />
             <div style={{width: 87, height: 23, left: 126, top: 7, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>Following</div>
     </div>
@@ -257,7 +257,7 @@ function FollowBar({numVibe, uname, uhandle}){
 
 function UserHandle({handle}){
     return(
-    <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
+    <div style={{left: 61, top: 164, position: 'absolute', color: '#FFFDFD', fontSize: 20, fontFamily: 'Old Standard TT', fontWeight: 'bold', wordWrap: 'break-word'}}>@{handle}</div>
     )
 }
 
@@ -275,6 +275,9 @@ function UserPic({username}){
         color: '#fff',
         margin: 'auto',
         background: color,
+        fontFamily: "Old Standard TT",
+        fontWeight: "bold",
+        fontSize: "25px",
         justifyContent: 'center',
         alignItems: 'center'
     }
@@ -314,10 +317,6 @@ function getInitials(name) {
      return color;
   }
   
-
-
-
-
 
 
 function UserName({username, handle, isself, updateUsername}){
@@ -448,7 +447,7 @@ function NavigationBar({imageSource, barName, barPath}){
 class VibeButton extends React.Component{
     render(){
         return(
-            <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+            <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
                 <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
                 <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>vibe</div>
             </div>
@@ -457,33 +456,35 @@ class VibeButton extends React.Component{
 }
 
 function LogoutButton(){
-    const token=localStorage.getItem('accessToken');
+    // const token=localStorage.getItem('accessToken');
     const navigate = useNavigate();
-    const logout = async (token, navigate) => {
+    const handleLogout = async (navigate) => {
         try {
             const API_key = localStorage.getItem('accessToken');
             if(API_key == null) {
                 throw new Error('User is not logged in')
             }
 
-            const response = await fetch('http://localhost:4000/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
-                },
-            });
+            await logout()
 
-            if (!response.ok) {
-                if (response.status == 401)
-                {
-                    console.log('trying to refresh access token...');
-                    await refreshAccessToken();
-                    logout(token, navigate);
-                    return;
-                } else {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }  
-            }
+            // const response = await fetch('http://localhost:4000/auth/logout', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            //     },
+            // });
+
+            // if (!response.ok) {
+            //     if (response.status == 401)
+            //     {
+            //         console.log('trying to refresh access token...');
+            //         await refreshAccessToken();
+            //         logout(token, navigate);
+            //         return;
+            //     } else {
+            //         throw new Error(`HTTP error! status: ${response.status}`);
+            //     }  
+            // }
 
             navigate('/')
 
@@ -493,9 +494,9 @@ function LogoutButton(){
       };
 
     return(
-        <div style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+        <div onClick={()=> handleLogout(navigate)} style={{width: 132, height: 40, left: -1, top: 1053, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-            <div onClick={()=> logout(token, navigate)}style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+            <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
             {/* {errMess && <div style={{ color: 'grey' }}>{errMess}</div>} */}
         </div>
     );
@@ -527,13 +528,29 @@ function UserDisplay(){
     const obj=JSON.parse(object);
     const handle=obj.handle;
     const username=obj.username;
+    const Alias_style = {
+        position: 'absolute',
+        top: '0px',
+        left: '0px',
+        display: 'flex',
+        width: '40px',
+        height: '40px',
+        borderRadius: '100px',
+        overflow: 'hidden',
+        color: '#fff',
+        fontFamily: 'Old Standard TT',
+        fontWeight: 'bold',
+        background: generateBackground(username),
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
     
 
     return(
-        <div style={{width: 109, height: 40, left: 1, top: 988, position: 'absolute'}}>
+        <div style={{width: 250, height: 40, left: 1, top: 988, position: 'absolute'}}>
             <div style={{left: 49, top: 0, width: 800, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{username}</div>
             <div style={{left: 49, top: 20, width: 800, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>{handle}</div>
-            <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
+            <div style={Alias_style}>{getInitials(username)}</div>
         </div>
     )
     

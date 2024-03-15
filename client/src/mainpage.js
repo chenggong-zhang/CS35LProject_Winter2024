@@ -148,6 +148,7 @@ function SearchBar()  {
         try {
             const API_key = localStorage.getItem('accessToken');
             if(API_key == null) {
+                navigate('/');
                 throw new Error('User is not logged in')
             }
             const response = await fetch('http://localhost:4000/relation/'+userid, 
@@ -224,7 +225,7 @@ function SearchBar()  {
                         <ul style={{ listStyle: 'none', padding: 0 }}>
                             <div>
                                 {newUsers.map((user, index) => (
-                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white' }} >
+                                    <li key={index} style={{ padding: '10px 0', borderBottom: '1px solid #ccc', color: 'white', fontFamily: 'Quicksand', fontWeight:'bold' }} >
                                         {user.username} 
                                         <p style = {{fontSize: '10px'}} onClick={() => handleUserClick(user._id)}>
                                             @{user.handle}
@@ -271,7 +272,7 @@ function NavigationBar({imageSource, barName, barPath}){
 function VibeButton (){
     const navigate = useNavigate();
     return(
-        <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+        <div style={{width: 132, height: 40, left: -1, top: 255, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}}>
             <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', background: '#F95337', borderRadius: 100}} />
             <div onClick={() => navigate('/createpost')} style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>vibe</div>
         </div>
@@ -279,15 +280,63 @@ function VibeButton (){
     
 }
 
-class LogoutButton extends React.Component{
-    render(){
-        return(
-            <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
-                <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
-            </div>
-        )
-    }
+// class LogoutButton extends React.Component{
+    
+//     render(){
+//         return(
+//             <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}} onClick={logout}>
+//                 <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
+//                 <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+//             </div>
+//         )
+//     }
+// }
+
+function LogoutButton(){
+    const navigate = useNavigate();
+
+    const handleLogout = async (navigate) => {
+        try {
+            console.log('logging user out...');
+            const API_key = localStorage.getItem('accessToken');
+            if(API_key == null) {
+                throw new Error('User is not logged in')
+            }
+
+            await logout();
+
+            // const response = await fetch('http://localhost:4000/auth/logout', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Authorization': `Bearer ${API_key}` // Include the JWT token in the Authorization header
+            //     },
+            // });
+
+            // if (!response.ok) {
+            //     if (response.status == 401)
+            //     {
+            //         console.log('trying to refresh access token...');
+            //         await refreshAccessToken();
+            //         handleLogout(navigate);
+            //         return;
+            //     } else {
+            //         throw new Error(`HTTP error! status: ${response.status}`);
+            //     }  
+            // }
+
+            navigate('/')
+
+        } catch (error) {
+            navigate('/')
+        }
+      };
+
+    return(
+        <div style={{width: 132, height: 40, left: -1, top: 700, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)'}} onClick={() => handleLogout(navigate)}>
+            <div style={{width: 132, height: 40, left: 0, top: 0, position: 'absolute', borderRadius: 100, border: '1px #F95337 solid'}} />
+            <div style={{width: 87, height: 23, left: 22, top: 9, position: 'absolute', textAlign: 'center', color: '#E6EAEF', fontSize: 18, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>logout</div>
+        </div>
+    )
 }
 
 class Rubato extends React.Component{
@@ -306,11 +355,36 @@ class Logo extends React.Component{
             <div style={{width: 160, height: 53, left: 94, top: 10, position: 'absolute', color: '#E6EAEF', fontSize: 31, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
                 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
                 RUBATO
-            
             </div>
         )
     }
 }
+function getInitials(name) {
+    if (typeof name === 'string') {
+      const names = name.split(' ');
+      if (names.length >= 2) {
+        return `${names[0][0]}${names[1][0]}`;
+      } else if (names.length === 1) {
+        return names[0][0];
+      }
+    }
+    return ''; 
+  }
+
+  function generateBackground(name) {
+    let hash = 0;
+    let i;
+     for (i = 0; i < name.length; i += 1) {
+       hash = name.charCodeAt(i) + ((hash << 5) - hash);
+     } 
+    let color = '#';
+     for (i = 0; i < 3; i += 1) {
+       const value = (hash >> (i * 8)) & 0xff;
+       color += `00${value.toString(16)}`.slice(-2);
+     }
+     return color;
+  }
+
 
 class UserDisplay extends React.Component{
     render(){
@@ -318,11 +392,28 @@ class UserDisplay extends React.Component{
         const user = JSON.parse(localStorage.getItem("userObject"));
         const name = user.username;
         const handle = user.handle;
+        const Alias_style = {
+            position: 'absolute',
+            top: '0px',
+            left: '0px',
+            display: 'flex',
+            width: '40px',
+            height: '40px',
+            borderRadius: '100px',
+            overflow: 'hidden',
+            color: '#fff',
+            fontFamily: 'Old Standard TT',
+            fontWeight: 'bold',
+            background: generateBackground(name),
+            justifyContent: 'center',
+            alignItems: 'center'
+        }
+ 
         return(
-            <div style={{width: 109, height: 40, left: 1, top: 650, position: 'absolute'}}>
+            <div style={{width: 250, height: 40, left: 1, top: 650, position: 'absolute'}}>
                 <div style={{left: 49, top: 0, position: 'absolute', color: '#E6EAEF', fontSize: 16, fontFamily: 'Quicksand', fontWeight: '700', wordWrap: 'break-word'}}>{name}</div>
-                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 12, fontFamily: 'Quicksand', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
-                <div style={{width: 40, height: 40, left: 0, top: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 9999}} />
+                <div style={{left: 49, top: 20, position: 'absolute', color: '#E6EAEF', fontSize: 12, fontFamily: 'Quatracento', fontWeight: '400', wordWrap: 'break-word'}}>@{handle}</div>
+                <div style={Alias_style}> {getInitials(name)}</div>
             </div>
         )
     }

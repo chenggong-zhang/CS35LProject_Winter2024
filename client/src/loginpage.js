@@ -170,13 +170,24 @@ class MainLogin extends React.Component{
     render()
     {
       return(
-<div style={{width: '100%', height: '100%', position: 'relative', background: '#E6EAEF'}}>
-  <div style={{ width: 320, height: 50, left: '40%', top: 155, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
-  <div style={{position: 'absolute', bottom: 55, color: '#F2F2F2', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.20, wordWrap: 'break-word'}}>email</div>
-        <UserTypingBoard propsData={{state:this.state.email, setState:this.setEmail, current:this.state.current, setCurrent:this.setCurrent}}/>
-  </div>
-  <PassWord email={this.state.email} current={this.state.current} opt={this.state.opt} setOpt={this.setOpt} setCurrent={this.setCurrent}/>
-</div>
+    <div style={{alignItems: 'center', width: '100%', height: '100%', position: 'relative',  background: 'radial-gradient(circle at bottom left, #9DB2B9, #444D78, #393B6A, #353363, #342D5F, #383262, #47406D, #4E4773, #5A527C, #6C638B)'}}>
+      <div style={{ width: 320, height: 50, left: '40%', top: 155, position: 'absolute', boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)' }}>
+      <div style={{position: 'absolute', bottom: 55, color: '#F2F2F2', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.20, wordWrap: 'break-word'}}>email</div>
+            <UserTypingBoard propsData={{state:this.state.email, setState:this.setEmail, current:this.state.current, setCurrent:this.setCurrent}}/>
+      </div>
+      <PassWord email={this.state.email} current={this.state.current} opt={this.state.opt} setOpt={this.setOpt} setCurrent={this.setCurrent}/>
+      
+      <div style={{width: 400, height: 53, left: '40.85%', top: 498, position: 'absolute', color: '#3CC2EF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+      <div style={{width: 400, height: 53, left: '40.95%', top: 502, position: 'absolute', color: '#B50D65', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+      <div style={{width: 400, height: 53, left: '40.9%', top: 500, position: 'absolute', color: '#E6EAEF', fontSize: 25, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 1.0, wordWrap: 'break-word'}}>SHARE YOUR VIBE</div>
+      <div style={{left: '39.85%', top: 740, position: 'absolute'}}>
+            <Rubato imageSource={`${process.env.PUBLIC_URL}/rubato2 1.svg`}/>
+      </div>
+      <div style={{width: 300, height: 53, left: '44.3%', top: 760, position: 'absolute', color: '#E6EAEF', fontSize: 45, fontFamily: 'Pacifico', fontWeight: '900', letterSpacing: 0.45, wordWrap: 'break-word'}}>
+                <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet"></link>
+                RUBATO
+      </div>
+    </div>
       )
     }
 }
@@ -187,7 +198,7 @@ function PassWord({email, current, opt, setOpt, setCurrent}){
   }
   else{
     return (
-  <div style={{ width: 320, height: 50, left: '40%', top: 250, position: 'absolute', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
+  <div style={{ width: 320, height: 50, left: '40%', top: 250, position: 'absolute', borderRadius:40, boxShadow: '0px 0px 0px rgba(0, 0, 0, 0.25)' }}>
       <div style={{position: 'absolute', bottom: 55, color: '#F2F2F2', fontSize: 20, fontFamily: 'Quicksand', fontWeight: '700', letterSpacing: 0.20, wordWrap: 'break-word'}}>password</div>
     <UserTypingBoard propsData={{state: opt, setState: setOpt, current: current, setCurrent:setCurrent}}/>
   </div>
@@ -237,12 +248,20 @@ function UserTypingBoard({propsData}) {
 
   return (
     <div>
-      <input ref={inputRef} onKeyDown={handleKeyPress} type="text" style={{ width: 320, height: 50, bottom: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 100 }} />
+      <input ref={inputRef} onKeyDown={handleKeyPress} type="text" style={{ width: 320, height: 50, bottom: 0, position: 'absolute', background: '#E6EAEF', borderRadius: 40 }} />
       <div onClick={focusTextInput} style={{ cursor: 'pointer', textAlign: 'center', lineHeight: '20px' }}></div>
     </div>
   );
 }
 
+class Rubato extends React.Component{
+  render(){
+      const {imageSource}=this.props;
+      return (
+          <img style={{width: 88, height: 110, position:'absolute'}} alt='pic'src={imageSource} />
+      )
+  }
+}
 
 
 export default MainLogin;
