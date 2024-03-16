@@ -155,8 +155,6 @@ To set up the project, follow these steps:
 > 
 > Also, please make sure to have the latest LTS version of Node.js and npm installed.
 
-> **_IMPORTANT:_** Before initializing the project, make sure to add a `.env` file in the `./server` directory with the provided key-value pairs.  
-
 
 1. Clone the repository:
 
@@ -164,7 +162,7 @@ To set up the project, follow these steps:
 git clone https://github.com/chenggong-zhang/CS35LProject_Winter2024.git
 ```
 
-2. The `./initialize.sh` script can be run to initialize the project and run both the server and the client. You can then skip to step 6. If you want to manually initialize the project, you can jump to step 3.
+2. The `./initialize.sh` script can be run to initialize the project and run both the server and the client. You will be prompted to enter the environment variables needed for the server to run. You can then skip to step 6. If you want to manually initialize the project instead, please jump to step 3.
 
 ```
 # in the project's root directory
@@ -177,6 +175,8 @@ chmod u+x ./initialize.sh
 
 
 3. (If you ran the `./initialize.sh` script, you can skip to step 6.) Install the dependencies in the server and client directories:
+
+> **_IMPORTANT:_** Before manually initializing the project, make sure to add a `.env` file in the `./server` directory with the provided environment variables.  
 
 ```
 # from the project's root directory
