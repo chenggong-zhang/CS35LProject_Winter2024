@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(cors()) // enable cors
 app.use(mongoSanitize()) // remove $ and . in object keys in req.body, req.params, req.headers, req.query
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 const routes = require('./routes');
 const { emailService, userService } = require('./services');
